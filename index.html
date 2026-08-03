@@ -120,6 +120,8 @@ mNkd:'Некудот зикуй',mNkdD:'Сколько налоговых бал
 mMasR:'Мас рехиша',mMasRD:'Налог при покупке квартиры',
 mTlush:'Расшифровка тлуша',mTlushD:'Что значит каждая строчка в зарплатном листе',
 mAvt:'Пособие по безработице',mAvtD:'Сколько получишь от битуах леуми и на какой срок',
+mKids:'Кицват йеладим',mKidsD:'Ежемесячное детское пособие от битуах леуми',
+mTash:'Ташлумим',mTashD:'Рассрочка по кредитке — реальная стоимость покупки',
 },en:{
 back:'← back',calc:'Calculator',ref:'Reference',compare:'Compare',calcs:'Calculators',
 heroTitle:'Financial tools<br>for life in Israel',
@@ -153,6 +155,8 @@ mNkd:'Tax credit points',mNkdD:'How many nekudot zikuy you qualify for',
 mMasR:'Purchase tax',mMasRD:'Tax when buying an apartment',
 mTlush:'Payslip breakdown',mTlushD:'What every line on your payslip means',
 mAvt:'Unemployment benefits',mAvtD:'How much you get from Bituah Leumi and for how long',
+mKids:'Child allowance',mKidsD:'Monthly child benefit from Bituah Leumi',
+mTash:'Installments',mTashD:'Credit card installments — real cost of purchase',
 }};
 function t(k){return T[L][k]||T.ru[k]||k}
 function toggleLang(){L=L==='ru'?'en':'ru';document.getElementById('langBtn').textContent=L==='ru'?'EN':'RU';renderPage()}
@@ -160,7 +164,7 @@ function toggleLang(){L=L==='ru'?'en':'ru';document.getElementById('langBtn').te
 function fm(n){if(n==null||!isFinite(n))return'—';return Math.round(Number(n)).toLocaleString('he-IL')}
 function fy(v){if(!isFinite(v)||v<0)return t('unreach');var y=Math.floor(v),m=Math.round((v-y)*12);return y===0?m+' '+t('mos'):m>0?y+' '+t('yrs')+' '+m+' '+t('mos'):y+' '+t('yrs')}
 function ss(el){var mn=+el.min,mx=+el.max,v=+el.value;var p=((v-mn)/(mx-mn))*100;el.style.background='linear-gradient(to right,#2C2C2E '+p+'%,#D6D3CB '+p+'%)';el.style.height='2px';el.style.borderRadius='0'}
-function fmtV(sid,v){if(/^(txN|olK|pzM|wgH1|wgH2|wgH3|wgH4|wgH5|wgH6|wgH7|avA|avYr)$/.test(sid))return v;if(/^(mrY|cmY|rtY|ifY|glY|pzY|hiW|lsY|ppY)$/.test(sid))return v;if(/^(mrR|cmR|cmG|rtG|rtM|rtA|caD|ifR|glR|hiR|lsD|lsTx|ppR)$/.test(sid))return v+'%';return fm(v)+' ₪'}
+function fmtV(sid,v){if(/^(txN|olK|pzM|wgH1|wgH2|wgH3|wgH4|wgH5|wgH6|wgH7|avA|avYr|tsN)$/.test(sid))return v;if(/^(mrY|cmY|rtY|ifY|glY|pzY|hiW|lsY|ppY)$/.test(sid))return v;if(/^(mrR|cmR|cmG|rtG|rtM|rtA|caD|ifR|glR|hiR|lsD|lsTx|ppR|tsR)$/.test(sid))return v+'%';return fm(v)+' ₪'}
 
 function ed(span,sid){
   if(!/^[a-zA-Z0-9]+$/.test(sid))return;
@@ -187,8 +191,8 @@ function renderPage(){if(curPage==='home')renderHome();else renderCalc(curPage);
 function renderHome(){
   document.getElementById('barTitle').textContent='FI Tools';document.getElementById('barTitle').onclick=function(){};
   /* New order: tax, wage, osek, mort, rent, car, comp, goal, pitz, hish, infl, health, fi */
-  var items=[['tax','dark','₪'],['wage','red','⏱'],['car','out','○'],['leas','dark','⇋'],['mort','red','⌂'],['masR','out','⌂'],['rent','dark','⇔'],['prep','red','⚡'],['comp','out','%'],['goal','dark','⚑'],['hish','red','⏳'],['pitz','out','☐'],['avt','dark','☂'],['osek','red','✎'],['infl','out','↓'],['health','dark','♥'],['fi','red','FI']];
-  var refs=[['olim','dark','✚'],['nkd','red','✓'],['tlush','out','☰'],['city','dark','⚶'],['stats','out','i']];
+  var items=[['tax','dark','₪'],['wage','red','⏱'],['car','out','○'],['leas','dark','⇋'],['mort','red','⌂'],['masR','out','⌂'],['rent','dark','⇔'],['prep','red','⚡'],['tash','out','☷'],['comp','dark','%'],['goal','red','⚑'],['hish','out','⏳'],['pitz','dark','☐'],['avt','red','☂'],['osek','out','✎'],['infl','dark','↓'],['health','red','♥'],['fi','out','FI']];
+  var refs=[['olim','dark','✚'],['nkd','red','✓'],['kids','out','♦'],['tlush','dark','☰'],['city','red','⚶'],['stats','out','i']];
   var h='<div class="ph"><div class="ph-sub">Israel 2026</div><div class="ph-title">'+t('heroTitle')+'</div></div>';
   h+='<div style="padding:12px 16px;font-size:13px;color:var(--gr);line-height:1.5;border-bottom:1px solid var(--ln)">'+t('tapNum')+'</div><div class="tools"><div class="t-sect">'+t('calcs')+'</div>';
   items.forEach(function(x){h+='<div class="t-item" onclick="go(\''+x[0]+'\')"><div class="t-icon '+x[1]+'">'+x[2]+'</div><div><div class="t-name">'+t('m'+x[0].charAt(0).toUpperCase()+x[0].slice(1))+'</div><div class="t-desc">'+t('m'+x[0].charAt(0).toUpperCase()+x[0].slice(1)+'D')+'</div></div><span class="t-arrow">→</span></div>'});
@@ -205,12 +209,12 @@ function go(p){
 /* ── Render page (full, only on navigation) ── */
 function renderCalc(p){
   var el=document.getElementById('app');
-  var pages={fi:pgFI,tax:pgTax,wage:pgWage,mort:pgMort,prep:pgPrep,masR:pgMasR,comp:pgComp,rent:pgRent,car:pgCar,leas:pgLeas,olim:pgOlim,infl:pgInfl,goal:pgGoal,osek:pgOsek,pitz:pgPitz,avt:pgAvt,hish:pgHish,health:pgHealth,city:pgCity,stats:pgStats,nkd:pgNkd,tlush:pgTlush};
+  var pages={fi:pgFI,tax:pgTax,wage:pgWage,mort:pgMort,prep:pgPrep,masR:pgMasR,comp:pgComp,rent:pgRent,car:pgCar,leas:pgLeas,tash:pgTash,olim:pgOlim,infl:pgInfl,goal:pgGoal,osek:pgOsek,pitz:pgPitz,avt:pgAvt,hish:pgHish,health:pgHealth,city:pgCity,stats:pgStats,nkd:pgNkd,tlush:pgTlush,kids:pgKids};
   el.innerHTML=(pages[p]||function(){return''})();
   setTimeout(function(){document.querySelectorAll('input[type=range]').forEach(ss)},10);
 }
 function calcRes(p){
-  var fns={fi:resFI,tax:resTax,wage:resWage,mort:resMort,prep:resPrep,masR:resMasR,comp:resComp,rent:resRent,car:resCar,leas:resLeas,infl:resInfl,goal:resGoal,osek:resOsek,pitz:resPitz,avt:resAvt,hish:resHish,health:resHealth};
+  var fns={fi:resFI,tax:resTax,wage:resWage,mort:resMort,prep:resPrep,masR:resMasR,comp:resComp,rent:resRent,car:resCar,leas:resLeas,tash:resTash,infl:resInfl,goal:resGoal,osek:resOsek,pitz:resPitz,avt:resAvt,hish:resHish,health:resHealth};
   return(fns[p]||function(){return''})();
 }
 
@@ -371,6 +375,26 @@ function pgFI(){
   h+='<div class="hint"><b>'+t('howCalc')+'</b>'+(L==='ru'?'Target = расходы × 300 (правило 4%). Поток = (доход − расходы) + иштальмут + пенсия.':'Target = expenses × 300 (4% rule). Flow = (income − expenses) + hishtalmut + pension.')+'</div>';
   return h;
 }
+
+/* ══════ TASHLUMIM ══════ */
+function resTash(){
+  var sum=V('tsS',5000),n=V('tsN',12),r=V('tsR',0);
+  var mr=r/100;
+  var pmt,tot;
+  if(mr<=0){pmt=Math.round(sum/n);tot=sum}
+  else{pmt=Math.round(sum*(mr*Math.pow(1+mr,n))/(Math.pow(1+mr,n)-1));tot=pmt*n}
+  var over=tot-sum;var pct=sum>0?(over/sum*100).toFixed(1):0;
+  var noInt=Math.round(sum/n);
+  return '<div class="res'+(over>0?' bad':'')+'"><div class="res-lbl">'+(L==='ru'?'платёж в месяц':'monthly payment')+'</div><div class="res-num">'+fm(pmt)+' ₪</div><div class="res-line"></div><div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Всего заплатишь':'Total paid')+'</div><div class="res-item-val">'+fm(tot)+' ₪</div></div><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Переплата':'Overpayment')+'</div><div class="res-item-val">'+fm(over)+' ₪ ('+pct+'%)</div></div></div></div>'
+  +(over>0?'<div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Без процента':'Interest-free')+'</div><div class="info-cell-val">'+fm(noInt)+' ₪/'+(L==='ru'?'мес':'mo')+'</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'С процентом':'With interest')+'</div><div class="info-cell-val">'+fm(pmt)+' ₪/'+(L==='ru'?'мес':'mo')+'</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Разница в месяц':'Difference/mo')+'</div><div class="info-cell-val">+'+fm(pmt-noInt)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Годовая ставка':'Annual rate')+'</div><div class="info-cell-val">'+(r*12).toFixed(1)+'%</div></div></div>':'')
+}
+function pgTash(){var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mTash')+'</div></div><div class="fields">';
+  h+=FN('tsS',(L==='ru'?'Сумма покупки':'Purchase amount'),5000,'tash');
+  h+=FH('tsN',(L==='ru'?'Количество платежей':'Number of payments'),12,2,36,1,'tash');
+  h+=FH('tsR',(L==='ru'?'Процент в месяц (0 = без %)':'Monthly interest (0 = free)'),0,0,5,.1,'tash',(L==='ru'?'Обычные ташлумим = 0%. Кредит = 1-2%/мес':'Regular tashlumim = 0%. Credit = 1-2%/mo'));
+  h+='</div><div id="res-tash">'+resTash()+'</div>';
+  h+='<div class="hint"><b>'+t('howCalc')+'</b>'+(L==='ru'?'Обычные ташлумим (תשלומים רגילים) — без процента, магазин платит комиссию банку. Кредит (קרדיט) — с процентом, покупатель платит. Процент указывается месячный. Годовая ставка = месячный × 12. Если процент = 0, то переплаты нет — это просто разбивка на части.':'Regular tashlumim (תשלומים רגילים) — no interest, the store pays the bank fee. Credit (קרדיט) — with interest, the buyer pays. Interest is monthly. Annual rate = monthly × 12. If interest = 0, there is no overpayment — it is simply split into parts.')+'</div>';
+  return h}
 
 /* ══════ LEASING VS BUY ══════ */
 function resLeas(){
@@ -533,6 +557,34 @@ function pgTlush(){
     else h+='<div style="padding:12px 16px;border-bottom:1px solid var(--ln)"><div style="font-size:14px;font-weight:600">'+r[1]+'</div><div style="font-size:12px;color:var(--gr);margin-top:2px;line-height:1.4">'+r[2]+'</div></div>';
   });
   h+='<div class="hint"><b>'+(L==='ru'?'Итого':'Summary')+'</b>'+(L==='ru'?'Работник платит ~25-35% от брутто (зависит от зарплаты). Работодатель платит сверх брутто ещё ~20% (пенсия + пицуим + иштальмут). Это значит что реальная стоимость работника для компании примерно на 20% выше его брутто.':'Employee pays ~25-35% of gross (depends on salary). Employer pays an additional ~20% on top of gross (pension + severance + hishtalmut). This means the real cost of an employee to the company is about 20% above their gross.')+'</div>';
+  return h;
+}
+
+/* ══════ KIDS ALLOWANCE ══════ */
+var kidsCount=2;
+function kidsCalc(n){
+  /* 2026 rates: 1st=165, 2-4=220, 5+=165 */
+  var tot=0;
+  for(var i=1;i<=n;i++){
+    if(i===1)tot+=165;
+    else if(i<=4)tot+=220;
+    else tot+=165;
+  }
+  return tot;
+}
+function kidsAdj(d){kidsCount=Math.max(1,Math.min(10,kidsCount+d));renderCalc('kids')}
+function pgKids(){
+  var mo=kidsCalc(kidsCount);var yr=mo*12;
+  var sav=kidsCount*58;
+  var h='<div class="ph"><div class="ph-sub">'+t('ref')+'</div><div class="ph-title">'+t('mKids')+'</div></div>';
+  h+='<div style="display:flex;align-items:center;justify-content:center;gap:20px;padding:24px 16px"><div class="chk-box" onclick="kidsAdj(-1)" style="cursor:pointer;width:44px;height:44px;font-size:24px;'+(kidsCount>1?'':'opacity:.3')+'">−</div><div style="text-align:center"><div style="font-size:48px;font-weight:700;color:var(--bk)">'+kidsCount+'</div><div style="font-size:12px;color:var(--gr);margin-top:2px">'+(L==='ru'?'детей':'children')+'</div></div><div class="chk-box" onclick="kidsAdj(1)" style="cursor:pointer;width:44px;height:44px;font-size:24px">+</div></div>';
+  h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'пособие в месяц':'monthly allowance')+'</div><div class="res-num">'+fm(mo)+' ₪</div><div class="res-line"></div><div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'В год':'Per year')+'</div><div class="res-item-val">'+fm(yr)+' ₪</div></div><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Хисахон/мес':'Savings/mo')+'</div><div class="res-item-val">'+fm(sav)+' ₪</div></div></div></div>';
+  h+='<div class="section-title">'+(L==='ru'?'Разбивка по детям':'Breakdown per child')+'</div>';
+  for(var i=1;i<=kidsCount;i++){
+    var amt=i===1?165:(i<=4?220:165);
+    h+='<div class="stat-row"><span class="stat-lbl">'+(L==='ru'?'Ребёнок ':'Child ')+i+'</span><span class="stat-val">'+amt+' ₪</span></div>';
+  }
+  h+='<div class="hint"><b>'+t('howCalc')+'</b>'+(L==='ru'?'Битуах леуми платит ежемесячно на каждого ребёнка до 18 лет. Первый ребёнок: 165₪, 2-4 ребёнок: 220₪, 5+ ребёнок: 165₪. Плюс 58₪/мес на каждого ребёнка откладывается в «Хисахон лехоль йелед» (накопительная программа). Выплата 20-го числа каждого месяца. Не зависит от дохода семьи.':'Bituah Leumi pays monthly for each child under 18. First child: 165₪, 2nd-4th: 220₪, 5th+: 165₪. Plus 58₪/mo per child is deposited into "Hisachon Lechol Yeled" (savings program). Paid on the 20th of each month. Not income-dependent.')+'</div>';
   return h;
 }
 
