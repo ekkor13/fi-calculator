@@ -96,18 +96,35 @@
   }
   .field input[type=range] {
     width: 100%; height: 28px;
-    -webkit-appearance: none; appearance: none;
+    -webkit-appearance: none; -moz-appearance: none; appearance: none;
     background: transparent; cursor: pointer;
+    outline: none;
   }
-  .field input[type=range]::-webkit-slider-track {
-    height: 4px; border-radius: 2px;
-    background: var(--divider);
+  /* ── Webkit (Chrome, Safari, Edge, Samsung, TG WebView) ── */
+  .field input[type=range]::-webkit-slider-runnable-track {
+    height: 6px; border-radius: 3px;
+    background: var(--divider, #ddd);
   }
   .field input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 24px; height: 24px;
-    border-radius: 50%; background: var(--btn);
-    margin-top: -10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+    -webkit-appearance: none; width: 26px; height: 26px;
+    border-radius: 50%; background: #2563eb;
+    margin-top: -10px; border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(37,99,235,.35);
+  }
+  /* ── Firefox ── */
+  .field input[type=range]::-moz-range-track {
+    height: 6px; border-radius: 3px; border: none;
+    background: var(--divider, #ddd);
+  }
+  .field input[type=range]::-moz-range-thumb {
+    width: 22px; height: 22px; border: 3px solid #fff;
+    border-radius: 50%; background: #2563eb;
+    box-shadow: 0 2px 8px rgba(37,99,235,.35);
+    cursor: pointer;
+  }
+  .field input[type=range]::-moz-range-progress {
+    height: 6px; border-radius: 3px;
+    background: #2563eb;
   }
   .field-note { font-size: 11px; color: var(--hint); margin-top: 2px; }
 
@@ -574,9 +591,27 @@ function updateCalc() {
   document.getElementById('calcResult').innerHTML = renderResult(res, calcRate);
 }
 
+// ── Slider track fill color ──
+function styleSlider(el) {
+  const min = +el.min, max = +el.max, val = +el.value;
+  const pct = ((val - min) / (max - min)) * 100;
+  el.style.background = `linear-gradient(to right, #2563eb 0%, #2563eb ${pct}%, ${getComputedStyle(document.documentElement).getPropertyValue('--divider').trim() || '#ddd'} ${pct}%, ${getComputedStyle(document.documentElement).getPropertyValue('--divider').trim() || '#ddd'} 100%)`;
+  el.style.borderRadius = '3px';
+  el.style.height = '6px';
+}
+document.querySelectorAll('input[type=range]').forEach(el => {
+  styleSlider(el);
+  el.addEventListener('input', () => styleSlider(el));
+});
+
 // ── Init ──
 updateSnap();
 updateCalc();
+
+// Re-style after init
+setTimeout(() => {
+  document.querySelectorAll('input[type=range]').forEach(styleSlider);
+}, 50);
 </script>
 </body>
 </html>
