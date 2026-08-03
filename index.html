@@ -7,7 +7,7 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--bk:#1B1B1F;--rd:#D64045;--bg:#FAFAF8;--gr:#9B9B9B;--ln:#E8E8E4;--wh:#FFFFFF}
+:root{--bk:#2C2C2E;--rd:#B83A3A;--bg:#F5F2EC;--gr:#6E6E73;--ln:#D6D3CB;--wh:#FFFFFF}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--bk);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
 /* Top bar */
@@ -69,7 +69,7 @@ input[type=range]::-moz-range-progress{height:2px;background:var(--bk)}
 .res-line{width:24px;height:3px;background:var(--rd);margin-top:10px}
 .res-row{display:flex;gap:16px;margin-top:14px}
 .res-item{flex:1}
-.res-item-lbl{font-size:11px;color:#6B6B6B}
+.res-item-lbl{font-size:11px;color:#9A9A9E}
 .res-item-val{font-size:14px;font-weight:600;color:var(--bg);margin-top:2px;font-variant-numeric:tabular-nums}
 
 .res.bad{background:var(--rd)}
@@ -131,6 +131,26 @@ input[type=range]::-moz-range-progress{height:2px;background:var(--bk)}
     <div class="t-item" onclick="go('comp')">
       <div class="t-icon dark">%</div>
       <div><div class="t-name">Сложный процент</div><div class="t-desc">Рост вклада или портфеля со временем</div></div>
+      <span class="t-arrow">&#8594;</span>
+    </div>
+    <div class="t-item" onclick="go('rent')">
+      <div class="t-icon red">&#8644;</div>
+      <div><div class="t-name">Снимать или покупать</div><div class="t-desc">Что выгоднее на горизонте N лет</div></div>
+      <span class="t-arrow">&#8594;</span>
+    </div>
+    <div class="t-item" onclick="go('car')">
+      <div class="t-icon out">&#9711;</div>
+      <div><div class="t-name">Реальная стоимость машины</div><div class="t-desc">Все расходы: страховка, бензин, тест, износ</div></div>
+      <span class="t-arrow">&#8594;</span>
+    </div>
+    <div class="t-item" onclick="go('olim')">
+      <div class="t-icon dark">&#10010;</div>
+      <div><div class="t-name">Льготы для олим</div><div class="t-desc">Саль клита, налоговые льготы, сроки</div></div>
+      <span class="t-arrow">&#8594;</span>
+    </div>
+    <div class="t-item" onclick="go('infl')">
+      <div class="t-icon out">&#8595;</div>
+      <div><div class="t-name">Инфляция</div><div class="t-desc">Покупательная сила денег со временем</div></div>
       <span class="t-arrow">&#8594;</span>
     </div>
     <div class="t-sect">Справка</div>
@@ -202,6 +222,7 @@ input[type=range]::-moz-range-progress{height:2px;background:var(--bk)}
     </div>
     <div id="fiR3"></div>
   </div>
+  <div class="hint"><b>Как считается</b><br>Target = ежемесячные расходы × 300 — это сумма, с которой можно снимать 4% в год и жить на них не трогая капитал (правило Уильяма Бенгена, 1994). Поток накоплений = (доход − расходы) + керен иштальмут + пенсия в акции. Время рассчитывается по формуле аннуитета с учётом сложного процента. Иштальмут и пенсия — «скрытые» деньги, которые работодатель откладывает за тебя, но они тоже растут на рынке.</div>
 </div>
 
 <!-- ===== TAX ===== -->
@@ -216,6 +237,7 @@ input[type=range]::-moz-range-progress{height:2px;background:var(--bk)}
   </div>
   <div id="taxRes"></div>
   <div id="taxBreak"></div>
+  <div class="hint"><b>Как считается</b><br>Из брутто вычитаются четыре обязательных платежа. Мас ахнаса (подоходный налог) — прогрессивная шкала от 10% до 50% по ступеням, минус скидка за некудот зикуй (каждая точка = 242₪/мес). Битуах леуми (нац. страхование) — 0.4% до ~6,300₪ и 7% выше. Мас бриют (медстрах) — 3.1% и 5% соответственно. Пенсия — 6% отчисляет работник, ещё 6.5% платит работодатель (не вычитается из брутто). Ставки 2024 года.</div>
 </div>
 
 <!-- ===== MORTGAGE ===== -->
@@ -230,9 +252,8 @@ input[type=range]::-moz-range-progress{height:2px;background:var(--bk)}
     <div class="f"><div class="f-row"><span class="f-lbl">Ставка годовая</span><span class="f-val" id="mrRV" onclick="ed(this,'mrR')">4.5%</span></div><input type="range" id="mrR" min="1" max="10" step="0.1" value="4.5" oninput="uMort()"><div class="f-note">Средняя ставка по рынку</div></div>
   </div>
   <div id="mortRes"></div>
+  <div class="hint"><b>Как считается</b><br>Стандартная формула аннуитета: ежемесячный платёж = сумма кредита × [r(1+r)^n / ((1+r)^n − 1)], где r — месячная ставка, n — количество платежей. Переплата = все платежи минус тело кредита. Калькулятор считает фиксированную ставку. В реальности машканта в Израиле обычно состоит из нескольких траншей (прайм, фиксированная, привязанная к индексу), и итоговая ставка — средневзвешенная.</div>
 </div>
-
-<!-- ===== COMPOUND ===== -->
 <div class="page" id="p-comp">
   <div class="ph">
     <div class="ph-sub">Калькулятор</div>
@@ -243,11 +264,80 @@ input[type=range]::-moz-range-progress{height:2px;background:var(--bk)}
     <div class="f"><div class="f-row"><span class="f-lbl">Довложение/мес</span><span class="f-val" id="cmMV" onclick="ed(this,'cmM')">2,000 ₪</span></div><input type="range" id="cmM" min="0" max="30000" step="500" value="2000" oninput="uComp()"></div>
     <div class="f"><div class="f-row"><span class="f-lbl">Срок (лет)</span><span class="f-val" id="cmYV" onclick="ed(this,'cmY')">20</span></div><input type="range" id="cmY" min="1" max="40" step="1" value="20" oninput="uComp()"></div>
     <div class="f"><div class="f-row"><span class="f-lbl">Доходность/год</span><span class="f-val" id="cmRV" onclick="ed(this,'cmR')">7%</span></div><input type="range" id="cmR" min="1" max="15" step="0.5" value="7" oninput="uComp()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Повышение вклада/год</span><span class="f-val" id="cmGV" onclick="ed(this,'cmG')">0%</span></div><input type="range" id="cmG" min="0" max="20" step="1" value="0" oninput="uComp()"><div class="f-note">Каждый год довложение растёт на этот %</div></div>
   </div>
   <div id="compRes"></div>
+  <div class="hint"><b>Как считается</b><br>Каждый год капитал растёт на процент доходности, и к нему добавляются ежемесячные довложения. Магия сложного процента — ты получаешь проценты не только на вложенное, но и на проценты прошлых лет. При 7% годовых деньги удваиваются примерно каждые 10 лет (правило 72). Параметр «повышение вклада» симулирует рост зарплаты: каждый год ты откладываешь чуть больше.</div>
+</div>
+<!-- ===== RENT VS BUY ===== -->
+<div class="page" id="p-rent">
+  <div class="ph">
+    <div class="ph-sub">Калькулятор</div>
+    <div class="ph-title">Снимать или покупать</div>
+  </div>
+  <div class="fields">
+    <div class="f"><div class="f-row"><span class="f-lbl">Аренда/мес</span><span class="f-val" id="rtRV" onclick="ed(this,'rtR')">4,500 ₪</span></div><input type="range" id="rtR" min="2000" max="15000" step="100" value="4500" oninput="uRent()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Рост аренды/год</span><span class="f-val" id="rtGV" onclick="ed(this,'rtG')">3%</span></div><input type="range" id="rtG" min="0" max="10" step="0.5" value="3" oninput="uRent()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Цена квартиры</span><span class="f-val" id="rtPV" onclick="ed(this,'rtP')">1,500,000 ₪</span></div><input type="range" id="rtP" min="500000" max="5000000" step="50000" value="1500000" oninput="uRent()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Первый взнос</span><span class="f-val" id="rtDV" onclick="ed(this,'rtD')">375,000 ₪</span></div><input type="range" id="rtD" min="0" max="2000000" step="25000" value="375000" oninput="uRent()"><div class="f-note">Обычно 25% от стоимости</div></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Ставка машканты</span><span class="f-val" id="rtMV" onclick="ed(this,'rtM')">4.5%</span></div><input type="range" id="rtM" min="1" max="10" step="0.1" value="4.5" oninput="uRent()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Горизонт (лет)</span><span class="f-val" id="rtYV" onclick="ed(this,'rtY')">15</span></div><input type="range" id="rtY" min="5" max="30" step="1" value="15" oninput="uRent()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Рост цены жилья/год</span><span class="f-val" id="rtAV" onclick="ed(this,'rtA')">4%</span></div><input type="range" id="rtA" min="0" max="10" step="0.5" value="4" oninput="uRent()"></div>
+  </div>
+  <div id="rentRes"></div>
+  <div class="hint"><b>Как считается</b><br>Сравниваются два сценария за N лет. Аренда: суммируются все платежи с учётом ежегодного роста — деньги ушли и не вернулись. Покупка: первый взнос + все платежи по машканте, но в конце у тебя остаётся квартира, которая подорожала. Чистый расход покупки = (взнос + все платежи) − стоимость квартиры через N лет. Не учтены: арнона, ваад байит, ремонты, альтернативная доходность первого взноса.</div>
 </div>
 
-<!-- ===== STATS ===== -->
+<!-- ===== CAR COST ===== -->
+<div class="page" id="p-car">
+  <div class="ph">
+    <div class="ph-sub">Калькулятор</div>
+    <div class="ph-title">Реальная стоимость<br>машины</div>
+  </div>
+  <div class="fields">
+    <div class="f"><div class="f-row"><span class="f-lbl">Стоимость машины</span><span class="f-val" id="caVV" onclick="ed(this,'caV')">120,000 ₪</span></div><input type="range" id="caV" min="20000" max="500000" step="5000" value="120000" oninput="uCar()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Бензин/мес</span><span class="f-val" id="caFV" onclick="ed(this,'caF')">800 ₪</span></div><input type="range" id="caF" min="0" max="3000" step="50" value="800" oninput="uCar()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Страховка/год</span><span class="f-val" id="caIV" onclick="ed(this,'caI')">4,000 ₪</span></div><input type="range" id="caI" min="1000" max="15000" step="500" value="4000" oninput="uCar()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Тест + ТО/год</span><span class="f-val" id="caTtV" onclick="ed(this,'caTt')">2,800 ₪</span></div><input type="range" id="caTt" min="500" max="8000" step="100" value="2800" oninput="uCar()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Парковка/мес</span><span class="f-val" id="caPV" onclick="ed(this,'caP')">300 ₪</span></div><input type="range" id="caP" min="0" max="1500" step="50" value="300" oninput="uCar()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Износ/год</span><span class="f-val" id="caDV" onclick="ed(this,'caD')">12%</span></div><input type="range" id="caD" min="5" max="25" step="1" value="12" oninput="uCar()"><div class="f-note">Потеря стоимости: ~15% первый год, ~10% далее</div></div>
+  </div>
+  <div id="carRes"></div>
+  <div class="hint"><b>Как считается</b><br>Складываются все расходы, приведённые к месяцу: бензин + страховка/12 + тест и ТО/12 + парковка + износ (потеря стоимости машины в месяц). Износ — главная скрытая статья: машина за 120,000₪ теряет ~14,400₪ в год при 12% износе, это 1,200₪/мес которые ты не видишь, но платишь. Не учтены: штрафы, мойка, возможные ремонты, лизинг.</div>
+</div>
+
+<!-- ===== OLIM ===== -->
+<div class="page" id="p-olim">
+  <div class="ph">
+    <div class="ph-sub">Справка</div>
+    <div class="ph-title">Льготы для новых<br>репатриантов</div>
+  </div>
+  <div class="tog" id="olimFam">
+    <button class="on" onclick="olimT(0)">Один</button>
+    <button onclick="olimT(1)">Пара</button>
+    <button onclick="olimT(2)">Семья с детьми</button>
+  </div>
+  <div class="fields" style="padding-top:8px">
+    <div class="f" id="olimKidsF" style="display:none"><div class="f-row"><span class="f-lbl">Кол-во детей</span><span class="f-val" id="olKV" onclick="ed(this,'olK')">2</span></div><input type="range" id="olK" min="1" max="6" step="1" value="2" oninput="uOlim()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Зарплата брутто</span><span class="f-val" id="olSV" onclick="ed(this,'olS')">12,000 ₪</span></div><input type="range" id="olS" min="0" max="50000" step="500" value="12000" oninput="uOlim()"><div class="f-note">Если работаешь. 0 = пока не работаю</div></div>
+  </div>
+  <div id="olimRes"></div>
+  <div class="hint"><b>Откуда данные</b><br>Саль клита (корзина абсорбции) выплачивается Министерством алии: первый платёж в аэропорту, затем 6 ежемесячных на счёт в банке. Налоговые льготы — дополнительные некудот зикуй, уменьшающие подоходный налог на 3.5 года. Олим освобождены от отчётности и налога на зарубежные доходы 10 лет. Суммы приблизительные на 2024-2025, точные зависят от даты алии и состава семьи.</div>
+</div>
+<div class="page" id="p-infl">
+  <div class="ph">
+    <div class="ph-sub">Калькулятор</div>
+    <div class="ph-title">Покупательная сила</div>
+  </div>
+  <div class="fields">
+    <div class="f"><div class="f-row"><span class="f-lbl">Сумма</span><span class="f-val" id="ifSV" onclick="ed(this,'ifS')">100,000 ₪</span></div><input type="range" id="ifS" min="1000" max="5000000" step="1000" value="100000" oninput="uInfl()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Через сколько лет</span><span class="f-val" id="ifYV" onclick="ed(this,'ifY')">10</span></div><input type="range" id="ifY" min="1" max="40" step="1" value="10" oninput="uInfl()"></div>
+    <div class="f"><div class="f-row"><span class="f-lbl">Инфляция/год</span><span class="f-val" id="ifRV" onclick="ed(this,'ifR')">3%</span></div><input type="range" id="ifR" min="1" max="15" step="0.5" value="3" oninput="uInfl()"><div class="f-note">Израиль: ~2.5-3.5% среднее за 10 лет</div></div>
+  </div>
+  <div id="inflRes"></div>
+  <div class="hint"><b>Как считается</b><br>Покупательная сила = сумма / (1 + инфляция)^лет. Если инфляция 3% в год, через 10 лет на 100,000₪ можно купить столько же, сколько сегодня на ~74,000₪. Деньги «под подушкой» гарантированно теряют ценность. Вот почему инвестирование — не про жадность, а про защиту от обесценивания. Средняя инфляция в Израиле за последние 10 лет: ~2-3.5%.</div>
+</div>
+
 <div class="page" id="p-stats">
   <div class="ph">
     <div class="ph-sub">Справка</div>
@@ -310,6 +400,10 @@ function go(p){
   if(p==='tax')uTax();
   if(p==='mort')uMort();
   if(p==='comp')uComp();
+  if(p==='rent')uRent();
+  if(p==='car')uCar();
+  if(p==='olim')uOlim();
+  if(p==='infl')uInfl();
   setTimeout(function(){document.querySelectorAll('input[type=range]').forEach(ss)},30);
 }
 
@@ -317,7 +411,7 @@ function go(p){
 function ss(el){
   var mn=+el.min,mx=+el.max,v=+el.value;
   var p=((v-mn)/(mx-mn))*100;
-  el.style.background='linear-gradient(to right,#1B1B1F '+p+'%,#E8E8E4 '+p+'%)';
+  el.style.background='linear-gradient(to right,#2C2C2E '+p+'%,#D6D3CB '+p+'%)';
   el.style.height='2px';el.style.borderRadius='0';
 }
 
@@ -506,31 +600,218 @@ function uComp(){
   var M=+document.getElementById('cmM').value;
   var Y=+document.getElementById('cmY').value;
   var R=+document.getElementById('cmR').value;
+  var G=+document.getElementById('cmG').value;
   document.getElementById('cmPV').textContent=fm(P)+' ₪';
   document.getElementById('cmMV').textContent=fm(M)+' ₪';
   document.getElementById('cmYV').textContent=Y;
   document.getElementById('cmRV').textContent=R+'%';
+  document.getElementById('cmGV').textContent=G+'%';
 
-  var r=R/100;
-  var fv=P*Math.pow(1+r,Y);
-  if(r>0)fv+=M*12*((Math.pow(1+r,Y)-1)/r);
-  else fv+=M*12*Y;
-  var invested=P+M*12*Y;
+  var r=R/100,g=G/100;
+  var bal=P,invested=P,mCur=M;
+  for(var y=0;y<Y;y++){
+    var annualAdd=mCur*12;
+    bal=(bal+annualAdd)*(1+r);
+    invested+=annualAdd;
+    mCur=mCur*(1+g);
+  }
+  var fv=Math.round(bal);
+  invested=Math.round(invested);
   var profit=fv-invested;
+  var lastM=Math.round(M*Math.pow(1+g,Y-1));
 
-  var h='<div class="res"><div class="res-lbl">итого через '+Y+' лет</div><div class="res-num">'+fm(Math.round(fv))+' ₪</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Вложено</div><div class="res-item-val">'+fm(Math.round(invested))+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">Прибыль</div><div class="res-item-val">'+fm(Math.round(profit))+' ₪</div></div></div></div>';
+  var h='<div class="res"><div class="res-lbl">итого через '+Y+' лет</div><div class="res-num">'+fm(fv)+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Вложено</div><div class="res-item-val">'+fm(invested)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">Прибыль</div><div class="res-item-val">'+fm(profit)+' ₪</div></div></div></div>';
 
   h+='<div class="info-grid">';
   h+='<div class="info-cell"><div class="info-cell-lbl">Начальная сумма</div><div class="info-cell-val">'+fm(P)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Довложения</div><div class="info-cell-val">'+fm(M*12*Y)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Рост</div><div class="info-cell-val">×'+((fv/Math.max(invested,1))).toFixed(1)+'</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Доход/доходность</div><div class="info-cell-val">'+Math.round(profit/Math.max(invested,1)*100)+'%</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Все довложения</div><div class="info-cell-val">'+fm(invested-P)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Рост капитала</div><div class="info-cell-val">×'+(fv/Math.max(invested,1)).toFixed(1)+'</div></div>';
+  if(G>0){
+    h+='<div class="info-cell"><div class="info-cell-lbl">Довложение в '+Y+'-й год</div><div class="info-cell-val">'+fm(lastM)+' ₪/мес</div></div>';
+  }else{
+    h+='<div class="info-cell"><div class="info-cell-lbl">Общая доходность</div><div class="info-cell-val">'+Math.round(profit/Math.max(invested,1)*100)+'%</div></div>';
+  }
   h+='</div>';
 
   document.getElementById('compRes').innerHTML=h;
   document.querySelectorAll('#p-comp input[type=range]').forEach(ss);
+}
+
+/* ── RENT VS BUY ── */
+function uRent(){
+  var rent=+document.getElementById('rtR').value;
+  var rg=+document.getElementById('rtG').value;
+  var price=+document.getElementById('rtP').value;
+  var down=+document.getElementById('rtD').value;
+  var mr=+document.getElementById('rtM').value;
+  var yrs=+document.getElementById('rtY').value;
+  var appr=+document.getElementById('rtA').value;
+  document.getElementById('rtRV').textContent=fm(rent)+' ₪';
+  document.getElementById('rtGV').textContent=rg+'%';
+  document.getElementById('rtPV').textContent=fm(price)+' ₪';
+  document.getElementById('rtDV').textContent=fm(down)+' ₪';
+  document.getElementById('rtMV').textContent=mr+'%';
+  document.getElementById('rtYV').textContent=yrs;
+  document.getElementById('rtAV').textContent=appr+'%';
+
+  var loan=price-down;
+  var mri=mr/100/12,n=yrs*12;
+  var pmt=loan>0?loan*(mri*Math.pow(1+mri,n))/(Math.pow(1+mri,n)-1):0;
+  var totalMort=pmt*n+down;
+
+  var totalRent=0,curRent=rent;
+  for(var y=0;y<yrs;y++){totalRent+=curRent*12;curRent*=(1+rg/100)}
+
+  var futureVal=Math.round(price*Math.pow(1+appr/100,yrs));
+  var equity=futureVal;
+  var buyCost=Math.round(totalMort);
+  var buyNet=Math.round(buyCost-equity);
+  var rentTotal=Math.round(totalRent);
+  var diff=rentTotal-buyNet;
+  var buyWins=diff>0;
+
+  var h='<div class="res'+(buyWins?'':' bad')+'"><div class="res-lbl">'+(buyWins?'Покупать выгоднее':'Снимать выгоднее')+'</div>';
+  h+='<div class="res-num">на '+fm(Math.abs(diff))+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Аренда за '+yrs+' лет</div><div class="res-item-val">'+fm(rentTotal)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">Покупка (чистый расход)</div><div class="res-item-val">'+fm(Math.max(0,buyNet))+' ₪</div></div></div></div>';
+
+  h+='<div class="info-grid">';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Платёж/мес</div><div class="info-cell-val">'+fm(Math.round(pmt))+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Первый взнос</div><div class="info-cell-val">'+fm(down)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Стоимость через '+yrs+' лет</div><div class="info-cell-val">'+fm(futureVal)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Аренда в '+yrs+'-й год</div><div class="info-cell-val">'+fm(Math.round(rent*Math.pow(1+rg/100,yrs-1)))+' ₪/мес</div></div>';
+  h+='</div>';
+
+  document.getElementById('rentRes').innerHTML=h;
+  document.querySelectorAll('#p-rent input[type=range]').forEach(ss);
+}
+
+/* ── CAR COST ── */
+function uCar(){
+  var val=+document.getElementById('caV').value;
+  var fuel=+document.getElementById('caF').value;
+  var ins=+document.getElementById('caI').value;
+  var test=+document.getElementById('caTt').value;
+  var park=+document.getElementById('caP').value;
+  var depr=+document.getElementById('caD').value;
+  document.getElementById('caVV').textContent=fm(val)+' ₪';
+  document.getElementById('caFV').textContent=fm(fuel)+' ₪';
+  document.getElementById('caIV').textContent=fm(ins)+' ₪';
+  document.getElementById('caTtV').textContent=fm(test)+' ₪';
+  document.getElementById('caPV').textContent=fm(park)+' ₪';
+  document.getElementById('caDV').textContent=depr+'%';
+
+  var deprM=Math.round(val*depr/100/12);
+  var insM=Math.round(ins/12);
+  var testM=Math.round(test/12);
+  var total=fuel+insM+testM+park+deprM;
+  var yearly=total*12;
+
+  var h='<div class="res"><div class="res-lbl">реальная стоимость в месяц</div>';
+  h+='<div class="res-num">'+fm(total)+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">В год</div><div class="res-item-val">'+fm(yearly)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">За 5 лет</div><div class="res-item-val">'+fm(yearly*5)+' ₪</div></div></div></div>';
+
+  h+='<div class="info-grid">';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Износ/мес</div><div class="info-cell-val">'+fm(deprM)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Бензин/мес</div><div class="info-cell-val">'+fm(fuel)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Страховка/мес</div><div class="info-cell-val">'+fm(insM)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Тест+ТО/мес</div><div class="info-cell-val">'+fm(testM)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Парковка/мес</div><div class="info-cell-val">'+fm(park)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">% от ЗП 15К</div><div class="info-cell-val">'+Math.round(total/15000*100)+'%</div></div>';
+  h+='</div>';
+
+  document.getElementById('carRes').innerHTML=h;
+  document.querySelectorAll('#p-car input[type=range]').forEach(ss);
+}
+
+/* ── OLIM BENEFITS ── */
+var olimType=0;
+function olimT(t){
+  olimType=t;
+  var bs=document.querySelectorAll('#olimFam button');
+  bs.forEach(function(b,i){b.classList.toggle('on',i===t)});
+  document.getElementById('olimKidsF').style.display=t===2?'block':'none';
+  uOlim();
+}
+function uOlim(){
+  var sal=+document.getElementById('olS').value;
+  var kids=olimType===2?+document.getElementById('olK').value:0;
+  document.getElementById('olSV').textContent=fm(sal)+' ₪';
+  if(olimType===2)document.getElementById('olKV').textContent=kids;
+
+  var firstPay,monthlyPay;
+  if(olimType===0){firstPay=2800;monthlyPay=2700}
+  else if(olimType===1){firstPay=5600;monthlyPay=4400}
+  else{firstPay=5600+1250*kids;monthlyPay=4400+700*kids}
+  var totalKlita=firstPay+monthlyPay*6;
+
+  var extraPoints;
+  var taxSave18=0,taxSave12=0,taxSave12b=0;
+  extraPoints=olimType===0?3:olimType===1?4.5:4.5;
+  taxSave18=Math.round(extraPoints*242);
+  taxSave12=Math.round((extraPoints-1)*242);
+  taxSave12b=Math.round(1*242);
+  var totalTaxSave=(taxSave18*18+taxSave12*12+taxSave12b*12);
+
+  var rentHelp=olimType===0?700:olimType===1?1000:1000+200*kids;
+
+  var h='<div class="res"><div class="res-lbl">саль клита (корзина абсорбции)</div>';
+  h+='<div class="res-num">'+fm(totalKlita)+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Первая выплата</div><div class="res-item-val">'+fm(firstPay)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">6 платежей по</div><div class="res-item-val">'+fm(monthlyPay)+' ₪</div></div></div></div>';
+
+  h+='<div class="section-title">Налоговые льготы</div>';
+  h+='<div class="info-grid">';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Первые 18 мес.</div><div class="info-cell-val">+'+fm(taxSave18)+' ₪/мес</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Месяцы 19-30</div><div class="info-cell-val">+'+fm(taxSave12)+' ₪/мес</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Месяцы 31-42</div><div class="info-cell-val">+'+fm(taxSave12b)+' ₪/мес</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Итого экономия</div><div class="info-cell-val">'+fm(totalTaxSave)+' ₪</div></div>';
+  h+='</div>';
+
+  h+='<div class="section-title">Другие льготы</div>';
+  h+='<div class="stat-row"><span class="stat-lbl">Помощь с арендой</span><span class="stat-val">~'+fm(rentHelp)+' ₪/мес</span></div>';
+  h+='<div class="stat-row"><span class="stat-lbl">Доход из-за рубежа</span><span class="stat-val">0% налог 10 лет</span></div>';
+  h+='<div class="stat-row"><span class="stat-lbl">Ульпан</span><span class="stat-val">бесплатно</span></div>';
+  h+='<div class="stat-row"><span class="stat-lbl">Таможенные льготы</span><span class="stat-val">1 год</span></div>';
+  h+='<div class="stat-row"><span class="stat-lbl">Скидка на арнону</span><span class="stat-val">до 90% · 1 год</span></div>';
+
+  h+='<div style="padding:16px;font-size:12px;color:var(--gr);line-height:1.5">Суммы приблизительные, 2024-2025. Точные данные: Министерство алии и абсорбции.</div>';
+
+  document.getElementById('olimRes').innerHTML=h;
+  document.querySelectorAll('#p-olim input[type=range]').forEach(ss);
+}
+
+/* ── INFLATION ── */
+function uInfl(){
+  var S=+document.getElementById('ifS').value;
+  var Y=+document.getElementById('ifY').value;
+  var R=+document.getElementById('ifR').value;
+  document.getElementById('ifSV').textContent=fm(S)+' ₪';
+  document.getElementById('ifYV').textContent=Y;
+  document.getElementById('ifRV').textContent=R+'%';
+
+  var future=Math.round(S*Math.pow(1+R/100,Y));
+  var realVal=Math.round(S/Math.pow(1+R/100,Y));
+  var lost=S-realVal;
+  var lostPct=Math.round(lost/S*100);
+
+  var h='<div class="res"><div class="res-lbl">'+fm(S)+' ₪ через '+Y+' лет стоят как</div>';
+  h+='<div class="res-num">'+fm(realVal)+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Потеря силы</div><div class="res-item-val">−'+fm(lost)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">Обесценивание</div><div class="res-item-val">−'+lostPct+'%</div></div></div></div>';
+
+  h+='<div class="info-grid">';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Чтобы сохранить силу</div><div class="info-cell-val">нужно '+fm(future)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Рост цен за '+Y+' лет</div><div class="info-cell-val">×'+(future/S).toFixed(1)+'</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Хлеб (10₪ сегодня)</div><div class="info-cell-val">'+Math.round(10*Math.pow(1+R/100,Y))+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Аренда (5К сегодня)</div><div class="info-cell-val">'+fm(Math.round(5000*Math.pow(1+R/100,Y)))+' ₪</div></div>';
+  h+='</div>';
+
+  document.getElementById('inflRes').innerHTML=h;
+  document.querySelectorAll('#p-infl input[type=range]').forEach(ss);
 }
 </script>
 </body>
