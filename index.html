@@ -5,33 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self' https://web.telegram.org https://*.telegram.org;">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
 <title>FI Tools</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--bk:#2C2C2E;--rd:#B83A3A;--bg:#F5F2EC;--gr:#6E6E73;--ln:#D6D3CB;--wh:#FFFFFF}
+:root{--bk:#2C2C2E;--rd:#B83A3A;--bg:#F5F2EC;--gr:#6E6E73;--ln:#D6D3CB}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--bk);-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh}
+body[dir=rtl] .f-val{direction:ltr;text-align:left}
+body[dir=rtl] .f-input{direction:ltr;text-align:left}
+body[dir=rtl] .res-item-val{direction:ltr}
+body[dir=rtl] .info-cell-val{direction:ltr}
+body[dir=rtl] .stat-val{direction:ltr;text-align:left}
+body[dir=rtl] .res-num{direction:ltr}
+body[dir=rtl] .t-arrow{margin-left:0;margin-right:auto}
+body[dir=rtl] .hint{border-left:none;border-right:3px solid var(--rd);padding:18px 20px 18px 16px}
 
-/* Glossary tooltips */
-.tip{border-bottom:1px dotted var(--gr);cursor:help;position:relative}
-.tip:active::after{content:attr(data-tip);position:absolute;bottom:100%;left:0;right:0;background:var(--bk);color:var(--bg);padding:8px 12px;font-size:12px;line-height:1.5;font-weight:400;z-index:20;white-space:normal;min-width:200px;max-width:280px}
-
-/* Disclaimer */
-.disclaimer{margin:0 16px 16px;padding:12px 16px;border:1px solid var(--ln);font-size:11px;color:var(--gr);line-height:1.5}
-
-/* Top bar */
 .bar{background:var(--bk);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.bar-title{color:var(--bg);font-size:16px;font-weight:600;letter-spacing:-.3px}
+.bar-title{color:var(--bg);font-size:16px;font-weight:600;letter-spacing:-.3px;cursor:pointer}
 .bar-dot{width:8px;height:8px;background:var(--rd)}
-.bar-back{color:var(--bg);font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:4px}
+.bar-right{display:flex;align-items:center;gap:12px}
+.lang-btn{background:none;border:1px solid rgba(255,255,255,.3);color:var(--bg);font-size:12px;font-weight:600;padding:3px 8px;cursor:pointer}
 
-/* Page header */
 .ph{padding:20px 16px 16px;border-bottom:1.5px solid var(--bk)}
 .ph-sub{font-size:11px;color:var(--gr);letter-spacing:1.5px;text-transform:uppercase;font-weight:500}
 .ph-title{font-size:20px;font-weight:600;color:var(--bk);margin-top:4px;line-height:1.2}
 
-/* Tools list */
 .tools{padding:0 16px 20px}
 .t-sect{font-size:11px;color:var(--gr);letter-spacing:1.5px;text-transform:uppercase;font-weight:500;padding:20px 0 8px}
 .t-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--ln);cursor:pointer}
@@ -40,18 +38,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .t-icon.red{background:var(--rd);color:var(--bg)}
 .t-icon.dark{background:var(--bk);color:var(--bg)}
 .t-icon.out{border:1.5px solid var(--bk);color:var(--bk)}
-.t-name{font-size:14px;font-weight:600;color:var(--bk)}
+.t-name{font-size:14px;font-weight:600}
 .t-desc{font-size:12px;color:var(--gr);margin-top:1px;line-height:1.3}
 .t-arrow{margin-left:auto;color:var(--gr);font-size:11px}
 
-/* Fields */
 .fields{padding:0 16px 16px}
 .f{padding:14px 0;border-bottom:1px solid var(--ln)}
 .f:last-child{border:none}
-.f-row{display:flex;justify-content:space-between;align-items:center}
+.f-row{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .f-lbl{font-size:13px;color:var(--gr);font-weight:500}
-.f-val{font-size:16px;font-weight:600;color:var(--bk);cursor:pointer;padding:1px 4px;border-bottom:1.5px solid var(--rd);font-variant-numeric:tabular-nums}
-.f-input{width:130px;font-size:16px;font-weight:600;text-align:right;padding:2px 4px;border:none;border-bottom:2px solid var(--rd);background:transparent;color:var(--bk);outline:none;font-family:inherit}
+.f-val{font-size:16px;font-weight:600;color:var(--bk);cursor:pointer;padding:4px 8px;border-bottom:1.5px solid var(--rd);font-variant-numeric:tabular-nums;min-height:32px;display:inline-flex;align-items:center;direction:ltr}
+.f-input{width:130px;font-size:16px;font-weight:600;text-align:right;padding:2px 4px;border:none;border-bottom:2px solid var(--rd);background:transparent;color:var(--bk);outline:none;font-family:inherit;direction:ltr}
 input[type=range]{width:100%;height:36px;-webkit-appearance:none;appearance:none;background:transparent;cursor:pointer;outline:none;margin-top:4px;touch-action:none}
 input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--ln)}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;background:var(--bk);margin-top:-11px}
@@ -59,1243 +56,595 @@ input[type=range]::-moz-range-track{height:2px;background:var(--ln);border:none}
 input[type=range]::-moz-range-thumb{width:24px;height:24px;background:var(--bk);border:none;cursor:pointer}
 input[type=range]::-moz-range-progress{height:2px;background:var(--bk)}
 .f-note{font-size:11px;color:var(--gr);margin-top:4px}
-.f-val{font-size:16px;font-weight:600;color:var(--bk);cursor:pointer;padding:4px 8px;border-bottom:1.5px solid var(--rd);font-variant-numeric:tabular-nums;min-height:32px;display:inline-flex;align-items:center}
+.tip{border-bottom:1px dotted var(--gr);cursor:help}
 
-/* Segments */
 .seg{display:flex;margin:16px 16px 0;border:1.5px solid var(--bk)}
 .seg button{flex:1;padding:8px 0;border:none;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:var(--gr);transition:.15s}
 .seg button.on{background:var(--bk);color:var(--bg)}
 .seg button+button{border-left:1.5px solid var(--bk)}
+body[dir=rtl] .seg button+button{border-left:none;border-right:1.5px solid var(--bk)}
 
-/* Toggle */
 .tog{display:flex;gap:0;margin:16px 16px 0;border:1.5px solid var(--bk)}
 .tog button{flex:1;padding:10px 0;border:none;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(--gr);transition:.15s}
 .tog button.on{background:var(--bk);color:var(--bg)}
 .tog button+button{border-left:1.5px solid var(--bk)}
+body[dir=rtl] .tog button+button{border-left:none;border-right:1.5px solid var(--bk)}
 
-/* Result block */
 .res{background:var(--bk);padding:20px;margin:16px}
 .res-lbl{font-size:11px;color:var(--gr);letter-spacing:1px;text-transform:uppercase}
-.res-num{font-size:30px;font-weight:700;color:var(--bg);margin-top:4px;font-variant-numeric:tabular-nums}
+.res-num{font-size:30px;font-weight:700;color:var(--bg);margin-top:4px;font-variant-numeric:tabular-nums;direction:ltr}
 .res-line{width:24px;height:3px;background:var(--rd);margin-top:10px}
 .res-row{display:flex;gap:16px;margin-top:14px}
 .res-item{flex:1}
 .res-item-lbl{font-size:11px;color:#9A9A9E}
-.res-item-val{font-size:14px;font-weight:600;color:var(--bg);margin-top:2px;font-variant-numeric:tabular-nums}
-
+.res-item-val{font-size:14px;font-weight:600;color:var(--bg);margin-top:2px;font-variant-numeric:tabular-nums;direction:ltr}
 .res.bad{background:var(--rd)}
 .res.bad .res-lbl{color:rgba(255,255,255,.6)}
 .res.bad .res-item-lbl{color:rgba(255,255,255,.5)}
 
-/* Info blocks */
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--ln);margin:16px;border:1px solid var(--ln)}
 .info-cell{background:var(--bg);padding:12px}
 .info-cell-lbl{font-size:11px;color:var(--gr)}
-.info-cell-val{font-size:14px;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums}
-.info-cell.wide{grid-column:1/-1}
+.info-cell-val{font-size:14px;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums;direction:ltr}
 
-/* Stats table */
 .stat-row{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--ln)}
 .stat-row:last-child{border:none}
 .stat-lbl{font-size:13px;color:var(--gr)}
 .stat-val{font-size:13px;font-weight:600}
 
-/* Sections */
 .section-title{font-size:11px;color:var(--gr);letter-spacing:1.5px;text-transform:uppercase;font-weight:500;padding:20px 16px 8px}
-
-.page{display:none}
-.page.active{display:block}
-/* Hint blocks */
 .hint{margin:16px;padding:18px 16px 18px 20px;border-left:3px solid var(--rd);font-size:13px;color:var(--gr);line-height:1.7}
 .hint b{color:var(--bk);font-weight:600;display:block;margin-bottom:6px;font-size:14px}
-
+.disclaimer{margin:0 16px 16px;padding:12px 16px;border:1px solid var(--ln);font-size:11px;color:var(--gr);line-height:1.5}
+.page{display:none}
+.page.active{display:block}
 .footer{text-align:center;font-size:11px;color:var(--gr);padding:20px 16px;letter-spacing:.3px}
 </style>
 </head>
 <body>
 
-<!-- ===== BAR ===== -->
 <div class="bar" id="bar">
-  <span class="bar-title" id="barTitle">FI Tools</span>
-  <div class="bar-dot"></div>
-</div>
-
-<!-- ===== HOME ===== -->
-<div class="page active" id="p-home">
-  <div class="ph">
-    <div class="ph-sub">Israel 2026</div>
-    <div class="ph-title">Финансовые инструменты<br>для жизни в Израиле</div>
-  </div>
-  <div style="padding:12px 16px;font-size:13px;color:var(--gr);line-height:1.5;border-bottom:1px solid var(--ln)">Все калькуляторы работают оффлайн. Данные не отправляются и не сохраняются. Нажми на число — можно вбить вручную.</div>
-  <div class="tools">
-    <div class="t-sect">Калькуляторы</div>
-    <div class="t-item" onclick="go('fi')">
-      <div class="t-icon red">FI</div>
-      <div><div class="t-name">Финансовая независимость</div><div class="t-desc">Через сколько лет можно не работать</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-item" onclick="go('tax')">
-      <div class="t-icon dark">₪</div>
-      <div><div class="t-name">Брутто → Нетто</div><div class="t-desc">Зарплата после налогов и отчислений</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-item" onclick="go('mort')">
-      <div class="t-icon out">&#8962;</div>
-      <div><div class="t-name">Машканта</div><div class="t-desc">Ежемесячный платёж и переплата</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-item" onclick="go('comp')">
-      <div class="t-icon dark">%</div>
-      <div><div class="t-name">Сложный процент</div><div class="t-desc">Рост вклада или портфеля со временем</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-item" onclick="go('rent')">
-      <div class="t-icon red">&#8644;</div>
-      <div><div class="t-name">Снимать или покупать</div><div class="t-desc">Что выгоднее на горизонте N лет</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-item" onclick="go('car')">
-      <div class="t-icon out">&#9711;</div>
-      <div><div class="t-name">Реальная стоимость машины</div><div class="t-desc">Все расходы: страховка, бензин, тест, износ</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-item" onclick="go('olim')">
-      <div class="t-icon dark">&#10010;</div>
-      <div><div class="t-name">Льготы для олим</div><div class="t-desc">Саль клита, налоговые льготы, сроки</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-item" onclick="go('infl')">
-      <div class="t-icon out">&#8595;</div>
-      <div><div class="t-name">Инфляция</div><div class="t-desc">Покупательная сила денег со временем</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-item" onclick="go('goal')">
-      <div class="t-icon red">&#9873;</div>
-      <div><div class="t-name">Цель накопления</div><div class="t-desc">Сколько откладывать чтобы собрать X за Y лет</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-item" onclick="go('osek')">
-      <div class="t-icon dark">&#9998;</div>
-      <div><div class="t-name">Осек мурше vs наёмный</div><div class="t-desc">Реальный доход фрилансера после всех вычетов</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-item" onclick="go('pitz')">
-      <div class="t-icon out">&#9744;</div>
-      <div><div class="t-name">Пицуим при увольнении</div><div class="t-desc">Компенсация за стаж работы</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-item" onclick="go('hish')">
-      <div class="t-icon red">&#8987;</div>
-      <div><div class="t-name">Иштальмут: забрать или оставить</div><div class="t-desc">Сколько потеряешь если снимешь сейчас</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-item" onclick="go('health')">
-      <div class="t-icon dark">&#9829;</div>
-      <div><div class="t-name">Финансовое здоровье</div><div class="t-desc">Проверь свои пропорции расходов</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-sect">Сравнение</div>
-    <div class="t-item" onclick="go('city')">
-      <div class="t-icon dark">&#9878;</div>
-      <div><div class="t-name">Города Израиля</div><div class="t-desc">Стоимость жизни по городам: аренда, арнона, садик</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
-    <div class="t-sect">Справка</div>
-    <div class="t-item" onclick="go('stats')">
-      <div class="t-icon out">i</div>
-      <div><div class="t-name">Средние по стране</div><div class="t-desc">Расходы, зарплаты, отчисления — ЦСБ</div></div>
-      <span class="t-arrow">&#8594;</span>
-    </div>
+  <span class="bar-title" id="barTitle" onclick="go('home')">FI Tools</span>
+  <div class="bar-right">
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">עב</button>
+    <div class="bar-dot"></div>
   </div>
 </div>
 
-<!-- ===== FI CALCULATOR ===== -->
-<div class="page" id="p-fi">
-  <div class="ph">
-    <div class="ph-sub">Калькулятор</div>
-    <div class="ph-title">Финансовая независимость</div>
-  </div>
-  <div class="tog" id="fiMode">
-    <button class="on" onclick="fiTab(0)">Обзор по стране</button>
-    <button onclick="fiTab(1)">Мой расчёт</button>
-  </div>
-  <div class="seg" id="fiRate">
-    <button data-r=".05" onclick="fiR(this)">5%</button>
-    <button class="on" data-r=".07" onclick="fiR(this)">7%</button>
-    <button data-r=".09" onclick="fiR(this)">9%</button>
-  </div>
+<div id="app"></div>
 
-  <!-- Overview -->
-  <div id="fiOver">
-    <div class="section-title">Один человек</div>
-    <div class="info-grid">
-      <div class="info-cell"><div class="info-cell-lbl">Расходы/мес</div><div class="info-cell-val">11,000 ₪</div></div>
-      <div class="info-cell"><div class="info-cell-lbl">Иштальмут</div><div class="info-cell-val">1,570 ₪</div></div>
-      <div class="info-cell"><div class="info-cell-lbl">Пенсия</div><div class="info-cell-val">3,200 ₪</div></div>
-      <div class="info-cell"><div class="info-cell-lbl">Target (×300)</div><div class="info-cell-val">3,300,000 ₪</div></div>
-    </div>
-    <div class="fields">
-      <div class="f"><div class="f-row"><span class="f-lbl">Твой доход нетто</span><span class="f-val" id="s1iV" onclick="ed(this,'s1i')">15,000 ₪</span></div><input type="range" id="s1i" min="8000" max="50000" step="500" value="15000" oninput="uFiS()"></div>
-      <div class="f"><div class="f-row"><span class="f-lbl">Накопления</span><span class="f-val" id="s1pV" onclick="ed(this,'s1p')">50,000 ₪</span></div><input type="range" id="s1p" min="0" max="2000000" step="10000" value="50000" oninput="uFiS()"></div>
-    </div>
-    <div id="fiR1"></div>
-
-    <div class="section-title">Семья / пара</div>
-    <div class="info-grid">
-      <div class="info-cell"><div class="info-cell-lbl">Расходы/мес</div><div class="info-cell-val">16,400 ₪</div></div>
-      <div class="info-cell"><div class="info-cell-lbl">Ишт. ×2</div><div class="info-cell-val">3,140 ₪</div></div>
-      <div class="info-cell"><div class="info-cell-lbl">Пенс. ×2</div><div class="info-cell-val">6,400 ₪</div></div>
-      <div class="info-cell"><div class="info-cell-lbl">Target</div><div class="info-cell-val">4,920,000 ₪</div></div>
-    </div>
-    <div class="fields">
-      <div class="f"><div class="f-row"><span class="f-lbl">Доход семьи нетто</span><span class="f-val" id="s2iV" onclick="ed(this,'s2i')">25,000 ₪</span></div><input type="range" id="s2i" min="12000" max="80000" step="500" value="25000" oninput="uFiS()"></div>
-      <div class="f"><div class="f-row"><span class="f-lbl">Накопления семьи</span><span class="f-val" id="s2pV" onclick="ed(this,'s2p')">100,000 ₪</span></div><input type="range" id="s2p" min="0" max="3000000" step="10000" value="100000" oninput="uFiS()"></div>
-    </div>
-    <div id="fiR2"></div>
-  </div>
-
-  <!-- Personal calc -->
-  <div id="fiPers" style="display:none">
-    <div class="tog" id="fiEarn" style="margin-top:12px">
-      <button class="on" onclick="fiE(1)">Один</button>
-      <button onclick="fiE(2)">Двое</button>
-    </div>
-    <div class="fields">
-      <div class="f"><div class="f-row"><span class="f-lbl">Расходы в месяц</span><span class="f-val" id="ceV" onclick="ed(this,'ce')">11,000 ₪</span></div><input type="range" id="ce" min="5000" max="40000" step="500" value="11000" oninput="uFiC()"><div class="f-note">Среднее: 11,000 (один) / 16,400 (семья)</div></div>
-      <div class="f"><div class="f-row"><span class="f-lbl">Доход нетто</span><span class="f-val" id="ciV" onclick="ed(this,'ci')">18,000 ₪</span></div><input type="range" id="ci" min="5000" max="100000" step="500" value="18000" oninput="uFiC()"></div>
-      <div class="f"><div class="f-row"><span class="f-lbl">Накопления</span><span class="f-val" id="cpV" onclick="ed(this,'cp')">100,000 ₪</span></div><input type="range" id="cp" min="0" max="5000000" step="10000" value="100000" oninput="uFiC()"></div>
-      <div class="f"><div class="f-row"><span class="f-lbl"><span class="tip" data-tip="Накопительный фонд от работодателя. Через 6 лет можно снять без налога. Прибыль фонда не облагается налогом — это уникальная льгота.">Керен Иштальмут</span></span><span class="f-val" id="chV" onclick="ed(this,'ch2')">1,570 ₪</span></div><input type="range" id="ch2" min="0" max="3000" step="10" value="1570" oninput="uFiC()"><div class="f-note">На 1 чел. · потолок 1,570 · 0% налог</div></div>
-      <div class="f"><div class="f-row"><span class="f-lbl"><span class="tip" data-tip="Часть пенсионных отчислений инвестируется в рынок (акции/облигации). Эти деньги растут до пенсионного возраста и увеличивают будущую пенсию.">Пенсия в акции</span></span><span class="f-val" id="cnV" onclick="ed(this,'cn')">3,200 ₪</span></div><input type="range" id="cn" min="0" max="6000" step="100" value="3200" oninput="uFiC()"><div class="f-note">На 1 чел. · ~12-15% от брутто</div></div>
-    </div>
-    <div id="fiR3"></div>
-  </div>
-  <div class="hint"><b>Как считается</b><br>Target = ежемесячные расходы × 300 — это сумма, с которой можно снимать 4% в год и жить на них не трогая капитал (правило Уильяма Бенгена, 1994). Поток накоплений = (доход − расходы) + керен иштальмут + пенсия в акции. Время рассчитывается по формуле аннуитета с учётом сложного процента. Иштальмут и пенсия — «скрытые» деньги, которые работодатель откладывает за тебя, но они тоже растут на рынке.</div>
-</div>
-
-<!-- ===== TAX ===== -->
-<div class="page" id="p-tax">
-  <div class="ph">
-    <div class="ph-sub">Калькулятор</div>
-    <div class="ph-title">Брутто → Нетто</div>
-  </div>
-  <div class="fields">
-    <div class="f"><div class="f-row"><span class="f-lbl">Зарплата брутто</span><span class="f-val" id="txBV" onclick="ed(this,'txB')">15,000 ₪</span></div><input type="range" id="txB" min="5000" max="80000" step="500" value="15000" oninput="uTax()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl"><span class="tip" data-tip="Налоговые баллы, уменьшающие подоходный налог. Каждый балл = 242₪/мес экономии. У резидента-мужчины 2.25, у женщины 2.75 (за счёт пол-балла за пол).">Некудот зикуй</span></span><span class="f-val" id="txNV" onclick="ed(this,'txN')">2.25</span></div><input type="range" id="txN" min="0" max="6" step="0.25" value="2.25" oninput="uTax()"><div class="f-note">Мужчина резидент: 2.25 · Женщина: 2.75</div></div>
-  </div>
-  <div id="taxRes"></div>
-  <div id="taxBreak"></div>
-  <div class="hint"><b>Как считается</b><br>Из брутто вычитаются четыре обязательных платежа. Мас ахнаса (подоходный налог) — прогрессивная шкала от 10% до 50% по ступеням, минус скидка за некудот зикуй (каждая точка = 242₪/мес). Битуах леуми (нац. страхование) — 0.4% до ~6,300₪ и 7% выше. Мас бриют (медстрах) — 3.1% и 5% соответственно. Пенсия — 6% отчисляет работник, ещё 6.5% платит работодатель (не вычитается из брутто). Ставки 2024 года.</div>
-</div>
-
-<!-- ===== MORTGAGE ===== -->
-<div class="page" id="p-mort">
-  <div class="ph">
-    <div class="ph-sub">Калькулятор</div>
-    <div class="ph-title">Машканта</div>
-  </div>
-  <div class="fields">
-    <div class="f"><div class="f-row"><span class="f-lbl">Сумма кредита</span><span class="f-val" id="mrSV" onclick="ed(this,'mrS')">1,000,000 ₪</span></div><input type="range" id="mrS" min="100000" max="3000000" step="50000" value="1000000" oninput="uMort()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Срок (лет)</span><span class="f-val" id="mrYV" onclick="ed(this,'mrY')">25</span></div><input type="range" id="mrY" min="5" max="30" step="1" value="25" oninput="uMort()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Ставка годовая</span><span class="f-val" id="mrRV" onclick="ed(this,'mrR')">4.5%</span></div><input type="range" id="mrR" min="1" max="10" step="0.1" value="4.5" oninput="uMort()"><div class="f-note">Средняя ставка по рынку</div></div>
-  </div>
-  <div id="mortRes"></div>
-  <div class="hint"><b>Как считается</b><br>Стандартная формула аннуитета: ежемесячный платёж = сумма кредита × [r(1+r)^n / ((1+r)^n − 1)], где r — месячная ставка, n — количество платежей. Переплата = все платежи минус тело кредита. Калькулятор считает фиксированную ставку. В реальности машканта в Израиле обычно состоит из нескольких траншей (прайм, фиксированная, привязанная к индексу), и итоговая ставка — средневзвешенная.</div>
-</div>
-<div class="page" id="p-comp">
-  <div class="ph">
-    <div class="ph-sub">Калькулятор</div>
-    <div class="ph-title">Сложный процент</div>
-  </div>
-  <div class="fields">
-    <div class="f"><div class="f-row"><span class="f-lbl">Начальная сумма</span><span class="f-val" id="cmPV" onclick="ed(this,'cmP')">100,000 ₪</span></div><input type="range" id="cmP" min="0" max="5000000" step="10000" value="100000" oninput="uComp()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Довложение/мес</span><span class="f-val" id="cmMV" onclick="ed(this,'cmM')">2,000 ₪</span></div><input type="range" id="cmM" min="0" max="30000" step="500" value="2000" oninput="uComp()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Срок (лет)</span><span class="f-val" id="cmYV" onclick="ed(this,'cmY')">20</span></div><input type="range" id="cmY" min="1" max="40" step="1" value="20" oninput="uComp()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Доходность/год</span><span class="f-val" id="cmRV" onclick="ed(this,'cmR')">7%</span></div><input type="range" id="cmR" min="1" max="15" step="0.5" value="7" oninput="uComp()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Повышение вклада/год</span><span class="f-val" id="cmGV" onclick="ed(this,'cmG')">0%</span></div><input type="range" id="cmG" min="0" max="20" step="1" value="0" oninput="uComp()"><div class="f-note">Каждый год довложение растёт на этот %</div></div>
-  </div>
-  <div id="compRes"></div>
-  <div class="hint"><b>Как считается</b><br>Каждый год капитал растёт на процент доходности, и к нему добавляются ежемесячные довложения. Магия сложного процента — ты получаешь проценты не только на вложенное, но и на проценты прошлых лет. При 7% годовых деньги удваиваются примерно каждые 10 лет (правило 72). Параметр «повышение вклада» симулирует рост зарплаты: каждый год ты откладываешь чуть больше.</div>
-</div>
-<!-- ===== RENT VS BUY ===== -->
-<div class="page" id="p-rent">
-  <div class="ph">
-    <div class="ph-sub">Калькулятор</div>
-    <div class="ph-title">Снимать или покупать</div>
-  </div>
-  <div class="fields">
-    <div class="f"><div class="f-row"><span class="f-lbl">Аренда/мес</span><span class="f-val" id="rtRV" onclick="ed(this,'rtR')">4,500 ₪</span></div><input type="range" id="rtR" min="2000" max="15000" step="100" value="4500" oninput="uRent()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Рост аренды/год</span><span class="f-val" id="rtGV" onclick="ed(this,'rtG')">3%</span></div><input type="range" id="rtG" min="0" max="10" step="0.5" value="3" oninput="uRent()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Цена квартиры</span><span class="f-val" id="rtPV" onclick="ed(this,'rtP')">1,500,000 ₪</span></div><input type="range" id="rtP" min="500000" max="5000000" step="50000" value="1500000" oninput="uRent()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Первый взнос</span><span class="f-val" id="rtDV" onclick="ed(this,'rtD')">375,000 ₪</span></div><input type="range" id="rtD" min="0" max="2000000" step="25000" value="375000" oninput="uRent()"><div class="f-note">Обычно 25% от стоимости</div></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Ставка машканты</span><span class="f-val" id="rtMV" onclick="ed(this,'rtM')">4.5%</span></div><input type="range" id="rtM" min="1" max="10" step="0.1" value="4.5" oninput="uRent()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Горизонт (лет)</span><span class="f-val" id="rtYV" onclick="ed(this,'rtY')">15</span></div><input type="range" id="rtY" min="5" max="30" step="1" value="15" oninput="uRent()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Рост цены жилья/год</span><span class="f-val" id="rtAV" onclick="ed(this,'rtA')">4%</span></div><input type="range" id="rtA" min="0" max="10" step="0.5" value="4" oninput="uRent()"></div>
-  </div>
-  <div id="rentRes"></div>
-  <div class="hint"><b>Как считается</b><br>Сравниваются два сценария за N лет. Аренда: суммируются все платежи с учётом ежегодного роста — деньги ушли и не вернулись. Покупка: первый взнос + все платежи по машканте, но в конце у тебя остаётся квартира, которая подорожала. Чистый расход покупки = (взнос + все платежи) − стоимость квартиры через N лет. Не учтены: арнона, ваад байит, ремонты, альтернативная доходность первого взноса.</div>
-</div>
-
-<!-- ===== CAR COST ===== -->
-<div class="page" id="p-car">
-  <div class="ph">
-    <div class="ph-sub">Калькулятор</div>
-    <div class="ph-title">Реальная стоимость<br>машины</div>
-  </div>
-  <div class="fields">
-    <div class="f"><div class="f-row"><span class="f-lbl">Стоимость машины</span><span class="f-val" id="caVV" onclick="ed(this,'caV')">120,000 ₪</span></div><input type="range" id="caV" min="20000" max="500000" step="5000" value="120000" oninput="uCar()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Бензин/мес</span><span class="f-val" id="caFV" onclick="ed(this,'caF')">800 ₪</span></div><input type="range" id="caF" min="0" max="3000" step="50" value="800" oninput="uCar()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Страховка/год</span><span class="f-val" id="caIV" onclick="ed(this,'caI')">4,000 ₪</span></div><input type="range" id="caI" min="1000" max="15000" step="500" value="4000" oninput="uCar()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Тест + ТО/год</span><span class="f-val" id="caTtV" onclick="ed(this,'caTt')">2,800 ₪</span></div><input type="range" id="caTt" min="500" max="8000" step="100" value="2800" oninput="uCar()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Парковка/мес</span><span class="f-val" id="caPV" onclick="ed(this,'caP')">300 ₪</span></div><input type="range" id="caP" min="0" max="1500" step="50" value="300" oninput="uCar()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Износ/год</span><span class="f-val" id="caDV" onclick="ed(this,'caD')">12%</span></div><input type="range" id="caD" min="5" max="25" step="1" value="12" oninput="uCar()"><div class="f-note">Потеря стоимости: ~15% первый год, ~10% далее</div></div>
-  </div>
-  <div id="carRes"></div>
-  <div class="hint"><b>Как считается</b><br>Складываются все расходы, приведённые к месяцу: бензин + страховка/12 + тест и ТО/12 + парковка + износ (потеря стоимости машины в месяц). Износ — главная скрытая статья: машина за 120,000₪ теряет ~14,400₪ в год при 12% износе, это 1,200₪/мес которые ты не видишь, но платишь. Не учтены: штрафы, мойка, возможные ремонты, лизинг.</div>
-</div>
-
-<!-- ===== OLIM ===== -->
-<div class="page" id="p-olim">
-  <div class="ph">
-    <div class="ph-sub">Справка</div>
-    <div class="ph-title">Льготы для новых<br>репатриантов</div>
-  </div>
-  <div class="tog" id="olimFam">
-    <button class="on" onclick="olimT(0)">Один</button>
-    <button onclick="olimT(1)">Пара</button>
-    <button onclick="olimT(2)">Семья с детьми</button>
-  </div>
-  <div class="fields" style="padding-top:8px">
-    <div class="f" id="olimKidsF" style="display:none"><div class="f-row"><span class="f-lbl">Кол-во детей</span><span class="f-val" id="olKV" onclick="ed(this,'olK')">2</span></div><input type="range" id="olK" min="1" max="6" step="1" value="2" oninput="uOlim()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Зарплата брутто</span><span class="f-val" id="olSV" onclick="ed(this,'olS')">12,000 ₪</span></div><input type="range" id="olS" min="0" max="50000" step="500" value="12000" oninput="uOlim()"><div class="f-note">Если работаешь. 0 = пока не работаю</div></div>
-  </div>
-  <div id="olimRes"></div>
-  <div class="hint"><b>Откуда данные</b><br>Саль клита (корзина абсорбции) выплачивается Министерством алии: первый платёж в аэропорту, затем 6 ежемесячных на счёт в банке. Налоговые льготы — дополнительные некудот зикуй, уменьшающие подоходный налог на 3.5 года. Олим освобождены от отчётности и налога на зарубежные доходы 10 лет. Суммы приблизительные на 2024-2025, точные зависят от даты алии и состава семьи.</div>
-</div>
-<div class="page" id="p-infl">
-  <div class="ph">
-    <div class="ph-sub">Калькулятор</div>
-    <div class="ph-title">Покупательная сила</div>
-  </div>
-  <div class="fields">
-    <div class="f"><div class="f-row"><span class="f-lbl">Сумма</span><span class="f-val" id="ifSV" onclick="ed(this,'ifS')">100,000 ₪</span></div><input type="range" id="ifS" min="1000" max="5000000" step="1000" value="100000" oninput="uInfl()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Через сколько лет</span><span class="f-val" id="ifYV" onclick="ed(this,'ifY')">10</span></div><input type="range" id="ifY" min="1" max="40" step="1" value="10" oninput="uInfl()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Инфляция/год</span><span class="f-val" id="ifRV" onclick="ed(this,'ifR')">3%</span></div><input type="range" id="ifR" min="1" max="15" step="0.5" value="3" oninput="uInfl()"><div class="f-note">Израиль: ~2.5-3.5% среднее за 10 лет</div></div>
-  </div>
-  <div id="inflRes"></div>
-  <div class="hint"><b>Как считается</b><br>Покупательная сила = сумма / (1 + инфляция)^лет. Если инфляция 3% в год, через 10 лет на 100,000₪ можно купить столько же, сколько сегодня на ~74,000₪. Деньги «под подушкой» гарантированно теряют ценность. Вот почему инвестирование — не про жадность, а про защиту от обесценивания. Средняя инфляция в Израиле за последние 10 лет: ~2-3.5%.</div>
-</div>
-
-<!-- ===== SAVINGS GOAL ===== -->
-<div class="page" id="p-goal">
-  <div class="ph">
-    <div class="ph-sub">Калькулятор</div>
-    <div class="ph-title">Цель накопления</div>
-  </div>
-  <div class="fields">
-    <div class="f"><div class="f-row"><span class="f-lbl">Хочу накопить</span><span class="f-val" id="glTV" onclick="ed(this,'glT')">500,000 ₪</span></div><input type="range" id="glT" min="10000" max="10000000" step="10000" value="500000" oninput="uGoal()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">За сколько лет</span><span class="f-val" id="glYV" onclick="ed(this,'glY')">5</span></div><input type="range" id="glY" min="1" max="30" step="1" value="5" oninput="uGoal()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Уже есть</span><span class="f-val" id="glPV" onclick="ed(this,'glP')">50,000 ₪</span></div><input type="range" id="glP" min="0" max="5000000" step="10000" value="50000" oninput="uGoal()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Доходность/год</span><span class="f-val" id="glRV" onclick="ed(this,'glR')">7%</span></div><input type="range" id="glR" min="0" max="15" step="0.5" value="7" oninput="uGoal()"></div>
-  </div>
-  <div id="goalRes"></div>
-  <div class="hint"><b>Как считается</b><br>Обратная задача к сложному проценту. Сначала считаем, сколько вырастут текущие накопления за N лет. Потом вычитаем из цели. Оставшуюся сумму разбиваем на ежемесячные довложения с учётом доходности. Без инвестирования (0%) нужно откладывать значительно больше — сложный процент работает на тебя.</div>
-</div>
-
-<!-- ===== CITY COMPARISON ===== -->
-<!-- ===== OSEK MURSHE ===== -->
-<div class="page" id="p-osek">
-  <div class="ph">
-    <div class="ph-sub">Калькулятор</div>
-    <div class="ph-title">Осек мурше<br>vs наёмный</div>
-  </div>
-  <div class="fields">
-    <div class="f"><div class="f-row"><span class="f-lbl">Доход осек/мес (до маам)</span><span class="f-val" id="okGV" onclick="ed(this,'okG')">20,000 ₪</span></div><input type="range" id="okG" min="5000" max="80000" step="500" value="20000" oninput="uOsek()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Бухгалтер/мес</span><span class="f-val" id="okAV" onclick="ed(this,'okA')">350 ₪</span></div><input type="range" id="okA" min="0" max="1500" step="50" value="350" oninput="uOsek()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Расходы на бизнес/мес</span><span class="f-val" id="okEV" onclick="ed(this,'okE')">500 ₪</span></div><input type="range" id="okE" min="0" max="5000" step="100" value="500" oninput="uOsek()"><div class="f-note">Оборудование, софт, проезд и т.д.</div></div>
-  </div>
-  <div id="osekRes"></div>
-  <div class="hint"><b>Что учтено</b><br>Маам (НДС) 17% — отдаёшь государству. Битуах леуми для осека: ~6.6% до порога и ~11.8% выше. Мас бриют: 3.1% и 5%. Мас ахнаса — по тем же ступеням что и у наёмного. У осека нет отчислений работодателя в пенсию (~6.5%) и иштальмут (~7.5%), а наёмный получает их «бесплатно». Поэтому осеку нужно зарабатывать значительно больше чтобы выйти в ноль.</div>
-</div>
-
-<!-- ===== PITZUIM ===== -->
-<div class="page" id="p-pitz">
-  <div class="ph">
-    <div class="ph-sub">Калькулятор</div>
-    <div class="ph-title">Пицуим при увольнении</div>
-  </div>
-  <div class="fields">
-    <div class="f"><div class="f-row"><span class="f-lbl">Последняя зарплата</span><span class="f-val" id="pzSV" onclick="ed(this,'pzS')">12,000 ₪</span></div><input type="range" id="pzS" min="5000" max="60000" step="500" value="12000" oninput="uPitz()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Лет работы</span><span class="f-val" id="pzYV" onclick="ed(this,'pzY')">3</span></div><input type="range" id="pzY" min="1" max="30" step="1" value="3" oninput="uPitz()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Месяцев сверх полных лет</span><span class="f-val" id="pzMV" onclick="ed(this,'pzM')">0</span></div><input type="range" id="pzM" min="0" max="11" step="1" value="0" oninput="uPitz()"></div>
-  </div>
-  <div id="pitzRes"></div>
-  <div class="hint"><b>Как считается</b><br>Пицуим = последняя зарплата × стаж в годах. За неполный год — пропорционально по месяцам. Потолок для освобождения от налога: ~13,310₪ за каждый год работы (2024). Всё что сверх потолка — облагается налогом. На практике часть пицуим уже накоплена в пенсионном фонде (раздел «пицуим» в тлуше). Калькулятор показывает полную сумму по закону.</div>
-</div>
-
-<!-- ===== HISHTALMUT ===== -->
-<div class="page" id="p-hish">
-  <div class="ph">
-    <div class="ph-sub">Калькулятор</div>
-    <div class="ph-title">Иштальмут:<br>забрать или оставить</div>
-  </div>
-  <div class="fields">
-    <div class="f"><div class="f-row"><span class="f-lbl">Текущий баланс</span><span class="f-val" id="hiCV" onclick="ed(this,'hiC')">80,000 ₪</span></div><input type="range" id="hiC" min="5000" max="500000" step="5000" value="80000" oninput="uHish()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Ежемесячное отчисление</span><span class="f-val" id="hiMV" onclick="ed(this,'hiM')">1,570 ₪</span></div><input type="range" id="hiM" min="0" max="3000" step="10" value="1570" oninput="uHish()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Доходность/год</span><span class="f-val" id="hiRV" onclick="ed(this,'hiR')">7%</span></div><input type="range" id="hiR" min="1" max="15" step="0.5" value="7" oninput="uHish()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Сравнить: ждать ещё (лет)</span><span class="f-val" id="hiWV" onclick="ed(this,'hiW')">6</span></div><input type="range" id="hiW" min="6" max="30" step="6" value="6" oninput="uHish()"><div class="f-note">Цикл иштальмут — 6 лет (0% налог на прибыль)</div></div>
-  </div>
-  <div id="hishRes"></div>
-  <div class="hint"><b>Как работает иштальмут</b><br>Керен иштальмут можно снять без налога на прибыль через 6 лет. Но можно и не снимать — деньги продолжают расти с 0% налога на доход. Снял — получил сумму. Оставил — она продолжает работать. Калькулятор показывает разницу: сколько ты получишь сейчас vs через N лет. Новые отчисления продолжают поступать в обоих случаях.</div>
-</div>
-
-<!-- ===== FINANCIAL HEALTH ===== -->
-<div class="page" id="p-health">
-  <div class="ph">
-    <div class="ph-sub">Проверка</div>
-    <div class="ph-title">Финансовое здоровье</div>
-  </div>
-  <div class="fields">
-    <div class="f"><div class="f-row"><span class="f-lbl">Доход нетто</span><span class="f-val" id="fhIV" onclick="ed(this,'fhI')">15,000 ₪</span></div><input type="range" id="fhI" min="5000" max="80000" step="500" value="15000" oninput="uHealth()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Жильё (аренда/машканта)</span><span class="f-val" id="fhHV" onclick="ed(this,'fhH')">4,500 ₪</span></div><input type="range" id="fhH" min="0" max="20000" step="100" value="4500" oninput="uHealth()"></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Кредиты и долги/мес</span><span class="f-val" id="fhDV" onclick="ed(this,'fhD')">0 ₪</span></div><input type="range" id="fhD" min="0" max="15000" step="100" value="0" oninput="uHealth()"><div class="f-note">Машина в лизинг, кредит, халват и т.д.</div></div>
-    <div class="f"><div class="f-row"><span class="f-lbl">Откладываешь/мес</span><span class="f-val" id="fhSV" onclick="ed(this,'fhS')">2,000 ₪</span></div><input type="range" id="fhS" min="0" max="30000" step="100" value="2000" oninput="uHealth()"></div>
-  </div>
-  <div id="healthRes"></div>
-  <div class="hint"><b>Как читать результат</b><br>Жильё до 30% дохода — норма. Больше — давит на бюджет. Все долги (жильё + кредиты) до 40% — управляемо, выше — зона риска. Сбережения от 20% — путь к свободе, от 10% — минимум, ниже — живёшь от зарплаты до зарплаты. Это не строгие правила, а ориентиры из мировой практики финансового планирования.</div>
-</div>
-
-<div class="page" id="p-city">
-  <div class="ph">
-    <div class="ph-sub">Сравнение</div>
-    <div class="ph-title">Стоимость жизни<br>по городам</div>
-  </div>
-  <div class="tog" id="cityFam" style="margin-bottom:0">
-    <button class="on" onclick="cityT(0)">Один</button>
-    <button onclick="cityT(1)">Пара</button>
-    <button onclick="cityT(2)">Семья с ребёнком</button>
-  </div>
-  <div id="cityRes"></div>
-  <div class="hint"><b>Откуда данные</b><br>Аренда — средняя по объявлениям на 2024-2025 (2-3 комнаты). Арнона — муниципальные тарифы для квартиры ~65-75 м². Садик — стоимость частного или субсидированного дневного ухода. Маколет — индекс продуктовых расходов. Данные приблизительные и могут отличаться от реальных цен в конкретном районе.</div>
-</div>
-
-<div class="page" id="p-stats">
-  <div class="ph">
-    <div class="ph-sub">Справка</div>
-    <div class="ph-title">Средние показатели<br>по Израилю</div>
-  </div>
-  <div class="section-title">Расходы (ЦСБ / למ״ס)</div>
-  <div class="stat-row"><span class="stat-lbl">Один человек</span><span class="stat-val">11,000 ₪/мес</span></div>
-  <div class="stat-row"><span class="stat-lbl">Семья / пара</span><span class="stat-val">16,400 ₪/мес</span></div>
-  <div class="stat-row"><span class="stat-lbl">Семья с детьми</span><span class="stat-val">19,200 ₪/мес</span></div>
-
-  <div class="section-title">Зарплаты</div>
-  <div class="stat-row"><span class="stat-lbl">Средняя брутто</span><span class="stat-val">12,600 ₪</span></div>
-  <div class="stat-row"><span class="stat-lbl">Медиана брутто</span><span class="stat-val">9,500 ₪</span></div>
-  <div class="stat-row"><span class="stat-lbl">Хай-тек средняя</span><span class="stat-val">28,000 ₪</span></div>
-
-  <div class="section-title">Налоговые льготы</div>
-  <div class="stat-row"><span class="stat-lbl">Некудот зикуй (муж.)</span><span class="stat-val">2.25 точки</span></div>
-  <div class="stat-row"><span class="stat-lbl">Некудот зикуй (жен.)</span><span class="stat-val">2.75 точки</span></div>
-  <div class="stat-row"><span class="stat-lbl">Стоимость точки</span><span class="stat-val">242 ₪/мес</span></div>
-
-  <div class="section-title">Пенсионные отчисления</div>
-  <div class="stat-row"><span class="stat-lbl">Работник + работодатель</span><span class="stat-val">18.5% от брутто</span></div>
-  <div class="stat-row"><span class="stat-lbl">Чистая пенсия (акции)</span><span class="stat-val">~3,200 ₪/мес</span></div>
-  <div class="stat-row"><span class="stat-lbl">Керен Иштальмут</span><span class="stat-val">1,570 ₪/мес</span></div>
-  <div class="stat-row"><span class="stat-lbl">Иштальмут: 0% налог</span><span class="stat-val">после 6 лет</span></div>
-
-  <div class="section-title">Правило 4%</div>
-  <div class="stat-row"><span class="stat-lbl">Суть</span><span class="stat-val">Target = расходы × 300</span></div>
-  <div class="stat-row"><span class="stat-lbl">Target одиночки</span><span class="stat-val">3,300,000 ₪</span></div>
-  <div class="stat-row"><span class="stat-lbl">Target семьи</span><span class="stat-val">4,920,000 ₪</span></div>
-  <div class="stat-row"><span class="stat-lbl">Доходность (средн.)</span><span class="stat-val">7% реальных/год</span></div>
-  <div style="padding:16px;font-size:12px;color:var(--gr);line-height:1.5">Источники: ЦСБ Израиля (סקר הוצאות משק הבית), Банк Израиля, данные S&P 500 / MSCI World за 30+ лет.</div>
-</div>
-
-<div class="disclaimer">Все расчёты приблизительные и не являются финансовой консультацией. Для точных расчётов обратитесь к лицензированному налоговому консультанту (יועץ מס) или финансовому планировщику. Данные актуальны на 2024-2025 год.</div>
-<div class="footer">FI Tools · Israel 2026 · Данные не сохраняются</div>
+<div class="disclaimer" id="discl"></div>
+<div class="footer" id="footerEl"></div>
 
 <script>
 var tg=window.Telegram&&window.Telegram.WebApp;
 if(tg){tg.ready();tg.expand()}
 
-/* Prevent double-tap zoom on iOS */
-var lastTap=0;
-document.addEventListener('touchend',function(e){
-  var now=Date.now();
-  if(now-lastTap<300&&e.target.tagName!=='INPUT'){e.preventDefault()}
-  lastTap=now;
-},false);
+var L='ru';
+var curPage='home';
+var fiRateVal=.07,fiEarners=1,olimType=0,cityType=0;
 
-/* Safe calc wrapper */
-function safe(fn){try{fn()}catch(e){console.error(e)}}
+/* ══════ TRANSLATIONS ══════ */
+var T={
+ru:{
+  // general
+  calc:'Калькулятор',compare:'Сравнение',ref:'Справка',back:'← назад',
+  tapNum:'Все калькуляторы работают оффлайн. Данные не отправляются и не сохраняются. Нажми на число — можно вбить вручную.',
+  discl:'Все расчёты приблизительные и не являются финансовой консультацией. Для точных расчётов обратитесь к лицензированному налоговому консультанту (יועץ מס). Данные 2024-2025.',
+  footer:'FI Tools · Israel 2026 · Данные не сохраняются',
+  heroSub:'Israel 2026',heroTitle:'Финансовые инструменты\nдля жизни в Израиле',
+  calcs:'Калькуляторы',
+  // menu items
+  mFi:'Финансовая независимость',mFiD:'Через сколько лет можно не работать',
+  mTax:'Брутто → Нетто',mTaxD:'Зарплата после налогов и отчислений',
+  mMort:'Машканта',mMortD:'Ежемесячный платёж и переплата',
+  mComp:'Сложный процент',mCompD:'Рост вклада или портфеля со временем',
+  mRent:'Снимать или покупать',mRentD:'Что выгоднее на горизонте N лет',
+  mCar:'Реальная стоимость машины',mCarD:'Все расходы: страховка, бензин, тест, износ',
+  mOlim:'Льготы для олим',mOlimD:'Саль клита, налоговые льготы, сроки',
+  mInfl:'Инфляция',mInflD:'Покупательная сила денег со временем',
+  mGoal:'Цель накопления',mGoalD:'Сколько откладывать чтобы собрать X за Y лет',
+  mOsek:'Осек мурше vs наёмный',mOsekD:'Реальный доход фрилансера после всех вычетов',
+  mPitz:'Пицуим при увольнении',mPitzD:'Компенсация за стаж работы',
+  mHish:'Иштальмут: забрать или оставить',mHishD:'Сколько потеряешь если снимешь сейчас',
+  mHealth:'Финансовое здоровье',mHealthD:'Проверь свои пропорции расходов',
+  mCity:'Города Израиля',mCityD:'Стоимость жизни по городам',
+  mStats:'Средние по стране',mStatsD:'Расходы, зарплаты, отчисления — ЦСБ',
+  // common labels
+  incNet:'Доход нетто',savings:'Накопления',expenses:'Расходы в месяц',
+  yrs:'лет',mos:'мес.',toFI:'до финансовой независимости',
+  needSave:'Нужно накопить',savPerMo:'Откладываешь/мес',savRate:'Норма сбережений',
+  overview:'Обзор по стране',myCalc:'Мой расчёт',
+  one:'Один',two:'Двое',single:'Один',couple:'Пара',famKid:'Семья с ребёнком',
+  howCalc:'Как считается',
+  unreachable:'Недостижимо',
+},
+he:{
+  calc:'מחשבון',compare:'השוואה',ref:'מידע',back:'→ חזרה',
+  tapNum:'כל המחשבונים עובדים אופליין. הנתונים לא נשמרים ולא נשלחים. לחץ על מספר כדי להקליד ידנית.',
+  discl:'החישובים הם הערכות בלבד ואינם מהווים ייעוץ פיננסי. לחישובים מדויקים פנה ליועץ מס מוסמך. נתוני 2024-2025.',
+  footer:'FI Tools · Israel 2026 · הנתונים לא נשמרים',
+  heroSub:'Israel 2026',heroTitle:'כלים פיננסיים\nלחיים בישראל',
+  calcs:'מחשבונים',
+  mFi:'עצמאות כלכלית',mFiD:'עוד כמה שנים אפשר להפסיק לעבוד',
+  mTax:'ברוטו → נטו',mTaxD:'משכורת אחרי מסים וניכויים',
+  mMort:'משכנתא',mMortD:'תשלום חודשי ועלות כוללת',
+  mComp:'ריבית דריבית',mCompD:'צמיחת תיק השקעות לאורך זמן',
+  mRent:'לשכור או לקנות',mRentD:'מה משתלם יותר על פני N שנים',
+  mCar:'עלות אמיתית של רכב',mCarD:'ביטוח, דלק, טסט, פחת — הכל',
+  mOlim:'הטבות לעולים',mOlimD:'סל קליטה, הטבות מס, לוחות זמנים',
+  mInfl:'אינפלציה',mInflD:'כוח הקנייה של הכסף לאורך זמן',
+  mGoal:'יעד חיסכון',mGoalD:'כמה לחסוך בחודש כדי להגיע ליעד',
+  mOsek:'עוסק מורשה vs שכיר',mOsekD:'ההכנסה האמיתית של פרילנסר',
+  mPitz:'פיצויי פיטורין',mPitzD:'פיצויים לפי ותק ומשכורת',
+  mHish:'השתלמות: למשוך או להשאיר',mHishD:'כמה תפסיד אם תמשוך עכשיו',
+  mHealth:'בריאות פיננסית',mHealthD:'בדיקת יחסי ההוצאות שלך',
+  mCity:'ערים בישראל',mCityD:'השוואת יוקר מחיה בין ערים',
+  mStats:'ממוצעים ארציים',mStatsD:'הוצאות, שכר, הפרשות — לפי הלמ"ס',
+  incNet:'הכנסה נטו',savings:'חסכונות',expenses:'הוצאות חודשיות',
+  yrs:'שנים',mos:'חודשים',toFI:'עד עצמאות כלכלית',
+  needSave:'יעד',savPerMo:'חוסך/חודש',savRate:'שיעור חיסכון',
+  overview:'סקירה ארצית',myCalc:'חישוב אישי',
+  one:'יחיד',two:'שניים',single:'יחיד',couple:'זוג',famKid:'משפחה עם ילד',
+  howCalc:'איך זה מחושב',
+  unreachable:'לא ניתן להשגה',
+}
+};
 
-/* Auto-scroll to result */
-function scrollToRes(id){
-  setTimeout(function(){
-    var el=document.getElementById(id);
-    if(el&&el.firstChild)el.firstChild.scrollIntoView({behavior:'smooth',block:'nearest'});
-  },50);
+function t(k){return T[L][k]||T['ru'][k]||k}
+
+function toggleLang(){
+  L=L==='ru'?'he':'ru';
+  document.body.dir=L==='he'?'rtl':'ltr';
+  document.documentElement.lang=L;
+  document.getElementById('langBtn').textContent=L==='ru'?'עב':'RU';
+  renderPage();
 }
 
-var curPage='home';
-var fiRateVal=.07, fiEarners=1;
+/* ══════ RENDER ══════ */
+function renderPage(){
+  if(curPage==='home')renderHome();
+  else renderCalc(curPage);
+  document.getElementById('discl').textContent=t('discl');
+  document.getElementById('footerEl').textContent=t('footer');
+}
 
-/* ── NAV ── */
+function renderHome(){
+  document.getElementById('barTitle').textContent='FI Tools';
+  document.getElementById('bar').style.cursor='default';
+
+  var items=[
+    ['fi','red','FI','mFi','mFiD'],['tax','dark','₪','mTax','mTaxD'],
+    ['mort','out','⌂','mMort','mMortD'],['comp','dark','%','mComp','mCompD'],
+    ['rent','red','⇔','mRent','mRentD'],['car','out','○','mCar','mCarD'],
+    ['goal','red','⚑','mGoal','mGoalD'],['osek','dark','✎','mOsek','mOsekD'],
+    ['pitz','out','☐','mPitz','mPitzD'],['hish','red','⏳','mHish','mHishD'],
+    ['health','dark','♥','mHealth','mHealthD'],['infl','out','↓','mInfl','mInflD'],
+  ];
+  var refs=[['olim','dark','✚','mOlim','mOlimD'],['city','dark','⚶','mCity','mCityD'],['stats','out','i','mStats','mStatsD']];
+
+  var h='<div class="ph"><div class="ph-sub">'+t('heroSub')+'</div><div class="ph-title">'+t('heroTitle').replace('\n','<br>')+'</div></div>';
+  h+='<div style="padding:12px 16px;font-size:13px;color:var(--gr);line-height:1.5;border-bottom:1px solid var(--ln)">'+t('tapNum')+'</div>';
+  h+='<div class="tools"><div class="t-sect">'+t('calcs')+'</div>';
+  items.forEach(function(it){
+    h+='<div class="t-item" onclick="go(\''+it[0]+'\')"><div class="t-icon '+it[1]+'">'+it[2]+'</div><div><div class="t-name">'+t(it[3])+'</div><div class="t-desc">'+t(it[4])+'</div></div><span class="t-arrow">→</span></div>';
+  });
+  h+='<div class="t-sect">'+t('ref')+'</div>';
+  refs.forEach(function(it){
+    h+='<div class="t-item" onclick="go(\''+it[0]+'\')"><div class="t-icon '+it[1]+'">'+it[2]+'</div><div><div class="t-name">'+t(it[3])+'</div><div class="t-desc">'+t(it[4])+'</div></div><span class="t-arrow">→</span></div>';
+  });
+  h+='</div>';
+  document.getElementById('app').innerHTML=h;
+}
+
 function go(p){
-  document.querySelectorAll('.page').forEach(function(el){el.classList.remove('active')});
-  document.getElementById('p-'+p).classList.add('active');
   curPage=p;
-  if(p==='home'){
-    document.getElementById('barTitle').textContent='FI Tools';
-    document.getElementById('bar').onclick=null;
-    document.getElementById('bar').style.cursor='default';
-  }else{
-    document.getElementById('barTitle').innerHTML='&#8592; назад';
-    document.getElementById('bar').onclick=function(){go('home')};
-    document.getElementById('bar').style.cursor='pointer';
-  }
+  if(p==='home'){renderHome();window.scrollTo(0,0);return}
+  document.getElementById('barTitle').textContent=t('back');
+  document.getElementById('barTitle').onclick=function(){go('home')};
+  document.getElementById('bar').style.cursor='pointer';
+  renderCalc(p);
   window.scrollTo(0,0);
-  if(p==='fi'){uFiS();uFiC()}
-  if(p==='tax')uTax();
-  if(p==='mort')uMort();
-  if(p==='comp')uComp();
-  if(p==='rent')uRent();
-  if(p==='car')uCar();
-  if(p==='olim')uOlim();
-  if(p==='infl')uInfl();
-  if(p==='goal')uGoal();
-  if(p==='osek')uOsek();
-  if(p==='pitz')uPitz();
-  if(p==='hish')uHish();
-  if(p==='health')uHealth();
-  if(p==='city')cityT(0);
   setTimeout(function(){document.querySelectorAll('input[type=range]').forEach(ss)},30);
 }
 
-/* ── SLIDER FILL ── */
+/* ══════ UTILITY ══════ */
+function fm(n){if(n==null||!isFinite(n))return'—';return Math.round(Number(n)).toLocaleString('he-IL')}
+function fy(t_val){
+  if(!isFinite(t_val)||t_val<0)return t('unreachable');
+  var y=Math.floor(t_val),m=Math.round((t_val-y)*12);
+  if(y===0)return m+' '+t('mos');
+  return m>0?y+' '+t('yrs')+' '+m+' '+t('mos'):y+' '+t('yrs');
+}
 function ss(el){
   var mn=+el.min,mx=+el.max,v=+el.value;
   var p=((v-mn)/(mx-mn))*100;
   el.style.background='linear-gradient(to right,#2C2C2E '+p+'%,#D6D3CB '+p+'%)';
   el.style.height='2px';el.style.borderRadius='0';
 }
-
-/* ── EDITABLE FIELDS ── */
+function fmtV(sid,v){
+  if(/^(txN|olK|pzM)$/.test(sid))return v;
+  if(/^(mrY|cmY|rtY|ifY|glY|pzY|hiW)$/.test(sid))return v;
+  if(/^(mrR|cmR|cmG|rtG|rtM|rtA|caD|ifR|glR|hiR)$/.test(sid))return v+'%';
+  return fm(v)+' ₪';
+}
 function ed(span,sid){
-  var sl=document.getElementById(sid);
-  if(!sl)return;
+  var sl=document.getElementById(sid);if(!sl)return;
   var cv=+sl.value;
   var inp=document.createElement('input');
   inp.type='number';inp.className='f-input';inp.value=cv;inp.inputMode='numeric';
-  inp.step=sl.step;inp.min=sl.min;inp.max=sl.max;
-  inp.setAttribute('autocomplete','off');
+  inp.step=sl.step;inp.min=sl.min;inp.max=sl.max;inp.setAttribute('autocomplete','off');
   span.replaceWith(inp);inp.focus();inp.select();
-  var committed=false;
-  function done(){
-    if(committed)return;committed=true;
+  var done_=false;
+  function done(){if(done_)return;done_=true;
     var raw=String(inp.value).replace(/[^0-9.\-]/g,'');
     var v=parseFloat(raw)||0;
     v=Math.max(+sl.min,Math.min(+sl.max,v));
     v=Math.round(v/(+sl.step))*(+sl.step);
-    v=parseFloat(v.toFixed(4));
-    sl.value=v;
-    var ns=document.createElement('span');
-    ns.className='f-val';ns.id=span.id;
-    ns.textContent=fmtV(sid,v);
-    ns.onclick=function(){ed(ns,sid)};
-    inp.replaceWith(ns);ss(sl);
-    triggerUpdate(sid);
+    v=parseFloat(v.toFixed(4));sl.value=v;
+    var ns=document.createElement('span');ns.className='f-val';ns.id=span.id;
+    ns.textContent=fmtV(sid,v);ns.onclick=function(){ed(ns,sid)};
+    inp.replaceWith(ns);ss(sl);renderCalc(curPage);
   }
-  inp.onblur=done;
-  inp.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();inp.blur()}};
+  inp.onblur=done;inp.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();inp.blur()}};
 }
 
-function fmtV(sid,v){
-  if(sid==='txN'||sid==='olK'||sid==='pzM')return v;
-  if(sid==='mrY'||sid==='cmY'||sid==='rtY'||sid==='ifY'||sid==='glY'||sid==='pzY'||sid==='hiW')return v;
-  if(sid==='mrR'||sid==='cmR'||sid==='cmG'||sid==='rtG'||sid==='rtM'||sid==='rtA'||sid==='caD'||sid==='ifR'||sid==='glR'||sid==='hiR')return v+'%';
-  return fm(v)+' ₪';
-}
-function triggerUpdate(sid){
-  if(sid.startsWith('s1')||sid.startsWith('s2'))uFiS();
-  else if(sid.startsWith('ce')||sid.startsWith('ci')||sid.startsWith('cp')||sid==='ch2'||sid==='cn')uFiC();
-  else if(sid.startsWith('tx'))uTax();
-  else if(sid.startsWith('mr'))uMort();
-  else if(sid.startsWith('cm'))uComp();
-  else if(sid.startsWith('rt'))uRent();
-  else if(sid.startsWith('ca'))uCar();
-  else if(sid.startsWith('ol'))uOlim();
-  else if(sid.startsWith('if'))uInfl();
-  else if(sid.startsWith('gl'))uGoal();
-  else if(sid.startsWith('ok'))uOsek();
-  else if(sid.startsWith('pz'))uPitz();
-  else if(sid.startsWith('hi'))uHish();
-  else if(sid.startsWith('fh'))uHealth();
+function F(id,lbl,val,min,max,step,oninp,note){
+  return '<div class="f"><div class="f-row"><span class="f-lbl">'+lbl+'</span><span class="f-val" id="'+id+'V" onclick="ed(this,\''+id+'\')">'+val+'</span></div><input type="range" id="'+id+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+(document.getElementById(id)?document.getElementById(id).value:min)+'" oninput="renderCalc(\''+curPage+'\')">'+(note?'<div class="f-note">'+note+'</div>':'')+'</div>';
 }
 
-function fm(n){
-  if(n==null||!isFinite(n))return'—';
-  return Math.round(Number(n)).toLocaleString('he-IL');
-}
-function fy(t){
-  if(!isFinite(t)||t<0)return'—';
-  var y=Math.floor(t),m=Math.round((t-y)*12);
-  return y===0?m+' мес.':m>0?y+' лет '+m+' мес.':y+' лет';
+/* ══════ CALCULATOR PAGES ══════ */
+function renderCalc(p){
+  var el=document.getElementById('app');
+  var h='';
+  var V=function(id,def){var e=document.getElementById(id);return e?+e.value:def};
+
+  if(p==='fi'){h=renderFIPage(V)}
+  else if(p==='tax'){h=renderTaxPage(V)}
+  else if(p==='mort'){h=renderMortPage(V)}
+  else if(p==='comp'){h=renderCompPage(V)}
+  else if(p==='rent'){h=renderRentPage(V)}
+  else if(p==='car'){h=renderCarPage(V)}
+  else if(p==='olim'){h=renderOlimPage(V)}
+  else if(p==='infl'){h=renderInflPage(V)}
+  else if(p==='goal'){h=renderGoalPage(V)}
+  else if(p==='osek'){h=renderOsekPage(V)}
+  else if(p==='pitz'){h=renderPitzPage(V)}
+  else if(p==='hish'){h=renderHishPage(V)}
+  else if(p==='health'){h=renderHealthPage(V)}
+  else if(p==='city'){h=renderCityPage(V)}
+  else if(p==='stats'){h=renderStatsPage()}
+
+  el.innerHTML=h;
+  setTimeout(function(){document.querySelectorAll('input[type=range]').forEach(ss)},10);
 }
 
-/* ── FI CALC ── */
-function fiCalc(e,i,p0,r,n,h,pn){
-  var tgt=e*300,s=(i-e)+n*(h+pn);
+/* ── FI ── */
+function fiCalc(e,i,p0,r,n,his,pen){
+  var tgt=e*300,s=(i-e)+n*(his+pen);
   if(s<=0)return{t:1/0,tgt:tgt,s:s};
-  var N=r*tgt+12*s,D=r*p0+12*s;
-  if(D<=0||N/D<=0)return{t:1/0,tgt:tgt,s:s};
-  return{t:Math.log(N/D)/Math.log(1+r),tgt:tgt,s:s};
+  var N_=r*tgt+12*s,D_=r*p0+12*s;
+  if(D_<=0||N_/D_<=0)return{t:1/0,tgt:tgt,s:s};
+  return{t:Math.log(N_/D_)/Math.log(1+r),tgt:tgt,s:s};
 }
-
-function renderFI(res,income){
+function fiResult(res,inc){
   var ok=isFinite(res.t)&&res.t>0;
-  var savRate=income>0?Math.round(res.s/income*100):0;
-  var h='<div class="res'+(ok?'':' bad')+'">';
-  h+='<div class="res-lbl">до финансовой независимости</div>';
-  h+='<div class="res-num">'+(ok?fy(res.t):'Недостижимо')+'</div>';
-  h+='<div class="res-line"></div>';
-  h+='<div class="res-row">';
-  h+='<div class="res-item"><div class="res-item-lbl">Нужно накопить</div><div class="res-item-val">'+fm(res.tgt)+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">Откладываешь/мес</div><div class="res-item-val">'+fm(Math.round(res.s))+' ₪</div></div>';
+  var sr=inc>0?Math.round(res.s/inc*100):0;
+  var h='<div class="res'+(ok?'':' bad')+'"><div class="res-lbl">'+t('toFI')+'</div><div class="res-num">'+(ok?fy(res.t):t('unreachable'))+'</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+t('needSave')+'</div><div class="res-item-val">'+fm(res.tgt)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">'+t('savPerMo')+'</div><div class="res-item-val">'+fm(Math.round(res.s))+' ₪</div></div></div>';
+  if(inc>0&&ok){h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+t('savRate')+'</div><div class="res-item-val">'+sr+'%</div></div><div class="res-item"></div></div>';}
+  h+='</div>';return h;
+}
+function renderFIPage(V){
+  var r=fiRateVal;
+  var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mFi')+'</div></div>';
+  h+='<div class="seg" id="fiRate"><button '+(r===.05?'class="on"':'')+' onclick="fiRateVal=.05;renderCalc(\'fi\')">5%</button><button '+(r===.07?'class="on"':'')+' onclick="fiRateVal=.07;renderCalc(\'fi\')">7%</button><button '+(r===.09?'class="on"':'')+' onclick="fiRateVal=.09;renderCalc(\'fi\')">9%</button></div>';
+
+  var i1=V('s1i',15000),p1=V('s1p',50000),i2=V('s2i',25000),p2=V('s2p',100000);
+  h+='<div class="section-title">'+t('single')+'</div>';
+  h+='<div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Расходы':'הוצאות')+'</div><div class="info-cell-val">11,000 ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Target':'יעד')+'</div><div class="info-cell-val">3,300,000 ₪</div></div></div>';
+  h+='<div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('incNet')+'</span><span class="f-val" id="s1iV" onclick="ed(this,\'s1i\')">'+fm(i1)+' ₪</span></div><input type="range" id="s1i" min="8000" max="50000" step="500" value="'+i1+'" oninput="renderCalc(\'fi\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('savings')+'</span><span class="f-val" id="s1pV" onclick="ed(this,\'s1p\')">'+fm(p1)+' ₪</span></div><input type="range" id="s1p" min="0" max="2000000" step="10000" value="'+p1+'" oninput="renderCalc(\'fi\')"></div>';
   h+='</div>';
-  if(income>0){h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Норма сбережений</div><div class="res-item-val">'+savRate+'% от дохода</div></div>'
-  +'<div class="res-item"><div class="res-item-lbl">На жизнь остаётся</div><div class="res-item-val">'+fm(income-Math.round(res.s))+' ₪</div></div></div>';}
+  h+=fiResult(fiCalc(11000,i1,p1,r,1,1570,3200),i1);
+
+  h+='<div class="section-title">'+t('couple')+'</div>';
+  h+='<div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('incNet')+'</span><span class="f-val" id="s2iV" onclick="ed(this,\'s2i\')">'+fm(i2)+' ₪</span></div><input type="range" id="s2i" min="12000" max="80000" step="500" value="'+i2+'" oninput="renderCalc(\'fi\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('savings')+'</span><span class="f-val" id="s2pV" onclick="ed(this,\'s2p\')">'+fm(p2)+' ₪</span></div><input type="range" id="s2p" min="0" max="3000000" step="10000" value="'+p2+'" oninput="renderCalc(\'fi\')"></div>';
   h+='</div>';
+  h+=fiResult(fiCalc(16400,i2,p2,r,2,1570,3200),i2);
+
+  h+='<div class="hint"><b>'+t('howCalc')+'</b>'+(L==='ru'?'Target = расходы × 300 (правило 4%). Поток = (доход − расходы) + иштальмут + пенсия. Время — формула аннуитета со сложным процентом.':'Target = הוצאות × 300 (כלל 4%). זרם = (הכנסה − הוצאות) + השתלמות + פנסיה. הזמן מחושב לפי נוסחת אנואיטה בריבית דריבית.')+'</div>';
   return h;
 }
 
-function fiTab(n){
-  var bs=document.querySelectorAll('#fiMode button');
-  bs[0].classList.toggle('on',n===0);bs[1].classList.toggle('on',n===1);
-  document.getElementById('fiOver').style.display=n===0?'block':'none';
-  document.getElementById('fiPers').style.display=n===1?'block':'none';
-}
-function fiR(btn){
-  fiRateVal=+btn.dataset.r;
-  document.querySelectorAll('#fiRate button').forEach(function(b){b.classList.toggle('on',b===btn)});
-  uFiS();uFiC();
-}
-function fiE(n){
-  fiEarners=n;
-  var bs=document.querySelectorAll('#fiEarn button');
-  bs[0].classList.toggle('on',n===1);bs[1].classList.toggle('on',n===2);
-  uFiC();
-}
-
-function uFiS(){
-  var v=function(id){return+document.getElementById(id).value};
-  document.getElementById('s1iV').textContent=fm(v('s1i'))+' ₪';
-  document.getElementById('s1pV').textContent=fm(v('s1p'))+' ₪';
-  document.getElementById('s2iV').textContent=fm(v('s2i'))+' ₪';
-  document.getElementById('s2pV').textContent=fm(v('s2p'))+' ₪';
-  document.getElementById('fiR1').innerHTML=renderFI(fiCalc(11000,v('s1i'),v('s1p'),fiRateVal,1,1570,3200),v('s1i'));
-  document.getElementById('fiR2').innerHTML=renderFI(fiCalc(16400,v('s2i'),v('s2p'),fiRateVal,2,1570,3200),v('s2i'));
-  document.querySelectorAll('#p-fi input[type=range]').forEach(ss);
-}
-
-function uFiC(){
-  var v=function(id){return+document.getElementById(id).value};
-  document.getElementById('ceV').textContent=fm(v('ce'))+' ₪';
-  document.getElementById('ciV').textContent=fm(v('ci'))+' ₪';
-  document.getElementById('cpV').textContent=fm(v('cp'))+' ₪';
-  document.getElementById('chV').textContent=fm(v('ch2'))+' ₪';
-  document.getElementById('cnV').textContent=fm(v('cn'))+' ₪';
-  document.getElementById('fiR3').innerHTML=renderFI(fiCalc(v('ce'),v('ci'),v('cp'),fiRateVal,fiEarners,v('ch2'),v('cn')),v('ci'));
-  document.querySelectorAll('#p-fi input[type=range]').forEach(ss);
-}
-
-/* ── TAX CALC (Israel 2024) ── */
-function calcTax(brutto,points){
-  var annual=brutto*12;
-  var brackets=[[81480,.1],[116760,.14],[187440,.2],[260520,.31],[542160,.35],[698280,.47],[Infinity,.5]];
+/* ── TAX ── */
+function renderTaxPage(V){
+  var b=V('txB',15000),n=V('txN',2.25);
+  var annual=b*12;
+  var brackets=[[81480,.1],[116760,.14],[187440,.2],[260520,.31],[542160,.35],[698280,.47],[1/0,.5]];
   var tax=0,prev=0;
-  for(var i=0;i<brackets.length;i++){
-    var cap=brackets[i][0],rate=brackets[i][1];
-    if(annual<=cap){tax+=(annual-prev)*rate;break}
-    tax+=(cap-prev)*rate;prev=cap;
-  }
-  var credit=points*242*12;
-  tax=Math.max(0,tax-credit);
+  for(var i=0;i<brackets.length;i++){var cap=brackets[i][0],rate=brackets[i][1];if(annual<=cap){tax+=(annual-prev)*rate;break}tax+=(cap-prev)*rate;prev=cap}
+  tax=Math.max(0,tax-n*242*12);var taxM=Math.round(tax/12);
+  var blB=Math.min(b,6331),blO=Math.max(0,Math.min(b,44020)-6331);
+  var bl=Math.round(blB*.004+blO*.07),hp=Math.round(blB*.031+blO*.05),pen=Math.round(b*.06);
+  var net=Math.round(b-taxM-bl-hp-pen);
 
-  var blBase=Math.min(brutto,6331);
-  var blOver=Math.max(0,Math.min(brutto,44020)-6331);
-  var bituach=blBase*0.004+blOver*0.07;
-  var health=blBase*0.031+blOver*0.05;
-  var pension=brutto*0.06;
-  var netto=brutto-tax/12-bituach-health-pension;
-  return{tax:Math.round(tax/12),bituach:Math.round(bituach),health:Math.round(health),pension:Math.round(pension),netto:Math.round(netto),brutto:brutto};
-}
+  var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mTax')+'</div></div><div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Зарплата брутто':'משכורת ברוטו')+'</span><span class="f-val" id="txBV" onclick="ed(this,\'txB\')">'+fm(b)+' ₪</span></div><input type="range" id="txB" min="5000" max="80000" step="500" value="'+b+'" oninput="renderCalc(\'tax\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Некудот зикуй':'נקודות זיכוי')+'</span><span class="f-val" id="txNV" onclick="ed(this,\'txN\')">'+n+'</span></div><input type="range" id="txN" min="0" max="6" step="0.25" value="'+n+'" oninput="renderCalc(\'tax\')"><div class="f-note">'+(L==='ru'?'Мужчина: 2.25 · Женщина: 2.75':'גבר: 2.25 · אישה: 2.75')+'</div></div></div>';
 
-function uTax(){
-  var b=+document.getElementById('txB').value;
-  var n=+document.getElementById('txN').value;
-  document.getElementById('txBV').textContent=fm(b)+' ₪';
-  document.getElementById('txNV').textContent=n;
-  var r=calcTax(b,n);
-
-  var h='<div class="res"><div class="res-lbl">зарплата нетто</div><div class="res-num">'+fm(r.netto)+' ₪</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Брутто</div><div class="res-item-val">'+fm(r.brutto)+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">На руки</div><div class="res-item-val">'+Math.round(r.netto/r.brutto*100)+'%</div></div></div></div>';
-
-  var empCost=Math.round(r.brutto*1.185);
+  h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'зарплата нетто':'משכורת נטו')+'</div><div class="res-num">'+fm(net)+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'На руки':'לפני מסים')+'</div><div class="res-item-val">'+Math.round(net/b*100)+'%</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Нетто в год':'נטו שנתי')+'</div><div class="res-item-val">'+fm(net*12)+' ₪</div></div></div></div>';
   h+='<div class="info-grid">';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Мас ахнаса</div><div class="info-cell-val">−'+fm(r.tax)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Битуах леуми</div><div class="info-cell-val">−'+fm(r.bituach)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Мас бриют</div><div class="info-cell-val">−'+fm(r.health)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Пенсия (6%)</div><div class="info-cell-val">−'+fm(r.pension)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Нетто в год</div><div class="info-cell-val">'+fm(r.netto*12)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Стоимость работодателю</div><div class="info-cell-val">~'+fm(empCost)+' ₪</div></div>';
-  h+='</div>';
-
-  document.getElementById('taxRes').innerHTML=h;
-  document.querySelectorAll('#p-tax input[type=range]').forEach(ss);
+  h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас ахнаса':'מס הכנסה')+'</div><div class="info-cell-val">−'+fm(taxM)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Битуах леуми':'ביטוח לאומי')+'</div><div class="info-cell-val">−'+fm(bl)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас бриют':'מס בריאות')+'</div><div class="info-cell-val">−'+fm(hp)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Пенсия (6%)':'פנסיה (6%)')+'</div><div class="info-cell-val">−'+fm(pen)+' ₪</div></div></div>';
+  return h;
 }
 
 /* ── MORTGAGE ── */
-function uMort(){
-  var P=+document.getElementById('mrS').value;
-  var Y=+document.getElementById('mrY').value;
-  var R=+document.getElementById('mrR').value;
-  document.getElementById('mrSV').textContent=fm(P)+' ₪';
-  document.getElementById('mrYV').textContent=Y;
-  document.getElementById('mrRV').textContent=R+'%';
-
-  var mr=R/100/12,n=Y*12;
-  var pmt=P*(mr*Math.pow(1+mr,n))/(Math.pow(1+mr,n)-1);
-  var total=pmt*n;
-  var interest=total-P;
-
-  var h='<div class="res"><div class="res-lbl">ежемесячный платёж</div><div class="res-num">'+fm(Math.round(pmt))+' ₪</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Всего выплатишь</div><div class="res-item-val">'+fm(Math.round(total))+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">Переплата</div><div class="res-item-val">'+fm(Math.round(interest))+' ₪</div></div></div></div>';
-
-  h+='<div class="info-grid">';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Тело кредита</div><div class="info-cell-val">'+fm(P)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Проценты</div><div class="info-cell-val">'+fm(Math.round(interest))+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Переплата</div><div class="info-cell-val">'+Math.round(interest/P*100)+'%</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Кол-во платежей</div><div class="info-cell-val">'+n+'</div></div>';
-  h+='</div>';
-
-  document.getElementById('mortRes').innerHTML=h;
-  document.querySelectorAll('#p-mort input[type=range]').forEach(ss);
+function renderMortPage(V){
+  var P=V('mrS',1000000),Y=V('mrY',25),R=V('mrR',4.5);
+  var mr=R/100/12,n=Y*12;var pmt=P*(mr*Math.pow(1+mr,n))/(Math.pow(1+mr,n)-1);var total=pmt*n;var interest=total-P;
+  var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mMort')+'</div></div><div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Сумма кредита':'סכום הלוואה')+'</span><span class="f-val" id="mrSV" onclick="ed(this,\'mrS\')">'+fm(P)+' ₪</span></div><input type="range" id="mrS" min="100000" max="3000000" step="50000" value="'+P+'" oninput="renderCalc(\'mort\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Срок (лет)':'תקופה (שנים)')+'</span><span class="f-val" id="mrYV" onclick="ed(this,\'mrY\')">'+Y+'</span></div><input type="range" id="mrY" min="5" max="30" step="1" value="'+Y+'" oninput="renderCalc(\'mort\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Ставка годовая':'ריבית שנתית')+'</span><span class="f-val" id="mrRV" onclick="ed(this,\'mrR\')">'+R+'%</span></div><input type="range" id="mrR" min="1" max="10" step="0.1" value="'+R+'" oninput="renderCalc(\'mort\')"></div></div>';
+  h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'ежемесячный платёж':'תשלום חודשי')+'</div><div class="res-num">'+fm(Math.round(pmt))+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Всего выплатишь':'סה"כ תשלום')+'</div><div class="res-item-val">'+fm(Math.round(total))+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Переплата':'עודף תשלום')+'</div><div class="res-item-val">'+fm(Math.round(interest))+' ₪</div></div></div></div>';
+  h+='<div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Тело кредита':'קרן')+'</div><div class="info-cell-val">'+fm(P)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Переплата':'ריבית')+'</div><div class="info-cell-val">'+Math.round(interest/P*100)+'%</div></div></div>';
+  return h;
 }
 
-/* ── COMPOUND INTEREST ── */
-function uComp(){
-  var P=+document.getElementById('cmP').value;
-  var M=+document.getElementById('cmM').value;
-  var Y=+document.getElementById('cmY').value;
-  var R=+document.getElementById('cmR').value;
-  var G=+document.getElementById('cmG').value;
-  document.getElementById('cmPV').textContent=fm(P)+' ₪';
-  document.getElementById('cmMV').textContent=fm(M)+' ₪';
-  document.getElementById('cmYV').textContent=Y;
-  document.getElementById('cmRV').textContent=R+'%';
-  document.getElementById('cmGV').textContent=G+'%';
-
-  var r=R/100,g=G/100;
-  var bal=P,invested=P,mCur=M;
-  for(var y=0;y<Y;y++){
-    var annualAdd=mCur*12;
-    bal=(bal+annualAdd)*(1+r);
-    invested+=annualAdd;
-    mCur=mCur*(1+g);
-  }
-  var fv=Math.round(bal);
-  invested=Math.round(invested);
-  var profit=fv-invested;
-  var lastM=Math.round(M*Math.pow(1+g,Y-1));
-
-  var h='<div class="res"><div class="res-lbl">итого через '+Y+' лет</div><div class="res-num">'+fm(fv)+' ₪</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Вложено</div><div class="res-item-val">'+fm(invested)+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">Прибыль</div><div class="res-item-val">'+fm(profit)+' ₪</div></div></div></div>';
-
-  h+='<div class="info-grid">';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Начальная сумма</div><div class="info-cell-val">'+fm(P)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Все довложения</div><div class="info-cell-val">'+fm(invested-P)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Рост капитала</div><div class="info-cell-val">×'+(fv/Math.max(invested,1)).toFixed(1)+'</div></div>';
-  if(G>0){
-    h+='<div class="info-cell"><div class="info-cell-lbl">Довложение в '+Y+'-й год</div><div class="info-cell-val">'+fm(lastM)+' ₪/мес</div></div>';
-  }else{
-    h+='<div class="info-cell"><div class="info-cell-lbl">Общая доходность</div><div class="info-cell-val">'+Math.round(profit/Math.max(invested,1)*100)+'%</div></div>';
-  }
-  h+='</div>';
-
-  document.getElementById('compRes').innerHTML=h;
-  document.querySelectorAll('#p-comp input[type=range]').forEach(ss);
+/* ── COMPOUND ── */
+function renderCompPage(V){
+  var P=V('cmP',100000),M=V('cmM',2000),Y=V('cmY',20),R=V('cmR',7),G=V('cmG',0);
+  var r=R/100,g=G/100,bal=P,inv=P,mC=M;
+  for(var y=0;y<Y;y++){var a=mC*12;bal=(bal+a)*(1+r);inv+=a;mC*=(1+g)}
+  var fv=Math.round(bal);inv=Math.round(inv);var pr=fv-inv;
+  var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mComp')+'</div></div><div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Начальная сумма':'סכום התחלתי')+'</span><span class="f-val" id="cmPV" onclick="ed(this,\'cmP\')">'+fm(P)+' ₪</span></div><input type="range" id="cmP" min="0" max="5000000" step="10000" value="'+P+'" oninput="renderCalc(\'comp\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Довложение/мес':'הפקדה/חודש')+'</span><span class="f-val" id="cmMV" onclick="ed(this,\'cmM\')">'+fm(M)+' ₪</span></div><input type="range" id="cmM" min="0" max="30000" step="500" value="'+M+'" oninput="renderCalc(\'comp\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Срок (лет)':'תקופה (שנים)')+'</span><span class="f-val" id="cmYV" onclick="ed(this,\'cmY\')">'+Y+'</span></div><input type="range" id="cmY" min="1" max="40" step="1" value="'+Y+'" oninput="renderCalc(\'comp\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Доходность/год':'תשואה/שנה')+'</span><span class="f-val" id="cmRV" onclick="ed(this,\'cmR\')">'+R+'%</span></div><input type="range" id="cmR" min="1" max="15" step="0.5" value="'+R+'" oninput="renderCalc(\'comp\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Повышение вклада/год':'העלאת הפקדה/שנה')+'</span><span class="f-val" id="cmGV" onclick="ed(this,\'cmG\')">'+G+'%</span></div><input type="range" id="cmG" min="0" max="20" step="1" value="'+G+'" oninput="renderCalc(\'comp\')"></div></div>';
+  h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'итого через '+Y+' лет':'סה"כ אחרי '+Y+' שנים')+'</div><div class="res-num">'+fm(fv)+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Вложено':'הושקע')+'</div><div class="res-item-val">'+fm(inv)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Прибыль':'רווח')+'</div><div class="res-item-val">'+fm(pr)+' ₪</div></div></div></div>';
+  return h;
 }
 
+/* ── STUBS for remaining pages (keep existing logic, add L check) ── */
 /* ── RENT VS BUY ── */
-function uRent(){
-  var rent=+document.getElementById('rtR').value;
-  var rg=+document.getElementById('rtG').value;
-  var price=+document.getElementById('rtP').value;
-  var down=+document.getElementById('rtD').value;
-  var mr=+document.getElementById('rtM').value;
-  var yrs=+document.getElementById('rtY').value;
-  var appr=+document.getElementById('rtA').value;
-  document.getElementById('rtRV').textContent=fm(rent)+' ₪';
-  document.getElementById('rtGV').textContent=rg+'%';
-  document.getElementById('rtPV').textContent=fm(price)+' ₪';
-  document.getElementById('rtDV').textContent=fm(down)+' ₪';
-  document.getElementById('rtMV').textContent=mr+'%';
-  document.getElementById('rtYV').textContent=yrs;
-  document.getElementById('rtAV').textContent=appr+'%';
-
-  var loan=price-down;
-  var mri=mr/100/12,n=yrs*12;
+function renderRentPage(V){
+  var rent=V('rtR',4500),rg=V('rtG',3),price=V('rtP',1500000),down=V('rtD',375000),mr=V('rtM',4.5),yrs=V('rtY',15),appr=V('rtA',4);
+  var loan=price-down,mri=mr/100/12,n=yrs*12;
   var pmt=loan>0?loan*(mri*Math.pow(1+mri,n))/(Math.pow(1+mri,n)-1):0;
-  var totalMort=pmt*n+down;
-
-  var totalRent=0,curRent=rent;
-  for(var y=0;y<yrs;y++){totalRent+=curRent*12;curRent*=(1+rg/100)}
-
-  var futureVal=Math.round(price*Math.pow(1+appr/100,yrs));
-  var equity=futureVal;
-  var buyCost=Math.round(totalMort);
-  var buyNet=Math.round(buyCost-equity);
-  var rentTotal=Math.round(totalRent);
-  var diff=rentTotal-(buyNet>0?buyNet:0);
-  var buyWins=buyNet<rentTotal;
-
-  var buyLabel=buyNet<0?'Заработаешь на росте':'Чистый расход покупки';
-  var buyVal=buyNet<0?'+'+fm(Math.abs(buyNet))+' ₪':fm(buyNet)+' ₪';
-  var diffAbs=Math.abs(rentTotal-buyNet);
-
-  var h='<div class="res'+(buyWins?'':' bad')+'"><div class="res-lbl">'+(buyWins?'Покупать выгоднее':'Снимать выгоднее')+'</div>';
-  h+='<div class="res-num">на '+fm(diffAbs)+' ₪</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Аренда за '+yrs+' лет</div><div class="res-item-val">'+fm(rentTotal)+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">'+buyLabel+'</div><div class="res-item-val">'+buyVal+'</div></div></div></div>';
-
-  h+='<div class="info-grid">';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Платёж/мес</div><div class="info-cell-val">'+fm(Math.round(pmt))+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Первый взнос</div><div class="info-cell-val">'+fm(down)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Всего за машканту</div><div class="info-cell-val">'+fm(Math.round(pmt*n))+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Стоимость через '+yrs+' лет</div><div class="info-cell-val">'+fm(futureVal)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Аренда в '+yrs+'-й год</div><div class="info-cell-val">'+fm(Math.round(rent*Math.pow(1+rg/100,yrs-1)))+' ₪/мес</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Разница платежа сейчас</div><div class="info-cell-val">'+fm(Math.round(Math.abs(pmt-rent)))+' ₪/мес</div></div>';
-  h+='</div>';
-
-  document.getElementById('rentRes').innerHTML=h;
-  document.querySelectorAll('#p-rent input[type=range]').forEach(ss);
+  var totalMort=pmt*n+down,totalRent=0,cR=rent;
+  for(var y=0;y<yrs;y++){totalRent+=cR*12;cR*=(1+rg/100)}
+  var futV=Math.round(price*Math.pow(1+appr/100,yrs));
+  var buyNet=Math.round(totalMort-futV);var rentT=Math.round(totalRent);
+  var buyWins=buyNet<rentT;
+  var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mRent')+'</div></div><div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Аренда/мес':'שכירות/חודש')+'</span><span class="f-val" id="rtRV" onclick="ed(this,\'rtR\')">'+fm(rent)+' ₪</span></div><input type="range" id="rtR" min="2000" max="15000" step="100" value="'+rent+'" oninput="renderCalc(\'rent\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Рост аренды/год':'עליית שכ"ד/שנה')+'</span><span class="f-val" id="rtGV" onclick="ed(this,\'rtG\')">'+rg+'%</span></div><input type="range" id="rtG" min="0" max="10" step="0.5" value="'+rg+'" oninput="renderCalc(\'rent\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Цена квартиры':'מחיר דירה')+'</span><span class="f-val" id="rtPV" onclick="ed(this,\'rtP\')">'+fm(price)+' ₪</span></div><input type="range" id="rtP" min="500000" max="5000000" step="50000" value="'+price+'" oninput="renderCalc(\'rent\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Первый взнос':'הון עצמי')+'</span><span class="f-val" id="rtDV" onclick="ed(this,\'rtD\')">'+fm(down)+' ₪</span></div><input type="range" id="rtD" min="0" max="2000000" step="25000" value="'+down+'" oninput="renderCalc(\'rent\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Ставка':'ריבית')+'</span><span class="f-val" id="rtMV" onclick="ed(this,\'rtM\')">'+mr+'%</span></div><input type="range" id="rtM" min="1" max="10" step="0.1" value="'+mr+'" oninput="renderCalc(\'rent\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Горизонт (лет)':'תקופה (שנים)')+'</span><span class="f-val" id="rtYV" onclick="ed(this,\'rtY\')">'+yrs+'</span></div><input type="range" id="rtY" min="5" max="30" step="1" value="'+yrs+'" oninput="renderCalc(\'rent\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Рост цены жилья/год':'עליית מחיר/שנה')+'</span><span class="f-val" id="rtAV" onclick="ed(this,\'rtA\')">'+appr+'%</span></div><input type="range" id="rtA" min="0" max="10" step="0.5" value="'+appr+'" oninput="renderCalc(\'rent\')"></div></div>';
+  var lbl=buyWins?(L==='ru'?'Покупать выгоднее':'לקנות משתלם יותר'):(L==='ru'?'Снимать выгоднее':'לשכור משתלם יותר');
+  h+='<div class="res'+(buyWins?'':' bad')+'"><div class="res-lbl">'+lbl+'</div><div class="res-num">'+(L==='ru'?'на ':'ב-')+fm(Math.abs(rentT-buyNet))+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Аренда за '+yrs+' лет':'שכירות ב-'+yrs+' שנים')+'</div><div class="res-item-val">'+fm(rentT)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Платёж/мес':'תשלום/חודש')+'</div><div class="res-item-val">'+fm(Math.round(pmt))+' ₪</div></div></div></div>';
+  return h;
 }
 
-/* ── CAR COST ── */
-function uCar(){
-  var val=+document.getElementById('caV').value;
-  var fuel=+document.getElementById('caF').value;
-  var ins=+document.getElementById('caI').value;
-  var test=+document.getElementById('caTt').value;
-  var park=+document.getElementById('caP').value;
-  var depr=+document.getElementById('caD').value;
-  document.getElementById('caVV').textContent=fm(val)+' ₪';
-  document.getElementById('caFV').textContent=fm(fuel)+' ₪';
-  document.getElementById('caIV').textContent=fm(ins)+' ₪';
-  document.getElementById('caTtV').textContent=fm(test)+' ₪';
-  document.getElementById('caPV').textContent=fm(park)+' ₪';
-  document.getElementById('caDV').textContent=depr+'%';
-
-  var deprM=Math.round(val*depr/100/12);
-  var insM=Math.round(ins/12);
-  var testM=Math.round(test/12);
-  var total=fuel+insM+testM+park+deprM;
-  var yearly=total*12;
-
-  var h='<div class="res"><div class="res-lbl">реальная стоимость в месяц</div>';
-  h+='<div class="res-num">'+fm(total)+' ₪</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">В год</div><div class="res-item-val">'+fm(yearly)+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">За 5 лет</div><div class="res-item-val">'+fm(yearly*5)+' ₪</div></div></div></div>';
-
-  h+='<div class="info-grid">';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Износ/мес</div><div class="info-cell-val">'+fm(deprM)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Бензин/мес</div><div class="info-cell-val">'+fm(fuel)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Страховка/мес</div><div class="info-cell-val">'+fm(insM)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Тест+ТО/мес</div><div class="info-cell-val">'+fm(testM)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Парковка/мес</div><div class="info-cell-val">'+fm(park)+' ₪</div></div>';
-  var invest10=Math.round(total*12*((Math.pow(1.07,10)-1)/0.07));
-  h+='<div class="info-cell"><div class="info-cell-lbl">Инвестируя это за 10 лет</div><div class="info-cell-val">'+fm(invest10)+' ₪</div></div>';
-  h+='</div>';
-
-  document.getElementById('carRes').innerHTML=h;
-  document.querySelectorAll('#p-car input[type=range]').forEach(ss);
+/* ── CAR ── */
+function renderCarPage(V){
+  var val=V('caV',120000),fuel=V('caF',800),ins=V('caI',4000),tst=V('caTt',2800),park=V('caP',300),depr=V('caD',12);
+  var dM=Math.round(val*depr/100/12),iM=Math.round(ins/12),tM=Math.round(tst/12);var tot=fuel+iM+tM+park+dM;
+  var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mCar')+'</div></div><div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Стоимость машины':'מחיר רכב')+'</span><span class="f-val" id="caVV" onclick="ed(this,\'caV\')">'+fm(val)+' ₪</span></div><input type="range" id="caV" min="20000" max="500000" step="5000" value="'+val+'" oninput="renderCalc(\'car\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Бензин/мес':'דלק/חודש')+'</span><span class="f-val" id="caFV" onclick="ed(this,\'caF\')">'+fm(fuel)+' ₪</span></div><input type="range" id="caF" min="0" max="3000" step="50" value="'+fuel+'" oninput="renderCalc(\'car\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Страховка/год':'ביטוח/שנה')+'</span><span class="f-val" id="caIV" onclick="ed(this,\'caI\')">'+fm(ins)+' ₪</span></div><input type="range" id="caI" min="1000" max="15000" step="500" value="'+ins+'" oninput="renderCalc(\'car\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Тест+ТО/год':'טסט+טיפול/שנה')+'</span><span class="f-val" id="caTtV" onclick="ed(this,\'caTt\')">'+fm(tst)+' ₪</span></div><input type="range" id="caTt" min="500" max="8000" step="100" value="'+tst+'" oninput="renderCalc(\'car\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Парковка/мес':'חניה/חודש')+'</span><span class="f-val" id="caPV" onclick="ed(this,\'caP\')">'+fm(park)+' ₪</span></div><input type="range" id="caP" min="0" max="1500" step="50" value="'+park+'" oninput="renderCalc(\'car\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Износ/год':'פחת/שנה')+'</span><span class="f-val" id="caDV" onclick="ed(this,\'caD\')">'+depr+'%</span></div><input type="range" id="caD" min="5" max="25" step="1" value="'+depr+'" oninput="renderCalc(\'car\')"></div></div>';
+  h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'реальная стоимость в месяц':'עלות חודשית אמיתית')+'</div><div class="res-num">'+fm(tot)+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'В год':'בשנה')+'</div><div class="res-item-val">'+fm(tot*12)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'За 5 лет':'ב-5 שנים')+'</div><div class="res-item-val">'+fm(tot*60)+' ₪</div></div></div></div>';
+  return h;
 }
 
-/* ── OLIM BENEFITS ── */
-var olimType=0;
-function olimT(t){
-  olimType=t;
-  var bs=document.querySelectorAll('#olimFam button');
-  bs.forEach(function(b,i){b.classList.toggle('on',i===t)});
-  document.getElementById('olimKidsF').style.display=t===2?'block':'none';
-  uOlim();
-}
-function uOlim(){
-  var sal=+document.getElementById('olS').value;
-  var kids=olimType===2?+document.getElementById('olK').value:0;
-  document.getElementById('olSV').textContent=fm(sal)+' ₪';
-  if(olimType===2)document.getElementById('olKV').textContent=kids;
-
-  var firstPay,monthlyPay;
-  if(olimType===0){firstPay=2800;monthlyPay=2700}
-  else if(olimType===1){firstPay=5600;monthlyPay=4400}
-  else{firstPay=5600+1250*kids;monthlyPay=4400+700*kids}
-  var totalKlita=firstPay+monthlyPay*6;
-
-  var extraPoints;
-  var taxSave18=0,taxSave12=0,taxSave12b=0;
-  extraPoints=olimType===0?3:olimType===1?4.5:4.5;
-  taxSave18=Math.round(extraPoints*242);
-  taxSave12=Math.round((extraPoints-1)*242);
-  taxSave12b=Math.round(1*242);
-  var totalTaxSave=(taxSave18*18+taxSave12*12+taxSave12b*12);
-
-  var rentHelp=olimType===0?700:olimType===1?1000:1000+200*kids;
-
-  var h='<div class="res"><div class="res-lbl">саль клита (корзина абсорбции)</div>';
-  h+='<div class="res-num">'+fm(totalKlita)+' ₪</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Первая выплата</div><div class="res-item-val">'+fm(firstPay)+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">6 платежей по</div><div class="res-item-val">'+fm(monthlyPay)+' ₪</div></div></div></div>';
-
-  h+='<div class="section-title">Налоговые льготы</div>';
-  h+='<div class="info-grid">';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Первые 18 мес.</div><div class="info-cell-val">+'+fm(taxSave18)+' ₪/мес</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Месяцы 19-30</div><div class="info-cell-val">+'+fm(taxSave12)+' ₪/мес</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Месяцы 31-42</div><div class="info-cell-val">+'+fm(taxSave12b)+' ₪/мес</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Итого экономия</div><div class="info-cell-val">'+fm(totalTaxSave)+' ₪</div></div>';
-  h+='</div>';
-
-  h+='<div class="section-title">Другие льготы</div>';
-  h+='<div class="stat-row"><span class="stat-lbl">Помощь с арендой</span><span class="stat-val">~'+fm(rentHelp)+' ₪/мес</span></div>';
-  h+='<div class="stat-row"><span class="stat-lbl">Доход из-за рубежа</span><span class="stat-val">0% налог 10 лет</span></div>';
-  h+='<div class="stat-row"><span class="stat-lbl">Ульпан</span><span class="stat-val">бесплатно</span></div>';
-  h+='<div class="stat-row"><span class="stat-lbl">Таможенные льготы</span><span class="stat-val">1 год</span></div>';
-  h+='<div class="stat-row"><span class="stat-lbl">Скидка на арнону</span><span class="stat-val">до 90% · 1 год</span></div>';
-
-  h+='<div style="padding:16px;font-size:12px;color:var(--gr);line-height:1.5">Суммы приблизительные, 2024-2025. Точные данные: Министерство алии и абсорбции.</div>';
-
-  document.getElementById('olimRes').innerHTML=h;
-  document.querySelectorAll('#p-olim input[type=range]').forEach(ss);
+/* ── OLIM ── */
+function renderOlimPage(V){
+  var sal=V('olS',12000),kids=V('olK',2);
+  var fp,mp;
+  if(olimType===0){fp=2800;mp=2700}else if(olimType===1){fp=5600;mp=4400}else{fp=5600+1250*kids;mp=4400+700*kids}
+  var totalK=fp+mp*6;var ep=olimType===0?3:4.5;var ts18=Math.round(ep*242),ts12=Math.round((ep-1)*242),ts12b=242;
+  var h='<div class="ph"><div class="ph-sub">'+t('ref')+'</div><div class="ph-title">'+t('mOlim')+'</div></div>';
+  h+='<div class="tog" id="olimFam"><button '+(olimType===0?'class="on"':'')+' onclick="olimType=0;renderCalc(\'olim\')">'+t('single')+'</button><button '+(olimType===1?'class="on"':'')+' onclick="olimType=1;renderCalc(\'olim\')">'+t('couple')+'</button><button '+(olimType===2?'class="on"':'')+' onclick="olimType=2;renderCalc(\'olim\')">'+(L==='ru'?'С детьми':'עם ילדים')+'</button></div>';
+  if(olimType===2){h+='<div class="fields"><div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Кол-во детей':'מספר ילדים')+'</span><span class="f-val" id="olKV" onclick="ed(this,\'olK\')">'+kids+'</span></div><input type="range" id="olK" min="1" max="6" step="1" value="'+kids+'" oninput="renderCalc(\'olim\')"></div></div>';}
+  h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'саль клита':'סל קליטה')+'</div><div class="res-num">'+fm(totalK)+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Первая выплата':'תשלום ראשון')+'</div><div class="res-item-val">'+fm(fp)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'6 платежей по':'6 תשלומים של')+'</div><div class="res-item-val">'+fm(mp)+' ₪</div></div></div></div>';
+  h+='<div class="section-title">'+(L==='ru'?'Налоговые льготы':'הטבות מס')+'</div>';
+  h+='<div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Первые 18 мес.':'18 חודשים ראשונים')+'</div><div class="info-cell-val">+'+fm(ts18)+' ₪/'+(L==='ru'?'мес':'חודש')+'</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Месяцы 19-30':'חודשים 19-30')+'</div><div class="info-cell-val">+'+fm(ts12)+' ₪/'+(L==='ru'?'мес':'חודש')+'</div></div></div>';
+  h+='<div class="section-title">'+(L==='ru'?'Другие льготы':'הטבות נוספות')+'</div>';
+  h+='<div class="stat-row"><span class="stat-lbl">'+(L==='ru'?'Доход из-за рубежа':'הכנסות מחו"ל')+'</span><span class="stat-val">'+(L==='ru'?'0% налог 10 лет':'0% מס 10 שנים')+'</span></div>';
+  h+='<div class="stat-row"><span class="stat-lbl">'+(L==='ru'?'Ульпан':'אולפן')+'</span><span class="stat-val">'+(L==='ru'?'бесплатно':'חינם')+'</span></div>';
+  h+='<div class="stat-row"><span class="stat-lbl">'+(L==='ru'?'Скидка на арнону':'הנחה בארנונה')+'</span><span class="stat-val">'+(L==='ru'?'до 90% · 1 год':'עד 90% · שנה')+'</span></div>';
+  return h;
 }
 
 /* ── INFLATION ── */
-function uInfl(){
-  var S=+document.getElementById('ifS').value;
-  var Y=+document.getElementById('ifY').value;
-  var R=+document.getElementById('ifR').value;
-  document.getElementById('ifSV').textContent=fm(S)+' ₪';
-  document.getElementById('ifYV').textContent=Y;
-  document.getElementById('ifRV').textContent=R+'%';
-
-  var future=Math.round(S*Math.pow(1+R/100,Y));
-  var realVal=Math.round(S/Math.pow(1+R/100,Y));
-  var lost=S-realVal;
-  var lostPct=Math.round(lost/S*100);
-
-  var h='<div class="res"><div class="res-lbl">'+fm(S)+' ₪ через '+Y+' лет стоят как</div>';
-  h+='<div class="res-num">'+fm(realVal)+' ₪</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Потеря силы</div><div class="res-item-val">−'+fm(lost)+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">Обесценивание</div><div class="res-item-val">−'+lostPct+'%</div></div></div></div>';
-
-  h+='<div class="info-grid">';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Чтобы сохранить силу</div><div class="info-cell-val">нужно '+fm(future)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Рост цен за '+Y+' лет</div><div class="info-cell-val">×'+(future/S).toFixed(1)+'</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Хлеб (10₪ сегодня)</div><div class="info-cell-val">'+Math.round(10*Math.pow(1+R/100,Y))+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Аренда (5К сегодня)</div><div class="info-cell-val">'+fm(Math.round(5000*Math.pow(1+R/100,Y)))+' ₪</div></div>';
-  h+='</div>';
-
-  document.getElementById('inflRes').innerHTML=h;
-  document.querySelectorAll('#p-infl input[type=range]').forEach(ss);
+function renderInflPage(V){
+  var S=V('ifS',100000),Y=V('ifY',10),R=V('ifR',3);
+  var realVal=Math.round(S/Math.pow(1+R/100,Y));var lost=S-realVal;
+  var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mInfl')+'</div></div><div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Сумма':'סכום')+'</span><span class="f-val" id="ifSV" onclick="ed(this,\'ifS\')">'+fm(S)+' ₪</span></div><input type="range" id="ifS" min="1000" max="5000000" step="1000" value="'+S+'" oninput="renderCalc(\'infl\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Через лет':'עוד שנים')+'</span><span class="f-val" id="ifYV" onclick="ed(this,\'ifY\')">'+Y+'</span></div><input type="range" id="ifY" min="1" max="40" step="1" value="'+Y+'" oninput="renderCalc(\'infl\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Инфляция/год':'אינפלציה/שנה')+'</span><span class="f-val" id="ifRV" onclick="ed(this,\'ifR\')">'+R+'%</span></div><input type="range" id="ifR" min="1" max="15" step="0.5" value="'+R+'" oninput="renderCalc(\'infl\')"></div></div>';
+  h+='<div class="res"><div class="res-lbl">'+fm(S)+' ₪ '+(L==='ru'?'через '+Y+' лет стоят как':'עוד '+Y+' שנים שווים')+'</div><div class="res-num">'+fm(realVal)+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Потеря':'אובדן')+'</div><div class="res-item-val">−'+fm(lost)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Обесценивание':'פיחות')+'</div><div class="res-item-val">−'+Math.round(lost/S*100)+'%</div></div></div></div>';
+  return h;
 }
 
-/* ── SAVINGS GOAL ── */
-function uGoal(){
-  var T=+document.getElementById('glT').value;
-  var Y=+document.getElementById('glY').value;
-  var P=+document.getElementById('glP').value;
-  var R=+document.getElementById('glR').value;
-  document.getElementById('glTV').textContent=fm(T)+' ₪';
-  document.getElementById('glYV').textContent=Y;
-  document.getElementById('glPV').textContent=fm(P)+' ₪';
-  document.getElementById('glRV').textContent=R+'%';
-
-  var r=R/100;
-  var pvGrown=P*Math.pow(1+r,Y);
-  var need=Math.max(0,T-pvGrown);
-  var monthly=0;
-  if(r>0){monthly=need*r/((Math.pow(1+r,Y)-1))/12}
-  else{monthly=need/(Y*12)}
-  monthly=Math.round(monthly);
-
-  var noInvest=Math.round(Math.max(0,T-P)/(Y*12));
-  var totalPut=Math.round(P+monthly*Y*12);
-  var earnedOnInvest=Math.round(T-totalPut);
-
-  var h='<div class="res"><div class="res-lbl">нужно откладывать</div>';
-  h+='<div class="res-num">'+fm(monthly)+' ₪/мес</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Без инвестиций</div><div class="res-item-val">'+fm(noInvest)+' ₪/мес</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">Экономия на %</div><div class="res-item-val">'+fm(noInvest-monthly)+' ₪/мес</div></div></div></div>';
-
-  h+='<div class="info-grid">';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Цель</div><div class="info-cell-val">'+fm(T)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Начальные вырастут до</div><div class="info-cell-val">'+fm(Math.round(pvGrown))+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Вложишь всего</div><div class="info-cell-val">'+fm(totalPut)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Заработает рынок</div><div class="info-cell-val">'+fm(Math.max(0,earnedOnInvest))+' ₪</div></div>';
-  h+='</div>';
-
-  document.getElementById('goalRes').innerHTML=h;
-  document.querySelectorAll('#p-goal input[type=range]').forEach(ss);
+/* ── GOAL ── */
+function renderGoalPage(V){
+  var T_=V('glT',500000),Y=V('glY',5),P=V('glP',50000),R=V('glR',7);
+  var r=R/100;var pvG=P*Math.pow(1+r,Y);var need=Math.max(0,T_-pvG);
+  var mon=r>0?Math.round(need*r/((Math.pow(1+r,Y)-1))/12):Math.round(need/(Y*12));
+  var noInv=Math.round(Math.max(0,T_-P)/(Y*12));
+  var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mGoal')+'</div></div><div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Хочу накопить':'יעד')+'</span><span class="f-val" id="glTV" onclick="ed(this,\'glT\')">'+fm(T_)+' ₪</span></div><input type="range" id="glT" min="10000" max="10000000" step="10000" value="'+T_+'" oninput="renderCalc(\'goal\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'За лет':'תוך שנים')+'</span><span class="f-val" id="glYV" onclick="ed(this,\'glY\')">'+Y+'</span></div><input type="range" id="glY" min="1" max="30" step="1" value="'+Y+'" oninput="renderCalc(\'goal\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Уже есть':'יש כרגע')+'</span><span class="f-val" id="glPV" onclick="ed(this,\'glP\')">'+fm(P)+' ₪</span></div><input type="range" id="glP" min="0" max="5000000" step="10000" value="'+P+'" oninput="renderCalc(\'goal\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Доходность/год':'תשואה/שנה')+'</span><span class="f-val" id="glRV" onclick="ed(this,\'glR\')">'+R+'%</span></div><input type="range" id="glR" min="0" max="15" step="0.5" value="'+R+'" oninput="renderCalc(\'goal\')"></div></div>';
+  h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'нужно откладывать':'צריך לחסוך')+'</div><div class="res-num">'+fm(mon)+' ₪/'+(L==='ru'?'мес':'חודש')+'</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Без инвестиций':'ללא השקעה')+'</div><div class="res-item-val">'+fm(noInv)+' ₪/'+(L==='ru'?'мес':'חודש')+'</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Экономия':'חיסכון')+'</div><div class="res-item-val">'+fm(noInv-mon)+' ₪/'+(L==='ru'?'мес':'חודש')+'</div></div></div></div>';
+  return h;
 }
 
-/* ── OSEK MURSHE vs EMPLOYEE ── */
-function uOsek(){
-  var gross=+document.getElementById('okG').value;
-  var acct=+document.getElementById('okA').value;
-  var bizExp=+document.getElementById('okE').value;
-  document.getElementById('okGV').textContent=fm(gross)+' ₪';
-  document.getElementById('okAV').textContent=fm(acct)+' ₪';
-  document.getElementById('okEV').textContent=fm(bizExp)+' ₪';
-
-  var maam=Math.round(gross*0.17/1.17);
-  var afterMaam=gross-maam;
-  var taxable=afterMaam-acct-bizExp;
-
-  var annual=taxable*12;
-  var brackets=[[81480,.1],[116760,.14],[187440,.2],[260520,.31],[542160,.35],[698280,.47],[Infinity,.5]];
-  var tax=0,prev=0;
-  for(var i=0;i<brackets.length;i++){
-    var cap=brackets[i][0],rate=brackets[i][1];
-    if(annual<=cap){tax+=(annual-prev)*rate;break}
-    tax+=(cap-prev)*rate;prev=cap;
-  }
-  tax=Math.max(0,tax-2.25*242*12);
-  var taxM=Math.round(tax/12);
-
-  var blBase=Math.min(taxable,6331);
-  var blOver=Math.max(0,Math.min(taxable,44020)-6331);
-  var bl=Math.round(blBase*0.066+blOver*0.118);
-  var health=Math.round(blBase*0.031+blOver*0.05);
-
-  var osekNet=Math.round(taxable-taxM-bl-health);
-  var empEquiv=Math.round(osekNet/(1-0.06-0.004-0.031)*1/(1-0.12));
-  var empNetApprox=Math.round(osekNet*0.88);
-  var lostPension=Math.round(gross*0.065);
-  var lostHish=Math.round(gross*0.075);
-
-  var h='<div class="res"><div class="res-lbl">Осек: реально на руки</div>';
-  h+='<div class="res-num">'+fm(osekNet)+' ₪</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Выставил счёт</div><div class="res-item-val">'+fm(gross)+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">Получил</div><div class="res-item-val">'+Math.round(osekNet/gross*100)+'%</div></div></div></div>';
-
-  h+='<div class="info-grid">';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Маам (НДС 17%)</div><div class="info-cell-val">−'+fm(maam)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Мас ахнаса</div><div class="info-cell-val">−'+fm(taxM)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Битуах леуми</div><div class="info-cell-val">−'+fm(bl)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Мас бриют</div><div class="info-cell-val">−'+fm(health)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Бухгалтер + расходы</div><div class="info-cell-val">−'+fm(acct+bizExp)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Нет пенсии работод.</div><div class="info-cell-val">теряешь ~'+fm(lostPension)+' ₪</div></div>';
-  h+='</div>';
-
-  h+='<div class="section-title">Чтобы получить столько же наёмным</div>';
-  h+='<div style="margin:0 16px;padding:16px 0;font-size:14px">Нужна зарплата брутто: <b style="font-size:18px;color:var(--rd)">~'+fm(Math.round(osekNet/0.65))+' ₪</b>';
-  h+='<div style="font-size:12px;color:var(--gr);margin-top:4px">+ работодатель откладывает ~'+fm(lostPension+lostHish)+' ₪/мес в пенсию и иштальмут</div></div>';
-
-  document.getElementById('osekRes').innerHTML=h;
-  document.querySelectorAll('#p-osek input[type=range]').forEach(ss);
+/* ── OSEK ── */
+function renderOsekPage(V){
+  var gr=V('okG',20000),ac=V('okA',350),bz=V('okE',500);
+  var maam=Math.round(gr*.17/1.17);var aftM=gr-maam;var txbl=aftM-ac-bz;
+  var an=txbl*12;var bk=[[81480,.1],[116760,.14],[187440,.2],[260520,.31],[542160,.35],[698280,.47],[1/0,.5]];
+  var tx=0,pv=0;for(var i=0;i<bk.length;i++){var c=bk[i][0],r=bk[i][1];if(an<=c){tx+=(an-pv)*r;break}tx+=(c-pv)*r;pv=c}
+  tx=Math.max(0,tx-2.25*242*12);var txM=Math.round(tx/12);
+  var blB=Math.min(txbl,6331),blO=Math.max(0,Math.min(txbl,44020)-6331);
+  var bl=Math.round(blB*.066+blO*.118),hp=Math.round(blB*.031+blO*.05);
+  var net=Math.round(txbl-txM-bl-hp);
+  var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mOsek')+'</div></div><div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Доход осек/мес':'הכנסה/חודש')+'</span><span class="f-val" id="okGV" onclick="ed(this,\'okG\')">'+fm(gr)+' ₪</span></div><input type="range" id="okG" min="5000" max="80000" step="500" value="'+gr+'" oninput="renderCalc(\'osek\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Бухгалтер/мес':'רואה חשבון/חודש')+'</span><span class="f-val" id="okAV" onclick="ed(this,\'okA\')">'+fm(ac)+' ₪</span></div><input type="range" id="okA" min="0" max="1500" step="50" value="'+ac+'" oninput="renderCalc(\'osek\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Расходы бизнеса':'הוצאות עסק')+'</span><span class="f-val" id="okEV" onclick="ed(this,\'okE\')">'+fm(bz)+' ₪</span></div><input type="range" id="okE" min="0" max="5000" step="100" value="'+bz+'" oninput="renderCalc(\'osek\')"></div></div>';
+  h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'реально на руки':'נטו בפועל')+'</div><div class="res-num">'+fm(net)+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Выставил':'חשבונית')+'</div><div class="res-item-val">'+fm(gr)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Получил':'קיבלת')+'</div><div class="res-item-val">'+Math.round(net/gr*100)+'%</div></div></div></div>';
+  h+='<div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Маам (17%)':'מע"מ (17%)')+'</div><div class="info-cell-val">−'+fm(maam)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас ахнаса':'מס הכנסה')+'</div><div class="info-cell-val">−'+fm(txM)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Битуах леуми':'ביטוח לאומי')+'</div><div class="info-cell-val">−'+fm(bl)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас бриют':'מס בריאות')+'</div><div class="info-cell-val">−'+fm(hp)+' ₪</div></div></div>';
+  h+='<div style="margin:16px;padding:14px 0;border-top:1px solid var(--ln);font-size:14px">'+(L==='ru'?'Как наёмный нужно зарабатывать':'כשכיר צריך להרוויח')+': <b style="color:var(--rd)">~'+fm(Math.round(net/.65))+' ₪ '+(L==='ru'?'брутто':'ברוטו')+'</b></div>';
+  return h;
 }
 
 /* ── PITZUIM ── */
-function uPitz(){
-  var sal=+document.getElementById('pzS').value;
-  var yrs=+document.getElementById('pzY').value;
-  var mos=+document.getElementById('pzM').value;
-  document.getElementById('pzSV').textContent=fm(sal)+' ₪';
-  document.getElementById('pzYV').textContent=yrs;
-  document.getElementById('pzMV').textContent=mos;
-
-  var total=Math.round(sal*(yrs+mos/12));
-  var ceiling=13310;
-  var exempt=Math.round(ceiling*(yrs+mos/12));
-  var taxable=Math.max(0,total-exempt);
-
-  var h='<div class="res"><div class="res-lbl">компенсация при увольнении</div>';
-  h+='<div class="res-num">'+fm(total)+' ₪</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Стаж</div><div class="res-item-val">'+yrs+' лет '+(mos>0?mos+' мес.':'')+'</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">Последняя ЗП</div><div class="res-item-val">'+fm(sal)+' ₪</div></div></div></div>';
-
-  h+='<div class="info-grid">';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Потолок без налога</div><div class="info-cell-val">'+fm(exempt)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Облагается налогом</div><div class="info-cell-val">'+fm(taxable)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Формула</div><div class="info-cell-val">ЗП × стаж</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Потолок/год (2024)</div><div class="info-cell-val">'+fm(ceiling)+' ₪</div></div>';
-  h+='</div>';
-
-  document.getElementById('pitzRes').innerHTML=h;
-  document.querySelectorAll('#p-pitz input[type=range]').forEach(ss);
+function renderPitzPage(V){
+  var sal=V('pzS',12000),yrs=V('pzY',3),mos=V('pzM',0);
+  var tot=Math.round(sal*(yrs+mos/12));var ceil=13310;var exm=Math.round(ceil*(yrs+mos/12));var txbl=Math.max(0,tot-exm);
+  var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mPitz')+'</div></div><div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Последняя ЗП':'משכורת אחרונה')+'</span><span class="f-val" id="pzSV" onclick="ed(this,\'pzS\')">'+fm(sal)+' ₪</span></div><input type="range" id="pzS" min="5000" max="60000" step="500" value="'+sal+'" oninput="renderCalc(\'pitz\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Лет работы':'שנות עבודה')+'</span><span class="f-val" id="pzYV" onclick="ed(this,\'pzY\')">'+yrs+'</span></div><input type="range" id="pzY" min="1" max="30" step="1" value="'+yrs+'" oninput="renderCalc(\'pitz\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Доп. месяцев':'חודשים נוספים')+'</span><span class="f-val" id="pzMV" onclick="ed(this,\'pzM\')">'+mos+'</span></div><input type="range" id="pzM" min="0" max="11" step="1" value="'+mos+'" oninput="renderCalc(\'pitz\')"></div></div>';
+  h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'компенсация':'פיצויים')+'</div><div class="res-num">'+fm(tot)+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Без налога':'פטור ממס')+'</div><div class="res-item-val">'+fm(exm)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Облагается':'חייב במס')+'</div><div class="res-item-val">'+fm(txbl)+' ₪</div></div></div></div>';
+  return h;
 }
 
 /* ── HISHTALMUT ── */
-function uHish(){
-  var bal=+document.getElementById('hiC').value;
-  var mon=+document.getElementById('hiM').value;
-  var r=+document.getElementById('hiR').value/100;
-  var wait=+document.getElementById('hiW').value;
-  document.getElementById('hiCV').textContent=fm(bal)+' ₪';
-  document.getElementById('hiMV').textContent=fm(mon)+' ₪';
-  document.getElementById('hiRV').textContent=Math.round(r*100)+'%';
-  document.getElementById('hiWV').textContent=wait;
-
-  var withdrawNow=bal;
-  var futBal=bal;
-  for(var y=0;y<wait;y++){futBal=(futBal+mon*12)*(1+r)}
-  futBal=Math.round(futBal);
-  var newContrib=Math.round(mon*12*wait);
-  var diff=futBal-withdrawNow-newContrib;
-
-  var h='<div class="res"><div class="res-lbl">забрать сейчас</div>';
-  h+='<div class="res-num">'+fm(withdrawNow)+' ₪</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Получишь на руки</div><div class="res-item-val">'+fm(withdrawNow)+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">0% налог</div><div class="res-item-val">после 6 лет</div></div></div></div>';
-
-  h+='<div class="res" style="background:var(--rd)"><div class="res-lbl" style="color:rgba(255,255,255,.7)">оставить ещё на '+wait+' лет</div>';
-  h+='<div class="res-num">'+fm(futBal)+' ₪</div><div class="res-line" style="background:var(--bg)"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl" style="color:rgba(255,255,255,.5)">Заработает рынок</div><div class="res-item-val">+'+fm(diff)+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl" style="color:rgba(255,255,255,.5)">Новые отчисления</div><div class="res-item-val">+'+fm(newContrib)+' ₪</div></div></div></div>';
-
-  h+='<div class="info-grid">';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Разница</div><div class="info-cell-val">+'+fm(futBal-withdrawNow)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Из них от рынка</div><div class="info-cell-val">+'+fm(diff)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Рост баланса</div><div class="info-cell-val">×'+(futBal/Math.max(withdrawNow,1)).toFixed(1)+'</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">Налог при снятии</div><div class="info-cell-val">0%</div></div>';
-  h+='</div>';
-
-  document.getElementById('hishRes').innerHTML=h;
-  document.querySelectorAll('#p-hish input[type=range]').forEach(ss);
+function renderHishPage(V){
+  var bal=V('hiC',80000),mon=V('hiM',1570),r=V('hiR',7)/100,wait=V('hiW',6);
+  var fut=bal;for(var y=0;y<wait;y++){fut=(fut+mon*12)*(1+r)}fut=Math.round(fut);
+  var nc=Math.round(mon*12*wait);var diff=fut-bal-nc;
+  var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mHish')+'</div></div><div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Баланс сейчас':'יתרה נוכחית')+'</span><span class="f-val" id="hiCV" onclick="ed(this,\'hiC\')">'+fm(bal)+' ₪</span></div><input type="range" id="hiC" min="5000" max="500000" step="5000" value="'+bal+'" oninput="renderCalc(\'hish\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Отчисление/мес':'הפקדה/חודש')+'</span><span class="f-val" id="hiMV" onclick="ed(this,\'hiM\')">'+fm(mon)+' ₪</span></div><input type="range" id="hiM" min="0" max="3000" step="10" value="'+mon+'" oninput="renderCalc(\'hish\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Доходность/год':'תשואה/שנה')+'</span><span class="f-val" id="hiRV" onclick="ed(this,\'hiR\')">'+Math.round(r*100)+'%</span></div><input type="range" id="hiR" min="1" max="15" step="0.5" value="'+Math.round(r*100)+'" oninput="renderCalc(\'hish\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Ждать ещё (лет)':'להמתין עוד (שנים)')+'</span><span class="f-val" id="hiWV" onclick="ed(this,\'hiW\')">'+wait+'</span></div><input type="range" id="hiW" min="6" max="30" step="6" value="'+wait+'" oninput="renderCalc(\'hish\')"><div class="f-note">'+(L==='ru'?'Цикл 6 лет · 0% налог':'מחזור 6 שנים · 0% מס')+'</div></div></div>';
+  h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'забрать сейчас':'למשוך עכשיו')+'</div><div class="res-num">'+fm(bal)+' ₪</div><div class="res-line"></div></div>';
+  h+='<div class="res" style="background:var(--rd)"><div class="res-lbl" style="color:rgba(255,255,255,.7)">'+(L==='ru'?'оставить ещё '+wait+' лет':'להשאיר עוד '+wait+' שנים')+'</div><div class="res-num">'+fm(fut)+' ₪</div><div class="res-line" style="background:var(--bg)"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl" style="color:rgba(255,255,255,.5)">'+(L==='ru'?'Заработает рынок':'רווח שוק')+'</div><div class="res-item-val">+'+fm(diff)+' ₪</div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl" style="color:rgba(255,255,255,.5)">'+(L==='ru'?'Новые отчисления':'הפקדות חדשות')+'</div><div class="res-item-val">+'+fm(nc)+' ₪</div></div></div></div>';
+  return h;
 }
 
-/* ── FINANCIAL HEALTH ── */
-function uHealth(){
-  var inc=+document.getElementById('fhI').value;
-  var house=+document.getElementById('fhH').value;
-  var debt=+document.getElementById('fhD').value;
-  var sav=+document.getElementById('fhS').value;
-  document.getElementById('fhIV').textContent=fm(inc)+' ₪';
-  document.getElementById('fhHV').textContent=fm(house)+' ₪';
-  document.getElementById('fhDV').textContent=fm(debt)+' ₪';
-  document.getElementById('fhSV').textContent=fm(sav)+' ₪';
-
-  var housePct=Math.round(house/inc*100);
-  var debtPct=Math.round((house+debt)/inc*100);
-  var savPct=Math.round(sav/inc*100);
-  var freeMoney=inc-house-debt-sav;
-  var freePct=Math.round(freeMoney/inc*100);
-
-  function grade(val,good,ok){return val<=good?'#4a8c5c':val<=ok?'#b8860b':'var(--rd)'}
-  var houseColor=grade(housePct,30,40);
-  var debtColor=grade(debtPct,40,50);
-  var savColor=savPct>=20?'#4a8c5c':savPct>=10?'#b8860b':'var(--rd)';
-
-  var score=0;
-  if(housePct<=30)score++;if(housePct<=25)score++;
-  if(debtPct<=40)score++;if(debtPct<=30)score++;
-  if(savPct>=20)score++;if(savPct>=30)score++;
-  var verdict=score>=5?'Отличное':'#4a8c5c';
-  if(score>=5){verdict='Отличное';var vc='#4a8c5c'}
-  else if(score>=3){verdict='Нормальное';var vc='#b8860b'}
-  else{verdict='Требует внимания';var vc='var(--rd)'}
-
-  var h='<div class="res"><div class="res-lbl">финансовое состояние</div>';
-  h+='<div class="res-num" style="font-size:24px">'+verdict+'</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Свободные деньги</div><div class="res-item-val">'+fm(freeMoney)+' ₪ ('+freePct+'%)</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">На жизнь/мес</div><div class="res-item-val">'+fm(freeMoney)+' ₪</div></div></div></div>';
-
+/* ── HEALTH ── */
+function renderHealthPage(V){
+  var inc=V('fhI',15000),house=V('fhH',4500),debt=V('fhD',0),sav=V('fhS',2000);
+  var hp=Math.round(house/inc*100),dp=Math.round((house+debt)/inc*100),sp=Math.round(sav/inc*100);
+  var free=inc-house-debt-sav;
+  function gr(v,g,o){return v<=g?'#4a8c5c':v<=o?'#b8860b':'var(--rd)'}
+  var sc=0;if(hp<=30)sc++;if(hp<=25)sc++;if(dp<=40)sc++;if(dp<=30)sc++;if(sp>=20)sc++;if(sp>=30)sc++;
+  var verd=sc>=5?(L==='ru'?'Отличное':'מצוין'):sc>=3?(L==='ru'?'Нормальное':'סביר'):(L==='ru'?'Требует внимания':'דורש תשומת לב');
+  var h='<div class="ph"><div class="ph-sub">'+(L==='ru'?'Проверка':'בדיקה')+'</div><div class="ph-title">'+t('mHealth')+'</div></div><div class="fields">';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('incNet')+'</span><span class="f-val" id="fhIV" onclick="ed(this,\'fhI\')">'+fm(inc)+' ₪</span></div><input type="range" id="fhI" min="5000" max="80000" step="500" value="'+inc+'" oninput="renderCalc(\'health\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Жильё':'דיור')+'</span><span class="f-val" id="fhHV" onclick="ed(this,\'fhH\')">'+fm(house)+' ₪</span></div><input type="range" id="fhH" min="0" max="20000" step="100" value="'+house+'" oninput="renderCalc(\'health\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Кредиты и долги':'הלוואות וחובות')+'</span><span class="f-val" id="fhDV" onclick="ed(this,\'fhD\')">'+fm(debt)+' ₪</span></div><input type="range" id="fhD" min="0" max="15000" step="100" value="'+debt+'" oninput="renderCalc(\'health\')"></div>';
+  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Откладываешь':'חוסך')+'</span><span class="f-val" id="fhSV" onclick="ed(this,\'fhS\')">'+fm(sav)+' ₪</span></div><input type="range" id="fhS" min="0" max="30000" step="100" value="'+sav+'" oninput="renderCalc(\'health\')"></div></div>';
+  h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'состояние':'מצב')+'</div><div class="res-num" style="font-size:24px">'+verd+'</div><div class="res-line"></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Свободные':'פנוי')+'</div><div class="res-item-val">'+fm(free)+' ₪</div></div><div class="res-item"></div></div></div>';
   h+='<div style="margin:16px">';
-
-  h+='<div style="padding:14px 0;border-bottom:1px solid var(--ln)">';
-  h+='<div style="display:flex;justify-content:space-between;align-items:center">';
-  h+='<span style="font-size:13px;color:var(--gr)">Жильё</span>';
-  h+='<span style="font-size:16px;font-weight:700;color:'+houseColor+'">'+housePct+'%</span></div>';
-  h+='<div style="height:4px;background:var(--ln);margin-top:6px"><div style="height:100%;width:'+Math.min(housePct,100)+'%;background:'+houseColor+'"></div></div>';
-  h+='<div style="font-size:11px;color:var(--gr);margin-top:4px">Норма: до 30%'+(housePct>30?' · <span style="color:var(--rd)">превышает на '+(housePct-30)+'%</span>':'')+'</div></div>';
-
-  h+='<div style="padding:14px 0;border-bottom:1px solid var(--ln)">';
-  h+='<div style="display:flex;justify-content:space-between;align-items:center">';
-  h+='<span style="font-size:13px;color:var(--gr)">Все долги (жильё + кредиты)</span>';
-  h+='<span style="font-size:16px;font-weight:700;color:'+debtColor+'">'+debtPct+'%</span></div>';
-  h+='<div style="height:4px;background:var(--ln);margin-top:6px"><div style="height:100%;width:'+Math.min(debtPct,100)+'%;background:'+debtColor+'"></div></div>';
-  h+='<div style="font-size:11px;color:var(--gr);margin-top:4px">Норма: до 40%'+(debtPct>40?' · <span style="color:var(--rd)">зона риска</span>':'')+'</div></div>';
-
-  h+='<div style="padding:14px 0">';
-  h+='<div style="display:flex;justify-content:space-between;align-items:center">';
-  h+='<span style="font-size:13px;color:var(--gr)">Норма сбережений</span>';
-  h+='<span style="font-size:16px;font-weight:700;color:'+savColor+'">'+savPct+'%</span></div>';
-  h+='<div style="height:4px;background:var(--ln);margin-top:6px"><div style="height:100%;width:'+Math.min(savPct,100)+'%;background:'+savColor+'"></div></div>';
-  h+='<div style="font-size:11px;color:var(--gr);margin-top:4px">Цель: от 20%'+(savPct<10?' · <span style="color:var(--rd)">от зарплаты до зарплаты</span>':'')+'</div></div>';
-
-  h+='</div>';
-
-  document.getElementById('healthRes').innerHTML=h;
-  document.querySelectorAll('#p-health input[type=range]').forEach(ss);
+  var bars=[[L==='ru'?'Жильё':'דיור',hp,gr(hp,30,40),'≤30%'],[L==='ru'?'Все долги':'סה"כ חובות',dp,gr(dp,40,50),'≤40%'],[L==='ru'?'Сбережения':'חיסכון',sp,sp>=20?'#4a8c5c':sp>=10?'#b8860b':'var(--rd)','≥20%']];
+  bars.forEach(function(b){
+    h+='<div style="padding:14px 0;border-bottom:1px solid var(--ln)"><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--gr)">'+b[0]+'</span><span style="font-size:16px;font-weight:700;color:'+b[2]+'">'+b[1]+'%</span></div>';
+    h+='<div style="height:4px;background:var(--ln);margin-top:6px"><div style="height:100%;width:'+Math.min(b[1],100)+'%;background:'+b[2]+'"></div></div>';
+    h+='<div style="font-size:11px;color:var(--gr);margin-top:4px">'+(L==='ru'?'Норма':'נורמה')+': '+b[3]+'</div></div>';
+  });
+  h+='</div>';return h;
 }
 
-/* ── CITY COMPARISON ── */
-var CITIES=[
-  {n:'Тель-Авив',r1:4800,r2:6500,r3:8500,arn:350,kid:3200,groc:110},
-  {n:'Иерусалим',r1:3200,r2:4500,r3:5800,arn:280,kid:2500,groc:100},
-  {n:'Хайфа',r1:2600,r2:3500,r3:4500,arn:220,kid:2200,groc:95},
-  {n:'Беэр-Шева',r1:2200,r2:3000,r3:3800,arn:180,kid:2000,groc:90},
-  {n:'Нетания',r1:3200,r2:4200,r3:5500,arn:260,kid:2600,groc:100},
-  {n:'Раанана',r1:4200,r2:5800,r3:7500,arn:320,kid:3000,groc:108},
-  {n:'Ришон ле-Цион',r1:3000,r2:4200,r3:5500,arn:250,kid:2600,groc:100},
-  {n:'Петах-Тиква',r1:2800,r2:3800,r3:5000,arn:240,kid:2400,groc:98},
-  {n:'Ашдод',r1:2500,r2:3400,r3:4200,arn:200,kid:2200,groc:92},
-  {n:'Герцлия',r1:4500,r2:6200,r3:8000,arn:340,kid:3100,groc:110}
-];
-var cityType=0;
-function cityT(t){
-  cityType=t;
-  var bs=document.querySelectorAll('#cityFam button');
-  bs.forEach(function(b,i){b.classList.toggle('on',i===t)});
-  renderCity();
-}
-function renderCity(){
-  var sorted=CITIES.map(function(c){
-    var rent=cityType===0?c.r1:cityType===1?c.r2:c.r3;
-    var kid=cityType===2?c.kid:0;
-    var grocM=Math.round(c.groc/100*(cityType===0?2500:cityType===1?4000:5000));
-    var total=rent+c.arn+kid+grocM;
-    return{n:c.n,rent:rent,arn:c.arn,kid:kid,groc:grocM,total:total};
-  }).sort(function(a,b){return a.total-b.total});
-
-  var cheapest=sorted[0].total;
-  var h='<div class="section-title">От дешёвого к дорогому</div>';
-
+/* ── CITY ── */
+var CITIES=[{n:['Тель-Авив','תל אביב'],r1:4800,r2:6500,r3:8500,arn:350,kid:3200,groc:110},{n:['Иерусалим','ירושלים'],r1:3200,r2:4500,r3:5800,arn:280,kid:2500,groc:100},{n:['Хайфа','חיפה'],r1:2600,r2:3500,r3:4500,arn:220,kid:2200,groc:95},{n:['Беэр-Шева','באר שבע'],r1:2200,r2:3000,r3:3800,arn:180,kid:2000,groc:90},{n:['Нетания','נתניה'],r1:3200,r2:4200,r3:5500,arn:260,kid:2600,groc:100},{n:['Раанана','רעננה'],r1:4200,r2:5800,r3:7500,arn:320,kid:3000,groc:108},{n:['Ришон','ראשון לציון'],r1:3000,r2:4200,r3:5500,arn:250,kid:2600,groc:100},{n:['Петах-Тиква','פתח תקווה'],r1:2800,r2:3800,r3:5000,arn:240,kid:2400,groc:98},{n:['Ашдод','אשדוד'],r1:2500,r2:3400,r3:4200,arn:200,kid:2200,groc:92},{n:['Герцлия','הרצליה'],r1:4500,r2:6200,r3:8000,arn:340,kid:3100,groc:110}];
+function renderCityPage(){
+  var h='<div class="ph"><div class="ph-sub">'+t('compare')+'</div><div class="ph-title">'+t('mCity')+'</div></div>';
+  h+='<div class="tog" id="cityFam"><button '+(cityType===0?'class="on"':'')+' onclick="cityType=0;renderCalc(\'city\')">'+t('single')+'</button><button '+(cityType===1?'class="on"':'')+' onclick="cityType=1;renderCalc(\'city\')">'+t('couple')+'</button><button '+(cityType===2?'class="on"':'')+' onclick="cityType=2;renderCalc(\'city\')">'+t('famKid')+'</button></div>';
+  var li=L==='ru'?0:1;
+  var sorted=CITIES.map(function(c){var r=cityType===0?c.r1:cityType===1?c.r2:c.r3;var k=cityType===2?c.kid:0;var g=Math.round(c.groc/100*(cityType===0?2500:cityType===1?4000:5000));return{n:c.n[li],rent:r,arn:c.arn,kid:k,groc:g,total:r+c.arn+k+g}}).sort(function(a,b){return a.total-b.total});
+  var cheap=sorted[0].total;
+  h+='<div class="section-title">'+(L==='ru'?'От дешёвого к дорогому':'מהזול ליקר')+'</div>';
   sorted.forEach(function(c,i){
-    var diff=c.total-cheapest;
-    var pct=Math.round(diff/cheapest*100);
-    h+='<div style="margin:0 16px;padding:16px 0;border-bottom:1px solid var(--ln)">';
-    h+='<div style="display:flex;justify-content:space-between;align-items:baseline">';
-    h+='<span style="font-size:15px;font-weight:600">'+c.n+'</span>';
-    h+='<span style="font-size:16px;font-weight:700;font-variant-numeric:tabular-nums">'+fm(c.total)+' ₪</span></div>';
-
-    if(i>0){h+='<div style="font-size:11px;color:var(--rd);margin-top:2px">+'+fm(diff)+' ₪/мес (+'+pct+'%) vs '+sorted[0].n+'</div>';}
-    else{h+='<div style="font-size:11px;color:#4a8c5c;margin-top:2px">Самый доступный</div>';}
-
-    h+='<div style="display:flex;gap:12px;margin-top:8px;font-size:12px;color:var(--gr)">';
-    h+='<span>Аренда: '+fm(c.rent)+'</span>';
-    h+='<span>Арнона: '+fm(c.arn)+'</span>';
-    if(cityType===2)h+='<span>Садик: '+fm(c.kid)+'</span>';
-    h+='<span>Еда: '+fm(c.groc)+'</span>';
+    var df=c.total-cheap;var pct=Math.round(df/cheap*100);
+    h+='<div style="margin:0 16px;padding:14px 0;border-bottom:1px solid var(--ln)"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:15px;font-weight:600">'+c.n+'</span><span style="font-size:16px;font-weight:700;direction:ltr">'+fm(c.total)+' ₪</span></div>';
+    if(i>0)h+='<div style="font-size:11px;color:var(--rd);margin-top:2px">+'+fm(df)+' (+'+pct+'%)</div>';
+    else h+='<div style="font-size:11px;color:#4a8c5c;margin-top:2px">'+(L==='ru'?'Самый доступный':'הזול ביותר')+'</div>';
+    h+='<div style="display:flex;gap:12px;margin-top:6px;font-size:12px;color:var(--gr);flex-wrap:wrap"><span>'+(L==='ru'?'Аренда':'שכ"ד')+': '+fm(c.rent)+'</span><span>'+(L==='ru'?'Арнона':'ארנונה')+': '+fm(c.arn)+'</span>';
+    if(cityType===2)h+='<span>'+(L==='ru'?'Садик':'גן')+': '+fm(c.kid)+'</span>';
     h+='</div></div>';
   });
-
-  document.getElementById('cityRes').innerHTML=h;
+  return h;
 }
+
+/* ── STATS ── */
+function renderStatsPage(){
+  var h='<div class="ph"><div class="ph-sub">'+t('ref')+'</div><div class="ph-title">'+t('mStats')+'</div></div>';
+  var rows=L==='ru'?[
+    ['Расходы',''],['Один человек','11,000 ₪'],['Семья','16,400 ₪'],['',''],
+    ['Зарплаты',''],['Средняя брутто','12,600 ₪'],['Медиана брутто','9,500 ₪'],['',''],
+    ['Отчисления',''],['Пенсия (работник+работод.)','18.5%'],['Керен Иштальмут','1,570 ₪/мес'],['Иштальмут: 0% налог','после 6 лет'],['',''],
+    ['Правило 4%',''],['Target одиночки','3,300,000 ₪'],['Target семьи','4,920,000 ₪'],['Средняя доходность','7%/год']
+  ]:[
+    ['הוצאות',''],['יחיד','11,000 ₪'],['משפחה','16,400 ₪'],['',''],
+    ['שכר',''],['ממוצע ברוטו','12,600 ₪'],['חציון ברוטו','9,500 ₪'],['',''],
+    ['הפרשות',''],['פנסיה (עובד+מעביד)','18.5%'],['קרן השתלמות','1,570 ₪/חודש'],['השתלמות: 0% מס','אחרי 6 שנים'],['',''],
+    ['כלל 4%',''],['יעד יחיד','3,300,000 ₪'],['יעד משפחה','4,920,000 ₪'],['תשואה ממוצעת','7%/שנה']
+  ];
+  rows.forEach(function(r){
+    if(!r[0]&&!r[1])return;
+    if(!r[1])h+='<div class="section-title">'+r[0]+'</div>';
+    else h+='<div class="stat-row"><span class="stat-lbl">'+r[0]+'</span><span class="stat-val">'+r[1]+'</span></div>';
+  });
+  h+='<div style="padding:16px;font-size:12px;color:var(--gr);line-height:1.5">'+(L==='ru'?'Источники: ЦСБ Израиля (למ"ס), Банк Израиля, S&P 500 / MSCI World.':'מקורות: הלמ"ס, בנק ישראל, S&P 500 / MSCI World.')+'</div>';
+  return h;
+}
+
+/* ── INIT ── */
+renderPage();
 </script>
 </body>
 </html>
