@@ -91,7 +91,7 @@ var T={ru:{
 back:'← назад',calc:'Калькулятор',ref:'Справка',compare:'Сравнение',calcs:'Калькуляторы',
 heroTitle:'Финансовые инструменты<br>для жизни в Израиле',
 tapNum:'Нажми на число — можно вбить вручную. Данные не сохраняются.',
-discl:'Расчёты приблизительные, не являются финансовой консультацией. Данные 2024-2025.',
+discl:'Расчёты приблизительные, не являются финансовой консультацией. Данные 2026.',
 footer:'FI Tools · Israel 2026 · Данные не сохраняются',
 inc:'Доход нетто',sav:'Накопления',exp:'Расходы/мес',yrs:'лет',mos:'мес.',
 toFI:'до финансовой независимости',need:'Нужно накопить',savMo:'Откладываешь/мес',savR:'Норма сбережений',
@@ -118,11 +118,13 @@ mCity:'Города',mCityD:'Сравнение стоимости жизни п
 mStats:'Средние по стране',mStatsD:'Расходы, зарплаты, отчисления',
 mNkd:'Некудот зикуй',mNkdD:'Сколько налоговых баллов тебе полагается',
 mMasR:'Мас рехиша',mMasRD:'Налог при покупке квартиры',
+mTlush:'Расшифровка тлуша',mTlushD:'Что значит каждая строчка в зарплатном листе',
+mAvt:'Пособие по безработице',mAvtD:'Сколько получишь от битуах леуми и на какой срок',
 },en:{
 back:'← back',calc:'Calculator',ref:'Reference',compare:'Compare',calcs:'Calculators',
 heroTitle:'Financial tools<br>for life in Israel',
 tapNum:'Tap any number to type manually. No data is stored.',
-discl:'Calculations are approximate and not financial advice. Data 2024-2025.',
+discl:'Calculations are approximate and not financial advice. Data 2026.',
 footer:'FI Tools · Israel 2026 · No data stored',
 inc:'Net income',sav:'Savings',exp:'Expenses/mo',yrs:'years',mos:'mo.',
 toFI:'to financial independence',need:'Target',savMo:'Saving/mo',savR:'Savings rate',
@@ -149,6 +151,8 @@ mCity:'Cities',mCityD:'Cost of living comparison by city',
 mStats:'National averages',mStatsD:'Expenses, salaries, deductions',
 mNkd:'Tax credit points',mNkdD:'How many nekudot zikuy you qualify for',
 mMasR:'Purchase tax',mMasRD:'Tax when buying an apartment',
+mTlush:'Payslip breakdown',mTlushD:'What every line on your payslip means',
+mAvt:'Unemployment benefits',mAvtD:'How much you get from Bituah Leumi and for how long',
 }};
 function t(k){return T[L][k]||T.ru[k]||k}
 function toggleLang(){L=L==='ru'?'en':'ru';document.getElementById('langBtn').textContent=L==='ru'?'EN':'RU';renderPage()}
@@ -156,7 +160,7 @@ function toggleLang(){L=L==='ru'?'en':'ru';document.getElementById('langBtn').te
 function fm(n){if(n==null||!isFinite(n))return'—';return Math.round(Number(n)).toLocaleString('he-IL')}
 function fy(v){if(!isFinite(v)||v<0)return t('unreach');var y=Math.floor(v),m=Math.round((v-y)*12);return y===0?m+' '+t('mos'):m>0?y+' '+t('yrs')+' '+m+' '+t('mos'):y+' '+t('yrs')}
 function ss(el){var mn=+el.min,mx=+el.max,v=+el.value;var p=((v-mn)/(mx-mn))*100;el.style.background='linear-gradient(to right,#2C2C2E '+p+'%,#D6D3CB '+p+'%)';el.style.height='2px';el.style.borderRadius='0'}
-function fmtV(sid,v){if(/^(txN|olK|pzM|wgH1|wgH2|wgH3|wgH4)$/.test(sid))return v;if(/^(mrY|cmY|rtY|ifY|glY|pzY|hiW|lsY|ppY)$/.test(sid))return v;if(/^(mrR|cmR|cmG|rtG|rtM|rtA|caD|ifR|glR|hiR|lsD|lsTx|ppR)$/.test(sid))return v+'%';return fm(v)+' ₪'}
+function fmtV(sid,v){if(/^(txN|olK|pzM|wgH1|wgH2|wgH3|wgH4|wgH5|wgH6|wgH7|avA|avYr)$/.test(sid))return v;if(/^(mrY|cmY|rtY|ifY|glY|pzY|hiW|lsY|ppY)$/.test(sid))return v;if(/^(mrR|cmR|cmG|rtG|rtM|rtA|caD|ifR|glR|hiR|lsD|lsTx|ppR)$/.test(sid))return v+'%';return fm(v)+' ₪'}
 
 function ed(span,sid){
   if(!/^[a-zA-Z0-9]+$/.test(sid))return;
@@ -183,8 +187,8 @@ function renderPage(){if(curPage==='home')renderHome();else renderCalc(curPage);
 function renderHome(){
   document.getElementById('barTitle').textContent='FI Tools';document.getElementById('barTitle').onclick=function(){};
   /* New order: tax, wage, osek, mort, rent, car, comp, goal, pitz, hish, infl, health, fi */
-  var items=[['tax','dark','₪'],['wage','red','⏱'],['car','out','○'],['leas','dark','⇋'],['mort','red','⌂'],['masR','out','⌂'],['rent','dark','⇔'],['prep','red','⚡'],['comp','out','%'],['goal','dark','⚑'],['hish','red','⏳'],['pitz','out','☐'],['osek','dark','✎'],['infl','red','↓'],['health','out','♥'],['fi','dark','FI']];
-  var refs=[['olim','dark','✚'],['nkd','red','✓'],['city','dark','⚶'],['stats','out','i']];
+  var items=[['tax','dark','₪'],['wage','red','⏱'],['car','out','○'],['leas','dark','⇋'],['mort','red','⌂'],['masR','out','⌂'],['rent','dark','⇔'],['prep','red','⚡'],['comp','out','%'],['goal','dark','⚑'],['hish','red','⏳'],['pitz','out','☐'],['avt','dark','☂'],['osek','red','✎'],['infl','out','↓'],['health','dark','♥'],['fi','red','FI']];
+  var refs=[['olim','dark','✚'],['nkd','red','✓'],['tlush','out','☰'],['city','dark','⚶'],['stats','out','i']];
   var h='<div class="ph"><div class="ph-sub">Israel 2026</div><div class="ph-title">'+t('heroTitle')+'</div></div>';
   h+='<div style="padding:12px 16px;font-size:13px;color:var(--gr);line-height:1.5;border-bottom:1px solid var(--ln)">'+t('tapNum')+'</div><div class="tools"><div class="t-sect">'+t('calcs')+'</div>';
   items.forEach(function(x){h+='<div class="t-item" onclick="go(\''+x[0]+'\')"><div class="t-icon '+x[1]+'">'+x[2]+'</div><div><div class="t-name">'+t('m'+x[0].charAt(0).toUpperCase()+x[0].slice(1))+'</div><div class="t-desc">'+t('m'+x[0].charAt(0).toUpperCase()+x[0].slice(1)+'D')+'</div></div><span class="t-arrow">→</span></div>'});
@@ -201,12 +205,12 @@ function go(p){
 /* ── Render page (full, only on navigation) ── */
 function renderCalc(p){
   var el=document.getElementById('app');
-  var pages={fi:pgFI,tax:pgTax,wage:pgWage,mort:pgMort,prep:pgPrep,masR:pgMasR,comp:pgComp,rent:pgRent,car:pgCar,leas:pgLeas,olim:pgOlim,infl:pgInfl,goal:pgGoal,osek:pgOsek,pitz:pgPitz,hish:pgHish,health:pgHealth,city:pgCity,stats:pgStats,nkd:pgNkd};
+  var pages={fi:pgFI,tax:pgTax,wage:pgWage,mort:pgMort,prep:pgPrep,masR:pgMasR,comp:pgComp,rent:pgRent,car:pgCar,leas:pgLeas,olim:pgOlim,infl:pgInfl,goal:pgGoal,osek:pgOsek,pitz:pgPitz,avt:pgAvt,hish:pgHish,health:pgHealth,city:pgCity,stats:pgStats,nkd:pgNkd,tlush:pgTlush};
   el.innerHTML=(pages[p]||function(){return''})();
   setTimeout(function(){document.querySelectorAll('input[type=range]').forEach(ss)},10);
 }
 function calcRes(p){
-  var fns={fi:resFI,tax:resTax,wage:resWage,mort:resMort,prep:resPrep,masR:resMasR,comp:resComp,rent:resRent,car:resCar,leas:resLeas,infl:resInfl,goal:resGoal,osek:resOsek,pitz:resPitz,hish:resHish,health:resHealth};
+  var fns={fi:resFI,tax:resTax,wage:resWage,mort:resMort,prep:resPrep,masR:resMasR,comp:resComp,rent:resRent,car:resCar,leas:resLeas,infl:resInfl,goal:resGoal,osek:resOsek,pitz:resPitz,avt:resAvt,hish:resHish,health:resHealth};
   return(fns[p]||function(){return''})();
 }
 
@@ -223,15 +227,15 @@ function FN(id,lbl,def,pg,note){
 }
 
 /* ══════ TAX ══════ */
-function resTax(){var b=V('txB',15000),n=V('txN',2.25);var an=b*12,bk=[[81480,.1],[116760,.14],[187440,.2],[260520,.31],[542160,.35],[698280,.47],[1/0,.5]],tx=0,pv=0;for(var i=0;i<bk.length;i++){if(an<=bk[i][0]){tx+=(an-pv)*bk[i][1];break}tx+=(bk[i][0]-pv)*bk[i][1];pv=bk[i][0]}tx=Math.max(0,tx-n*242*12);var txM=Math.round(tx/12);var blB=Math.min(b,6331),blO=Math.max(0,Math.min(b,44020)-6331);var bl=Math.round(blB*.004+blO*.07),hp=Math.round(blB*.031+blO*.05),pen=Math.round(b*.06);var net=Math.round(b-txM-bl-hp-pen);var h='<div class="res"><div class="res-lbl">'+(L==='ru'?'зарплата нетто':'net salary')+'</div><div class="res-num">'+fm(net)+' ₪</div><div class="res-line"></div><div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'На руки':'Take home')+'</div><div class="res-item-val">'+Math.round(net/b*100)+'%</div></div><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'В год':'Annual')+'</div><div class="res-item-val">'+fm(net*12)+' ₪</div></div></div></div>';h+='<div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас ахнаса':'Income tax')+'</div><div class="info-cell-val">−'+fm(txM)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Битуах леуми':'Nat. insurance')+'</div><div class="info-cell-val">−'+fm(bl)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас бриют':'Health tax')+'</div><div class="info-cell-val">−'+fm(hp)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Пенсия 6%':'Pension 6%')+'</div><div class="info-cell-val">−'+fm(pen)+' ₪</div></div></div>';return h}
+function resTax(){var b=V('txB',15000),n=V('txN',2.25);var an=b*12,bk=[[84120,.1],[120720,.14],[228000,.2],[301200,.31],[560280,.35],[721560,.47],[1/0,.5]],tx=0,pv=0;for(var i=0;i<bk.length;i++){if(an<=bk[i][0]){tx+=(an-pv)*bk[i][1];break}tx+=(bk[i][0]-pv)*bk[i][1];pv=bk[i][0]}tx=Math.max(0,tx-n*242*12);var txM=Math.round(tx/12);var blB=Math.min(b,7522),blO=Math.max(0,Math.min(b,49030)-7522);var bl=Math.round(blB*.004+blO*.07),hp=Math.round(blB*.031+blO*.05),pen=Math.round(b*.06);var net=Math.round(b-txM-bl-hp-pen);var h='<div class="res"><div class="res-lbl">'+(L==='ru'?'зарплата нетто':'net salary')+'</div><div class="res-num">'+fm(net)+' ₪</div><div class="res-line"></div><div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'На руки':'Take home')+'</div><div class="res-item-val">'+Math.round(net/b*100)+'%</div></div><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'В год':'Annual')+'</div><div class="res-item-val">'+fm(net*12)+' ₪</div></div></div></div>';h+='<div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас ахнаса':'Income tax')+'</div><div class="info-cell-val">−'+fm(txM)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Битуах леуми':'Nat. insurance')+'</div><div class="info-cell-val">−'+fm(bl)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас бриют':'Health tax')+'</div><div class="info-cell-val">−'+fm(hp)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Пенсия 6%':'Pension 6%')+'</div><div class="info-cell-val">−'+fm(pen)+' ₪</div></div></div>';return h}
 function pgTax(){var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mTax')+'</div></div><div class="fields">';h+=FN('txB',(L==='ru'?'Зарплата брутто (до налогов)':'Gross salary (before taxes)'),15000,'tax');h+=FH('txN',(L==='ru'?'Некудот зикуй (налоговые баллы)':'Tax credit points'),2.25,0,6,.25,'tax',(L==='ru'?'Мужчина: 2.25 · Женщина: 2.75':'Male: 2.25 · Female: 2.75'));h+='</div><div id="res-tax">'+resTax()+'</div>';return h}
 
 /* ══════ WAGE (NEW) ══════ */
-function resWage(){var rate=V('wgR',50),h1=V('wgH1',186),h2=V('wgH2',0),h3=V('wgH3',0),h4=V('wgH4',0);var g1=Math.round(rate*h1),g2=Math.round(rate*1.25*h2),g3=Math.round(rate*1.5*h3),g4=Math.round(rate*2*h4);var tot=g1+g2+g3+g4;var hrs=h1+h2+h3+h4;return '<div class="res"><div class="res-lbl">'+(L==='ru'?'зарплата брутто':'gross salary')+'</div><div class="res-num">'+fm(tot)+' ₪</div><div class="res-line"></div><div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Всего часов':'Total hours')+'</div><div class="res-item-val">'+hrs+'</div></div><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Средняя ₪/час':'Avg ₪/hr')+'</div><div class="res-item-val">'+fm(hrs>0?Math.round(tot/hrs):0)+'</div></div></div></div><div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">100% · '+h1+' '+(L==='ru'?'ч':'h')+'</div><div class="info-cell-val">'+fm(g1)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">125% · '+h2+' '+(L==='ru'?'ч':'h')+'</div><div class="info-cell-val">'+fm(g2)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">150% · '+h3+' '+(L==='ru'?'ч':'h')+'</div><div class="info-cell-val">'+fm(g3)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">200% · '+h4+' '+(L==='ru'?'ч':'h')+'</div><div class="info-cell-val">'+fm(g4)+' ₪</div></div></div>'}
-function pgWage(){var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mWage')+'</div></div><div class="fields">';h+=FN('wgR',(L==='ru'?'Ставка за час (базовая, до надбавок)':'Hourly rate (base, before overtime)'),50,'wage');h+=FN('wgH1',(L==='ru'?'Часы 100% (обычные рабочие)':'Hours 100% (regular work)'),186,'wage',(L==='ru'?'Стандарт: 186 часов/мес':'Standard: 186 hours/mo'));h+=FN('wgH2',(L==='ru'?'Часы 125% (первые 2 ч сверхурочных/день)':'Hours 125% (first 2 OT hrs/day)'),0,'wage');h+=FN('wgH3',(L==='ru'?'Часы 150% (сверхурочные после 2 ч)':'Hours 150% (OT after 2 hrs)'),0,'wage');h+=FN('wgH4',(L==='ru'?'Часы 200% (шабат, праздники)':'Hours 200% (Shabbat, holidays)'),0,'wage');h+='</div><div id="res-wage">'+resWage()+'</div><div class="hint"><b>'+t('howCalc')+'</b>'+(L==='ru'?'Первые 2 часа сверхурочных оплачиваются по 125%, последующие по 150%. Работа в шабат/праздники — 200%. 186 часов = стандартная месячная норма.':'First 2 overtime hours are paid at 125%, subsequent at 150%. Shabbat/holiday work — 200%. 186 hours = standard monthly norm.')+'</div>';return h}
+function resWage(){var rate=V('wgR',50),h1=V('wgH1',186),h2=V('wgH2',0),h3=V('wgH3',0),h5=V('wgH5',0),h4=V('wgH4',0),h6=V('wgH6',0),h7=V('wgH7',0);var g1=Math.round(rate*h1),g2=Math.round(rate*1.25*h2),g3=Math.round(rate*1.5*h3),g5=Math.round(rate*1.75*h5),g4=Math.round(rate*2*h4),g6=Math.round(rate*2.25*h6),g7=Math.round(rate*2.5*h7);var tot=g1+g2+g3+g5+g4+g6+g7;var hrs=h1+h2+h3+h5+h4+h6+h7;return '<div class="res"><div class="res-lbl">'+(L==='ru'?'зарплата брутто':'gross salary')+'</div><div class="res-num">'+fm(tot)+' ₪</div><div class="res-line"></div><div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Всего часов':'Total hours')+'</div><div class="res-item-val">'+hrs+'</div></div><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Средняя ₪/час':'Avg ₪/hr')+'</div><div class="res-item-val">'+fm(hrs>0?Math.round(tot/hrs):0)+'</div></div></div></div><div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">100% · '+h1+' '+(L==='ru'?'ч':'h')+'</div><div class="info-cell-val">'+fm(g1)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">125% · '+h2+' '+(L==='ru'?'ч':'h')+'</div><div class="info-cell-val">'+fm(g2)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">150% · '+h3+' '+(L==='ru'?'ч':'h')+'</div><div class="info-cell-val">'+fm(g3)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">175% · '+h5+' '+(L==='ru'?'ч':'h')+'</div><div class="info-cell-val">'+fm(g5)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">200% · '+h4+' '+(L==='ru'?'ч':'h')+'</div><div class="info-cell-val">'+fm(g4)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">225% · '+h6+' '+(L==='ru'?'ч':'h')+'</div><div class="info-cell-val">'+fm(g6)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">250% · '+h7+' '+(L==='ru'?'ч':'h')+'</div><div class="info-cell-val">'+fm(g7)+' ₪</div></div></div>'}
+function pgWage(){var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mWage')+'</div></div><div class="fields">';h+=FN('wgR',(L==='ru'?'Ставка за час (базовая)':'Hourly rate (base)'),50,'wage');h+=FN('wgH1',(L==='ru'?'Часы 100% (обычные)':'Hours 100% (regular)'),186,'wage',(L==='ru'?'Стандарт: 186 ч/мес':'Standard: 186 hrs/mo'));h+=FN('wgH2',(L==='ru'?'Часы 125% (первые 2 ч сверхурочных)':'Hours 125% (first 2 OT hrs)'),0,'wage');h+=FN('wgH3',(L==='ru'?'Часы 150% (сверхурочные после 2 ч)':'Hours 150% (OT after 2 hrs)'),0,'wage');h+=FN('wgH5',(L==='ru'?'Часы 175%':'Hours 175%'),0,'wage');h+=FN('wgH4',(L==='ru'?'Часы 200% (шабат, праздники)':'Hours 200% (Shabbat, holidays)'),0,'wage');h+=FN('wgH6',(L==='ru'?'Часы 225%':'Hours 225%'),0,'wage');h+=FN('wgH7',(L==='ru'?'Часы 250%':'Hours 250%'),0,'wage');h+='</div><div id="res-wage">'+resWage()+'</div><div class="hint"><b>'+t('howCalc')+'</b>'+(L==='ru'?'125% — первые 2 ч сверхурочных. 150% — сверхурочные после 2 ч. 175/200/225/250% — шабат, праздники, особые условия. 186 часов = стандартная месячная норма.':'125% — first 2 OT hours. 150% — OT after 2 hrs. 175/200/225/250% — Shabbat, holidays, special conditions. 186 hours = standard monthly norm.')+'</div>';return h}
 
 /* ══════ OSEK ══════ */
-function resOsek(){var gr=Math.max(V('okG',20000),1),bz=V('okE',500);var maam=Math.round(gr*.17/1.17);var txbl=gr-maam-bz;var an=txbl*12,bk=[[81480,.1],[116760,.14],[187440,.2],[260520,.31],[542160,.35],[698280,.47],[1/0,.5]],tx=0,pv=0;for(var i=0;i<bk.length;i++){if(an<=bk[i][0]){tx+=(an-pv)*bk[i][1];break}tx+=(bk[i][0]-pv)*bk[i][1];pv=bk[i][0]}tx=Math.max(0,tx-2.25*242*12);var txM=Math.round(tx/12);var blB=Math.min(txbl,6331),blO=Math.max(0,Math.min(txbl,44020)-6331);var bl=Math.round(blB*.066+blO*.118),hp=Math.round(blB*.031+blO*.05);var net=Math.round(txbl-txM-bl-hp);return '<div class="res"><div class="res-lbl">'+(L==='ru'?'на руки':'take home')+'</div><div class="res-num">'+fm(net)+' ₪</div><div class="res-line"></div><div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Выставил':'Invoiced')+'</div><div class="res-item-val">'+fm(gr)+' ₪</div></div><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Получил':'Received')+'</div><div class="res-item-val">'+Math.round(net/gr*100)+'%</div></div></div></div><div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">VAT 17%</div><div class="info-cell-val">−'+fm(maam)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас ахнаса':'Income tax')+'</div><div class="info-cell-val">−'+fm(txM)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Битуах леуми':'Nat. ins.')+'</div><div class="info-cell-val">−'+fm(bl)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас бриют':'Health')+'</div><div class="info-cell-val">−'+fm(hp)+' ₪</div></div></div><div style="margin:16px;padding:14px 0;border-top:1px solid var(--ln);font-size:14px">'+(L==='ru'?'Эквивалент наёмного':'Employee equivalent')+': <b style="color:var(--rd)">~'+fm(Math.round(net/.65))+' ₪</b></div>'}
+function resOsek(){var gr=Math.max(V('okG',20000),1),bz=V('okE',500);var maam=Math.round(gr*.18/1.18);var txbl=gr-maam-bz;var an=txbl*12,bk=[[84120,.1],[120720,.14],[228000,.2],[301200,.31],[560280,.35],[721560,.47],[1/0,.5]],tx=0,pv=0;for(var i=0;i<bk.length;i++){if(an<=bk[i][0]){tx+=(an-pv)*bk[i][1];break}tx+=(bk[i][0]-pv)*bk[i][1];pv=bk[i][0]}tx=Math.max(0,tx-2.25*242*12);var txM=Math.round(tx/12);var blB=Math.min(txbl,7522),blO=Math.max(0,Math.min(txbl,49030)-7522);var bl=Math.round(blB*.066+blO*.118),hp=Math.round(blB*.031+blO*.05);var net=Math.round(txbl-txM-bl-hp);return '<div class="res"><div class="res-lbl">'+(L==='ru'?'на руки':'take home')+'</div><div class="res-num">'+fm(net)+' ₪</div><div class="res-line"></div><div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Выставил':'Invoiced')+'</div><div class="res-item-val">'+fm(gr)+' ₪</div></div><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Получил':'Received')+'</div><div class="res-item-val">'+Math.round(net/gr*100)+'%</div></div></div></div><div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">VAT 18%</div><div class="info-cell-val">−'+fm(maam)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас ахнаса':'Income tax')+'</div><div class="info-cell-val">−'+fm(txM)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Битуах леуми':'Nat. ins.')+'</div><div class="info-cell-val">−'+fm(bl)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас бриют':'Health')+'</div><div class="info-cell-val">−'+fm(hp)+' ₪</div></div></div><div style="margin:16px;padding:14px 0;border-top:1px solid var(--ln);font-size:14px">'+(L==='ru'?'Эквивалент наёмного':'Employee equivalent')+': <b style="color:var(--rd)">~'+fm(Math.round(net/.65))+' ₪</b></div>'}
 function pgOsek(){var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mOsek')+'</div></div><div class="fields">';h+=FN('okG',(L==='ru'?'Доход осек/мес (сумма в хешбонит)':'Freelancer income/mo (invoice total)'),20000,'osek');h+=FN('okE',(L==='ru'?'Расходы бизнеса (признанные, вкл. бухгалтер)':'Business expenses (deductible, incl. accountant)'),500,'osek');h+='</div><div id="res-osek">'+resOsek()+'</div>';return h}
 
 /* ══════ MORTGAGE ══════ */
@@ -317,7 +321,7 @@ function resGoal(){var T_=V('glT',5e5),Y=V('glY',5),P=V('glP',5e4),R=V('glR',7);
 function pgGoal(){var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mGoal')+'</div></div><div class="fields">';h+=FN('glT',(L==='ru'?'Хочу накопить (целевая сумма)':'Target amount (savings goal)'),5e5,'goal');h+=FH('glY',(L==='ru'?'За сколько лет':'In how many years'),5,1,30,1,'goal');h+=FN('glP',(L==='ru'?'Уже есть (текущие сбережения)':'Already have (current savings)'),5e4,'goal');h+=FH('glR',(L==='ru'?'Доходность (% годовых)':'Return (% per year)'),7,0,15,.5,'goal');h+='</div><div id="res-goal">'+resGoal()+'</div>';return h}
 
 /* ══════ PITZUIM ══════ */
-function resPitz(){var sal=V('pzS',12000),yr=V('pzY',3),mo=V('pzM',0);var tot=Math.round(sal*(yr+mo/12));var exm=Math.round(13310*(yr+mo/12));return '<div class="res"><div class="res-lbl">'+(L==='ru'?'компенсация':'severance')+'</div><div class="res-num">'+fm(tot)+' ₪</div><div class="res-line"></div><div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Без налога':'Tax exempt')+'</div><div class="res-item-val">'+fm(exm)+' ₪</div></div><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Облагается':'Taxable')+'</div><div class="res-item-val">'+fm(Math.max(0,tot-exm))+' ₪</div></div></div></div>'}
+function resPitz(){var sal=V('pzS',12000),yr=V('pzY',3),mo=V('pzM',0);var tot=Math.round(sal*(yr+mo/12));var exm=Math.round(13750*(yr+mo/12));return '<div class="res"><div class="res-lbl">'+(L==='ru'?'компенсация':'severance')+'</div><div class="res-num">'+fm(tot)+' ₪</div><div class="res-line"></div><div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Без налога':'Tax exempt')+'</div><div class="res-item-val">'+fm(exm)+' ₪</div></div><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Облагается':'Taxable')+'</div><div class="res-item-val">'+fm(Math.max(0,tot-exm))+' ₪</div></div></div></div>'}
 function pgPitz(){var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mPitz')+'</div></div><div class="fields">';h+=FN('pzS',(L==='ru'?'Последняя ЗП (брутто)':'Last salary (gross)'),12000,'pitz');h+=FH('pzY',(L==='ru'?'Лет работы':'Years worked'),3,1,30,1,'pitz');h+=FH('pzM',(L==='ru'?'Доп. месяцев':'Extra months'),0,0,11,1,'pitz');h+='</div><div id="res-pitz">'+resPitz()+'</div>';return h}
 
 /* ══════ HISHTALMUT ══════ */
@@ -338,8 +342,8 @@ function fiResHTML(res,inc){var ok=isFinite(res.t)&&res.t>0;var sr=inc>0?Math.ro
 
 function resFI(){
   var r=fiRateVal;
-  if(fiTab===0){return fiResHTML(fiCalc(11000,V('s1i',15000),V('s1p',50000),r,1,1570,3200),V('s1i',15000))+'<div class="section-title">'+t('couple')+'</div>'+fiResHTML(fiCalc(16400,V('s2i',25000),V('s2p',100000),r,2,1570,3200),V('s2i',25000))}
-  return fiResHTML(fiCalc(V('ce',11000),V('ci',18000),V('cp',100000),r,fiEarners,V('ch2',1570),V('cn',3200)),V('ci',18000));
+  if(fiTab===0){return fiResHTML(fiCalc(12000,V('s1i',16000),V('s1p',50000),r,1,1178,3200),V('s1i',16000))+'<div class="section-title">'+t('couple')+'</div>'+fiResHTML(fiCalc(17500,V('s2i',28000),V('s2p',100000),r,2,1178,3200),V('s2i',28000))}
+  return fiResHTML(fiCalc(V('ce',12000),V('ci',18000),V('cp',100000),r,fiEarners,V('ch2',1178),V('cn',3200)),V('ci',18000));
 }
 function pgFI(){
   var r=fiRateVal;
@@ -347,7 +351,7 @@ function pgFI(){
   h+='<div class="tog"><button '+(fiTab===0?'class="on"':'')+' onclick="fiTab=0;renderCalc(\'fi\')">'+t('overview')+'</button><button '+(fiTab===1?'class="on"':'')+' onclick="fiTab=1;renderCalc(\'fi\')">'+t('myCalc')+'</button></div>';
   h+='<div class="seg"><button '+(r===.05?'class="on"':'')+' onclick="fiRateVal=.05;renderCalc(\'fi\')">5%</button><button '+(r===.07?'class="on"':'')+' onclick="fiRateVal=.07;renderCalc(\'fi\')">7%</button><button '+(r===.09?'class="on"':'')+' onclick="fiRateVal=.09;renderCalc(\'fi\')">9%</button></div>';
   if(fiTab===0){
-    h+='<div class="section-title">'+t('single')+'</div><div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+t('exp')+'</div><div class="info-cell-val">11,000 ₪</div></div><div class="info-cell"><div class="info-cell-lbl">Target</div><div class="info-cell-val">3,300,000 ₪</div></div></div><div class="fields">';
+    h+='<div class="section-title">'+t('single')+'</div><div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+t('exp')+'</div><div class="info-cell-val">12,000 ₪</div></div><div class="info-cell"><div class="info-cell-lbl">Target</div><div class="info-cell-val">3,600,000 ₪</div></div></div><div class="fields">';
     h+=FN('s1i',(L==='ru'?'Доход нетто (на руки)':'Net income (take-home)'),15000,'fi');
     h+=FN('s1p',(L==='ru'?'Накопления (все счета вместе)':'Savings (all accounts combined)'),50000,'fi');
     h+='</div><div id="res-fi">'+resFI()+'</div>';
@@ -357,10 +361,10 @@ function pgFI(){
     h+='</div>';
   } else {
     h+='<div class="tog"><button '+(fiEarners===1?'class="on"':'')+' onclick="fiEarners=1;renderCalc(\'fi\')">'+t('one')+'</button><button '+(fiEarners===2?'class="on"':'')+' onclick="fiEarners=2;renderCalc(\'fi\')">'+t('two')+'</button></div><div class="fields">';
-    h+=FN('ce',(L==='ru'?'Расходы/мес (все обязательные)':'Expenses/mo (all mandatory)'),11000,'fi');
+    h+=FN('ce',(L==='ru'?'Расходы/мес (все обязательные)':'Expenses/mo (all mandatory)'),12000,'fi');
     h+=FN('ci',(L==='ru'?'Доход нетто (на руки)':'Net income (take-home)'),18000,'fi');
     h+=FN('cp',(L==='ru'?'Накопления (все счета вместе)':'Savings (all accounts combined)'),100000,'fi');
-    h+=FN('ch2',(L==='ru'?'Керен Иштальмут (отчисление/мес)':'Hishtalmut (monthly deposit)'),1570,'fi');
+    h+=FN('ch2',(L==='ru'?'Керен Иштальмут (отчисление/мес)':'Hishtalmut (monthly deposit)'),1178,'fi');
     h+=FN('cn',(L==='ru'?'Пенсия в акции (от работодателя)':'Pension equity (from employer)'),3200,'fi');
     h+='</div><div id="res-fi">'+resFI()+'</div>';
   }
@@ -458,6 +462,80 @@ function pgNkd(){
   return h;
 }
 
+/* ══════ UNEMPLOYMENT ══════ */
+function resAvt(){
+  var sal=V('avS',12000),age=V('avA',30),yr=V('avYr',3);
+  /* Daily wage = salary / 30, capped at 1,510 NIS/day (2024) */
+  var daily=Math.min(sal/30,1510);
+  /* Benefit: first 125 days = daily rate, then 2/3 */
+  var rate1=Math.round(daily),rate2=Math.round(daily*2/3);
+  /* Duration depends on age and contribution period */
+  var months;
+  if(age<25){months=yr>=1?3:0}
+  else if(age<28){months=yr>=1?3:0;if(yr>=2)months=4}
+  else if(age<35){months=yr>=1?4:0;if(yr>=3)months=5}
+  else if(age<45){months=yr>=2?5:0;if(yr>=3)months=6}
+  else{months=yr>=2?6:0;if(yr>=3)months=8;if(yr>=4)months=10}
+  var half=Math.round(months/2);var days=months*25;
+  var tot=Math.round(rate1*Math.min(days,125)+rate2*Math.max(0,days-125));
+  return '<div class="res"><div class="res-lbl">'+(L==='ru'?'пособие в месяц (первая половина)':'monthly benefit (first half)')+'</div><div class="res-num">'+fm(rate1*25)+' ₪</div><div class="res-line"></div><div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Вторая половина':'Second half')+'</div><div class="res-item-val">'+fm(rate2*25)+' ₪/'+(L==='ru'?'мес':'mo')+'</div></div><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Срок':'Duration')+'</div><div class="res-item-val">'+months+' '+(L==='ru'?'мес':'mo')+'</div></div></div></div>'
+  +'<div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Дневная ставка':'Daily rate')+'</div><div class="info-cell-val">'+fm(rate1)+' ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'После 125 дней':'After 125 days')+'</div><div class="info-cell-val">'+fm(rate2)+' ₪/'+(L==='ru'?'день':'day')+'</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Всего дней':'Total days')+'</div><div class="info-cell-val">'+days+'</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Всего получишь':'Total payout')+'</div><div class="info-cell-val">'+fm(tot)+' ₪</div></div></div>'}
+function pgAvt(){var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mAvt')+'</div></div><div class="fields">';
+  h+=FN('avS',(L==='ru'?'Последняя зарплата (брутто)':'Last salary (gross)'),12000,'avt');
+  h+=FN('avA',(L==='ru'?'Возраст':'Age'),30,'avt');
+  h+=FN('avYr',(L==='ru'?'Лет работы (стаж отчислений)':'Years worked (contribution period)'),3,'avt');
+  h+='</div><div id="res-avt">'+resAvt()+'</div>';
+  h+='<div class="hint"><b>'+t('howCalc')+'</b>'+(L==='ru'?'Дневная ставка = зарплата / 30, потолок ~1,510₪/день. Первые 125 дней — полная ставка, далее — 2/3. Срок зависит от возраста и стажа отчислений. Для получения нужно отработать минимум 12 месяцев из последних 18. Необходимо встать на учёт в лишкат таасука.':'Daily rate = salary / 30, capped at ~1,510₪/day. First 125 days — full rate, then 2/3. Duration depends on age and contribution period. Must have worked at least 12 of the last 18 months. Must register at the employment office.')+'</div>';
+  return h}
+
+/* ══════ TLUSH (payslip breakdown) ══════ */
+function pgTlush(){
+  var b=15000;
+  var h='<div class="ph"><div class="ph-sub">'+t('ref')+'</div><div class="ph-title">'+t('mTlush')+'</div></div>';
+  h+='<div class="section-title">'+(L==='ru'?'Строчки тлуша масокрет':'Payslip lines explained')+'</div>';
+  var rows=L==='ru'?[
+    ['s',(L==='ru'?'Начисления (работнику)':'Earnings')],
+    ['r','Шахар басис / Salary',(L==='ru'?'Базовая зарплата брутто':'Base gross salary')],
+    ['r','Шаот носафот / Overtime',(L==='ru'?'Сверхурочные (125%, 150%, 200%)':'Overtime hours (125%, 150%, 200%)')],
+    ['r','Дмей хавраа / Recreation',(L==='ru'?'~394₪/мес после год работы':'~394₪/mo after 1 year')],
+    ['r','Дмей несиа / Travel',(L==='ru'?'Компенсация проезда':'Transportation allowance')],
+    ['r','Дмей хавраа / Bonus',(L==='ru'?'Премия (если есть)':'Bonus (if applicable)')],
+    ['s',(L==='ru'?'Удержания (вычеты)':'Deductions')],
+    ['r','Мас ахнаса / Income tax',(L==='ru'?'Подоходный налог (10-50%, минус некудот)':'Income tax (10-50%, minus credit points)')],
+    ['r','Битуах леуми / Nat. ins.',(L==='ru'?'Национальное страхование (0.4-7%)':'National insurance (0.4-7%)')],
+    ['r','Мас бриют / Health tax',(L==='ru'?'Медицинское страхование (3.1-5%)':'Health insurance (3.1-5%)')],
+    ['r','Пенсия работник / Pension',(L==='ru'?'Твои 6% в пенсию':'Your 6% to pension')],
+    ['r','Керен иштальмут / Hishtalmut',(L==='ru'?'Твои 2.5% в иштальмут':'Your 2.5% to hishtalmut')],
+    ['s',(L==='ru'?'Отчисления работодателя (не в тлуше)':'Employer contributions (not on payslip)')],
+    ['r','Пенсия работодатель / Pension',(L==='ru'?'6.5% — работодатель доплачивает в пенсию':'6.5% — employer adds to your pension')],
+    ['r','Пицуим / Severance',(L==='ru'?'6% — копится на компенсацию при увольнении':'6% — accumulates for severance')],
+    ['r','Иштальмут / Hishtalmut',(L==='ru'?'7.5% — работодатель доплачивает':'7.5% — employer contribution')],
+  ]:[
+    ['s','Earnings'],
+    ['r','Shachar basis / Salary','Base gross salary'],
+    ['r','Shaot nosafot / Overtime','Overtime hours (125%, 150%, 200%)'],
+    ['r','Dmei havraa / Recreation','~394₪/mo after 1 year of work'],
+    ['r','Dmei nesia / Travel','Transportation allowance'],
+    ['r','Bonus','Bonus (if applicable)'],
+    ['s','Deductions'],
+    ['r','Mas ahnasa / Income tax','Income tax (10-50%, minus credit points)'],
+    ['r','Bituah leumi / Nat. ins.','National insurance (0.4-7%)'],
+    ['r','Mas briut / Health tax','Health insurance (3.1-5%)'],
+    ['r','Pension (employee)','Your 6% to pension'],
+    ['r','Keren hishtalmut','Your 2.5% to hishtalmut'],
+    ['s','Employer contributions (not on payslip)'],
+    ['r','Pension (employer)','6.5% — employer adds to your pension'],
+    ['r','Pitzuim / Severance','6% — accumulates for severance'],
+    ['r','Hishtalmut (employer)','7.5% — employer contribution'],
+  ];
+  rows.forEach(function(r){
+    if(r[0]==='s')h+='<div class="section-title">'+r[1]+'</div>';
+    else h+='<div style="padding:12px 16px;border-bottom:1px solid var(--ln)"><div style="font-size:14px;font-weight:600">'+r[1]+'</div><div style="font-size:12px;color:var(--gr);margin-top:2px;line-height:1.4">'+r[2]+'</div></div>';
+  });
+  h+='<div class="hint"><b>'+(L==='ru'?'Итого':'Summary')+'</b>'+(L==='ru'?'Работник платит ~25-35% от брутто (зависит от зарплаты). Работодатель платит сверх брутто ещё ~20% (пенсия + пицуим + иштальмут). Это значит что реальная стоимость работника для компании примерно на 20% выше его брутто.':'Employee pays ~25-35% of gross (depends on salary). Employer pays an additional ~20% on top of gross (pension + severance + hishtalmut). This means the real cost of an employee to the company is about 20% above their gross.')+'</div>';
+  return h;
+}
+
 /* ══════ OLIM ══════ */
 function pgOlim(){var kids=V('olK',2);var fp,mp;if(olimType===0){fp=2800;mp=2700}else if(olimType===1){fp=5600;mp=4400}else{fp=5600+1250*kids;mp=4400+700*kids}var tot=fp+mp*6;var h='<div class="ph"><div class="ph-sub">'+t('ref')+'</div><div class="ph-title">'+t('mOlim')+'</div></div>';h+='<div class="tog"><button '+(olimType===0?'class="on"':'')+' onclick="olimType=0;renderCalc(\'olim\')">'+t('single')+'</button><button '+(olimType===1?'class="on"':'')+' onclick="olimType=1;renderCalc(\'olim\')">'+t('couple')+'</button><button '+(olimType===2?'class="on"':'')+' onclick="olimType=2;renderCalc(\'olim\')">'+(L==='ru'?'С детьми':'With kids')+'</button></div>';if(olimType===2)h+='<div class="fields">'+FH('olK',(L==='ru'?'Кол-во детей':'Children'),2,1,6,1,'olim')+'</div>';h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'саль клита':'sal klita')+'</div><div class="res-num">'+fm(tot)+' ₪</div><div class="res-line"></div><div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Первая':'First')+'</div><div class="res-item-val">'+fm(fp)+' ₪</div></div><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'6 платежей по':'6 payments of')+'</div><div class="res-item-val">'+fm(mp)+' ₪</div></div></div></div>';var ep=olimType===0?3:4.5;h+='<div class="section-title">'+(L==='ru'?'Налоговые льготы':'Tax benefits')+'</div><div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'18 мес.':'18 mo.')+'</div><div class="info-cell-val">+'+fm(Math.round(ep*242))+' ₪/'+(L==='ru'?'мес':'mo')+'</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мес. 19-30':'Mo. 19-30')+'</div><div class="info-cell-val">+'+fm(Math.round((ep-1)*242))+' ₪/'+(L==='ru'?'мес':'mo')+'</div></div></div>';h+='<div class="section-title">'+(L==='ru'?'Другие':'Other')+'</div><div class="stat-row"><span class="stat-lbl">'+(L==='ru'?'Зарубежный доход':'Foreign income')+'</span><span class="stat-val">0% '+(L==='ru'?'10 лет':'10 yrs')+'</span></div><div class="stat-row"><span class="stat-lbl">'+(L==='ru'?'Ульпан':'Ulpan')+'</span><span class="stat-val">'+(L==='ru'?'бесплатно':'free')+'</span></div><div class="stat-row"><span class="stat-lbl">'+(L==='ru'?'Арнона':'Arnona')+'</span><span class="stat-val">'+(L==='ru'?'до 90% скидка':'up to 90% off')+'</span></div>';return h}
 
@@ -466,7 +544,7 @@ var CITIES=[{n:['Тель-Авив','Tel Aviv'],r1:4800,r2:6500,r3:8500,a:350,k:
 function pgCity(){var li=L==='ru'?0:1;var h='<div class="ph"><div class="ph-sub">'+t('compare')+'</div><div class="ph-title">'+t('mCity')+'</div></div>';h+='<div class="tog"><button '+(cityType===0?'class="on"':'')+' onclick="cityType=0;renderCalc(\'city\')">'+t('single')+'</button><button '+(cityType===1?'class="on"':'')+' onclick="cityType=1;renderCalc(\'city\')">'+t('couple')+'</button><button '+(cityType===2?'class="on"':'')+' onclick="cityType=2;renderCalc(\'city\')">'+t('famKid')+'</button></div>';var sorted=CITIES.map(function(c){var r=cityType===0?c.r1:cityType===1?c.r2:c.r3;var kid=cityType===2?c.k:0;var gr=Math.round(c.g/100*(cityType===0?2500:cityType===1?4000:5000));return{n:c.n[li],rent:r,arn:c.a,kid:kid,groc:gr,total:r+c.a+kid+gr}}).sort(function(a,b){return a.total-b.total});var ch=sorted[0].total;h+='<div class="section-title">'+(L==='ru'?'От дешёвого к дорогому':'Cheapest to most expensive')+'</div>';sorted.forEach(function(c,i){var df=c.total-ch;h+='<div style="margin:0 16px;padding:14px 0;border-bottom:1px solid var(--ln)"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:15px;font-weight:600">'+c.n+'</span><span style="font-size:16px;font-weight:700">'+fm(c.total)+' ₪</span></div>';if(i>0)h+='<div style="font-size:11px;color:var(--rd);margin-top:2px">+'+fm(df)+' (+'+Math.round(df/ch*100)+'%)</div>';else h+='<div style="font-size:11px;color:#4a8c5c;margin-top:2px">'+(L==='ru'?'Самый доступный':'Most affordable')+'</div>';h+='<div style="display:flex;gap:12px;margin-top:6px;font-size:12px;color:var(--gr);flex-wrap:wrap"><span>'+(L==='ru'?'Аренда':'Rent')+': '+fm(c.rent)+'</span><span>'+(L==='ru'?'Арнона':'Arnona')+': '+fm(c.arn)+'</span>';if(cityType===2)h+='<span>'+(L==='ru'?'Садик':'Daycare')+': '+fm(c.kid)+'</span>';h+='</div></div>'});return h}
 
 /* ══════ STATS ══════ */
-function pgStats(){var h='<div class="ph"><div class="ph-sub">'+t('ref')+'</div><div class="ph-title">'+t('mStats')+'</div></div>';var rows=L==='ru'?[['s','Расходы'],['r','Один человек','11,000 ₪/мес'],['r','Семья','16,400 ₪/мес'],['s','Зарплаты'],['r','Средняя брутто','12,600 ₪'],['r','Медиана','9,500 ₪'],['s','Отчисления'],['r','Пенсия (работник+работод.)','18.5%'],['r','Керен Иштальмут','1,570 ₪/мес'],['s','Правило 4%'],['r','Target одиночки','3,300,000 ₪'],['r','Target семьи','4,920,000 ₪'],['r','Средняя доходность','7%/год']]:[['s','Expenses'],['r','Individual','11,000 ₪/mo'],['r','Family','16,400 ₪/mo'],['s','Salaries'],['r','Average gross','12,600 ₪'],['r','Median','9,500 ₪'],['s','Deductions'],['r','Pension (employee+employer)','18.5%'],['r','Keren Hishtalmut','1,570 ₪/mo'],['s','4% Rule'],['r','Individual target','3,300,000 ₪'],['r','Family target','4,920,000 ₪'],['r','Average return','7%/yr']];rows.forEach(function(r){if(r[0]==='s')h+='<div class="section-title">'+r[1]+'</div>';else h+='<div class="stat-row"><span class="stat-lbl">'+r[1]+'</span><span class="stat-val">'+r[2]+'</span></div>'});return h}
+function pgStats(){var h='<div class="ph"><div class="ph-sub">'+t('ref')+'</div><div class="ph-title">'+t('mStats')+'</div></div>';var rows=L==='ru'?[['s','Расходы'],['r','Один человек','12,000 ₪/мес'],['r','Семья','17,500 ₪/мес'],['s','Зарплаты'],['r','Средняя брутто','14,000 ₪'],['r','Медиана','10,500 ₪'],['r','Минимальная','6,444 ₪'],['s','Отчисления'],['r','Пенсия (работник+работод.)','18.5%'],['r','Керен Иштальмут','до 1,178 ₪/мес'],['s','Правило 4%'],['r','Target одиночки','3,600,000 ₪'],['r','Target семьи','5,250,000 ₪'],['r','Средняя доходность','7%/год']]:[['s','Expenses'],['r','Individual','12,000 ₪/mo'],['r','Family','17,500 ₪/mo'],['s','Salaries'],['r','Average gross','14,000 ₪'],['r','Median','10,500 ₪'],['r','Minimum','6,444 ₪'],['s','Deductions'],['r','Pension (employee+employer)','18.5%'],['r','Keren Hishtalmut','up to 1,178 ₪/mo'],['s','4% Rule'],['r','Individual target','3,600,000 ₪'],['r','Family target','5,250,000 ₪'],['r','Average return','7%/yr']];rows.forEach(function(r){if(r[0]==='s')h+='<div class="section-title">'+r[1]+'</div>';else h+='<div class="stat-row"><span class="stat-lbl">'+r[1]+'</span><span class="stat-val">'+r[2]+'</span></div>'});return h}
 
 renderPage();
 </script>
