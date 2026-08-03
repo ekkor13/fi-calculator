@@ -96,8 +96,6 @@ body[dir=rtl] .tog button+button{border-left:none;border-right:1.5px solid var(-
 .hint{margin:16px;padding:18px 16px 18px 20px;border-left:3px solid var(--rd);font-size:13px;color:var(--gr);line-height:1.7}
 .hint b{color:var(--bk);font-weight:600;display:block;margin-bottom:6px;font-size:14px}
 .disclaimer{margin:0 16px 16px;padding:12px 16px;border:1px solid var(--ln);font-size:11px;color:var(--gr);line-height:1.5}
-.page{display:none}
-.page.active{display:block}
 .footer{text-align:center;font-size:11px;color:var(--gr);padding:20px 16px;letter-spacing:.3px}
 </style>
 </head>
@@ -239,7 +237,10 @@ function renderHome(){
 
 function go(p){
   curPage=p;
-  if(p==='home'){renderHome();window.scrollTo(0,0);return}
+  if(p==='home'){
+    document.getElementById('barTitle').onclick=function(){};
+    renderHome();window.scrollTo(0,0);return;
+  }
   document.getElementById('barTitle').textContent=t('back');
   document.getElementById('barTitle').onclick=function(){go('home')};
   document.getElementById('bar').style.cursor='pointer';
@@ -289,10 +290,6 @@ function ed(span,sid){
   inp.onblur=done;inp.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();inp.blur()}};
 }
 
-function F(id,lbl,val,min,max,step,oninp,note){
-  return '<div class="f"><div class="f-row"><span class="f-lbl">'+lbl+'</span><span class="f-val" id="'+id+'V" onclick="ed(this,\''+id+'\')">'+val+'</span></div><input type="range" id="'+id+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+(document.getElementById(id)?document.getElementById(id).value:min)+'" oninput="renderCalc(\''+curPage+'\')">'+(note?'<div class="f-note">'+note+'</div>':'')+'</div>';
-}
-
 /* ══════ CALCULATOR PAGES ══════ */
 function renderCalc(p){
   var el=document.getElementById('app');
@@ -336,28 +333,42 @@ function fiResult(res,inc){
   if(inc>0&&ok){h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+t('savRate')+'</div><div class="res-item-val">'+sr+'%</div></div><div class="res-item"></div></div>';}
   h+='</div>';return h;
 }
+var fiTab=0;
 function renderFIPage(V){
   var r=fiRateVal;
   var h='<div class="ph"><div class="ph-sub">'+t('calc')+'</div><div class="ph-title">'+t('mFi')+'</div></div>';
+  h+='<div class="tog"><button '+(fiTab===0?'class="on"':'')+' onclick="fiTab=0;renderCalc(\'fi\')">'+t('overview')+'</button><button '+(fiTab===1?'class="on"':'')+' onclick="fiTab=1;renderCalc(\'fi\')">'+t('myCalc')+'</button></div>';
   h+='<div class="seg" id="fiRate"><button '+(r===.05?'class="on"':'')+' onclick="fiRateVal=.05;renderCalc(\'fi\')">5%</button><button '+(r===.07?'class="on"':'')+' onclick="fiRateVal=.07;renderCalc(\'fi\')">7%</button><button '+(r===.09?'class="on"':'')+' onclick="fiRateVal=.09;renderCalc(\'fi\')">9%</button></div>';
 
-  var i1=V('s1i',15000),p1=V('s1p',50000),i2=V('s2i',25000),p2=V('s2p',100000);
-  h+='<div class="section-title">'+t('single')+'</div>';
-  h+='<div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Расходы':'הוצאות')+'</div><div class="info-cell-val">11,000 ₪</div></div><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Target':'יעד')+'</div><div class="info-cell-val">3,300,000 ₪</div></div></div>';
-  h+='<div class="fields">';
-  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('incNet')+'</span><span class="f-val" id="s1iV" onclick="ed(this,\'s1i\')">'+fm(i1)+' ₪</span></div><input type="range" id="s1i" min="8000" max="50000" step="500" value="'+i1+'" oninput="renderCalc(\'fi\')"></div>';
-  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('savings')+'</span><span class="f-val" id="s1pV" onclick="ed(this,\'s1p\')">'+fm(p1)+' ₪</span></div><input type="range" id="s1p" min="0" max="2000000" step="10000" value="'+p1+'" oninput="renderCalc(\'fi\')"></div>';
-  h+='</div>';
-  h+=fiResult(fiCalc(11000,i1,p1,r,1,1570,3200),i1);
+  if(fiTab===0){
+    var i1=V('s1i',15000),p1=V('s1p',50000),i2=V('s2i',25000),p2=V('s2p',100000);
+    h+='<div class="section-title">'+t('single')+'</div>';
+    h+='<div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Расходы':'הוצאות')+'</div><div class="info-cell-val">11,000 ₪</div></div><div class="info-cell"><div class="info-cell-lbl">Target</div><div class="info-cell-val">3,300,000 ₪</div></div></div>';
+    h+='<div class="fields">';
+    h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('incNet')+'</span><span class="f-val" id="s1iV" onclick="ed(this,\'s1i\')">'+fm(i1)+' ₪</span></div><input type="range" id="s1i" min="8000" max="50000" step="500" value="'+i1+'" oninput="renderCalc(\'fi\')"></div>';
+    h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('savings')+'</span><span class="f-val" id="s1pV" onclick="ed(this,\'s1p\')">'+fm(p1)+' ₪</span></div><input type="range" id="s1p" min="0" max="2000000" step="10000" value="'+p1+'" oninput="renderCalc(\'fi\')"></div></div>';
+    h+=fiResult(fiCalc(11000,i1,p1,r,1,1570,3200),i1);
 
-  h+='<div class="section-title">'+t('couple')+'</div>';
-  h+='<div class="fields">';
-  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('incNet')+'</span><span class="f-val" id="s2iV" onclick="ed(this,\'s2i\')">'+fm(i2)+' ₪</span></div><input type="range" id="s2i" min="12000" max="80000" step="500" value="'+i2+'" oninput="renderCalc(\'fi\')"></div>';
-  h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('savings')+'</span><span class="f-val" id="s2pV" onclick="ed(this,\'s2p\')">'+fm(p2)+' ₪</span></div><input type="range" id="s2p" min="0" max="3000000" step="10000" value="'+p2+'" oninput="renderCalc(\'fi\')"></div>';
-  h+='</div>';
-  h+=fiResult(fiCalc(16400,i2,p2,r,2,1570,3200),i2);
+    h+='<div class="section-title">'+t('couple')+'</div>';
+    h+='<div class="info-grid"><div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Расходы':'הוצאות')+'</div><div class="info-cell-val">16,400 ₪</div></div><div class="info-cell"><div class="info-cell-lbl">Target</div><div class="info-cell-val">4,920,000 ₪</div></div></div>';
+    h+='<div class="fields">';
+    h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('incNet')+'</span><span class="f-val" id="s2iV" onclick="ed(this,\'s2i\')">'+fm(i2)+' ₪</span></div><input type="range" id="s2i" min="12000" max="80000" step="500" value="'+i2+'" oninput="renderCalc(\'fi\')"></div>';
+    h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('savings')+'</span><span class="f-val" id="s2pV" onclick="ed(this,\'s2p\')">'+fm(p2)+' ₪</span></div><input type="range" id="s2p" min="0" max="3000000" step="10000" value="'+p2+'" oninput="renderCalc(\'fi\')"></div></div>';
+    h+=fiResult(fiCalc(16400,i2,p2,r,2,1570,3200),i2);
+  } else {
+    var ce=V('ce',11000),ci=V('ci',18000),cp=V('cp',100000),ch=V('ch2',1570),cn=V('cn',3200);
+    h+='<div class="tog"><button '+(fiEarners===1?'class="on"':'')+' onclick="fiEarners=1;renderCalc(\'fi\')">'+t('one')+'</button><button '+(fiEarners===2?'class="on"':'')+' onclick="fiEarners=2;renderCalc(\'fi\')">'+t('two')+'</button></div>';
+    h+='<div class="fields">';
+    h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('expenses')+'</span><span class="f-val" id="ceV" onclick="ed(this,\'ce\')">'+fm(ce)+' ₪</span></div><input type="range" id="ce" min="5000" max="40000" step="500" value="'+ce+'" oninput="renderCalc(\'fi\')"></div>';
+    h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('incNet')+'</span><span class="f-val" id="ciV" onclick="ed(this,\'ci\')">'+fm(ci)+' ₪</span></div><input type="range" id="ci" min="5000" max="100000" step="500" value="'+ci+'" oninput="renderCalc(\'fi\')"></div>';
+    h+='<div class="f"><div class="f-row"><span class="f-lbl">'+t('savings')+'</span><span class="f-val" id="cpV" onclick="ed(this,\'cp\')">'+fm(cp)+' ₪</span></div><input type="range" id="cp" min="0" max="5000000" step="10000" value="'+cp+'" oninput="renderCalc(\'fi\')"></div>';
+    h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Керен Иштальмут':'קרן השתלמות')+'</span><span class="f-val" id="ch2V" onclick="ed(this,\'ch2\')">'+fm(ch)+' ₪</span></div><input type="range" id="ch2" min="0" max="3000" step="10" value="'+ch+'" oninput="renderCalc(\'fi\')"><div class="f-note">'+(L==='ru'?'На 1 чел. · потолок 1,570 · 0% налог':'לאדם · תקרה 1,570 · 0% מס')+'</div></div>';
+    h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Пенсия в акции':'פנסיה במניות')+'</span><span class="f-val" id="cnV" onclick="ed(this,\'cn\')">'+fm(cn)+' ₪</span></div><input type="range" id="cn" min="0" max="6000" step="100" value="'+cn+'" oninput="renderCalc(\'fi\')"><div class="f-note">'+(L==='ru'?'На 1 чел. · ~12-15% от брутто':'לאדם · ~12-15% מברוטו')+'</div></div>';
+    h+='</div>';
+    h+=fiResult(fiCalc(ce,ci,cp,r,fiEarners,ch,cn),ci);
+  }
 
-  h+='<div class="hint"><b>'+t('howCalc')+'</b>'+(L==='ru'?'Target = расходы × 300 (правило 4%). Поток = (доход − расходы) + иштальмут + пенсия. Время — формула аннуитета со сложным процентом.':'Target = הוצאות × 300 (כלל 4%). זרם = (הכנסה − הוצאות) + השתלמות + פנסיה. הזמן מחושב לפי נוסחת אנואיטה בריבית דריבית.')+'</div>';
+  h+='<div class="hint"><b>'+t('howCalc')+'</b>'+(L==='ru'?'Target = расходы × 300 (правило 4%). Поток = (доход − расходы) + иштальмут + пенсия. Время — формула аннуитета со сложным процентом. Иштальмут и пенсия — «скрытые» деньги от работодателя, но они тоже растут на рынке.':'Target = הוצאות × 300 (כלל 4%). זרם = (הכנסה − הוצאות) + השתלמות + פנסיה. הזמן מחושב לפי נוסחת אנואיטה בריבית דריבית. השתלמות ופנסיה — כסף "נסתר" מהמעביד שגם הוא צומח בשוק.')+'</div>';
   return h;
 }
 
@@ -378,13 +389,14 @@ function renderTaxPage(V){
   h+='<div class="f"><div class="f-row"><span class="f-lbl">'+(L==='ru'?'Некудот зикуй':'נקודות זיכוי')+'</span><span class="f-val" id="txNV" onclick="ed(this,\'txN\')">'+n+'</span></div><input type="range" id="txN" min="0" max="6" step="0.25" value="'+n+'" oninput="renderCalc(\'tax\')"><div class="f-note">'+(L==='ru'?'Мужчина: 2.25 · Женщина: 2.75':'גבר: 2.25 · אישה: 2.75')+'</div></div></div>';
 
   h+='<div class="res"><div class="res-lbl">'+(L==='ru'?'зарплата нетто':'משכורת נטו')+'</div><div class="res-num">'+fm(net)+' ₪</div><div class="res-line"></div>';
-  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'На руки':'לפני מסים')+'</div><div class="res-item-val">'+Math.round(net/b*100)+'%</div></div>';
+  h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'На руки':'נשאר')+'</div><div class="res-item-val">'+Math.round(net/b*100)+'%</div></div>';
   h+='<div class="res-item"><div class="res-item-lbl">'+(L==='ru'?'Нетто в год':'נטו שנתי')+'</div><div class="res-item-val">'+fm(net*12)+' ₪</div></div></div></div>';
   h+='<div class="info-grid">';
   h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас ахнаса':'מס הכנסה')+'</div><div class="info-cell-val">−'+fm(taxM)+' ₪</div></div>';
   h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Битуах леуми':'ביטוח לאומי')+'</div><div class="info-cell-val">−'+fm(bl)+' ₪</div></div>';
   h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Мас бриют':'מס בריאות')+'</div><div class="info-cell-val">−'+fm(hp)+' ₪</div></div>';
   h+='<div class="info-cell"><div class="info-cell-lbl">'+(L==='ru'?'Пенсия (6%)':'פנסיה (6%)')+'</div><div class="info-cell-val">−'+fm(pen)+' ₪</div></div></div>';
+  h+='<div class="hint"><b>'+t('howCalc')+'</b>'+(L==='ru'?'Из брутто вычитаются: мас ахнаса (10-50% по ступеням минус некудот зикуй), битуах леуми (0.4% и 7%), мас бриют (3.1% и 5%), пенсия работника (6%). Работодатель дополнительно платит ~6.5% пенсия + 7.5% иштальмут. Ставки 2024.':'מהברוטו מנוכים: מס הכנסה (10-50% מדרגות פחות נקודות זיכוי), ביטוח לאומי (0.4% ו-7%), מס בריאות (3.1% ו-5%), פנסיית עובד (6%). המעביד משלם עוד ~6.5% פנסיה + 7.5% השתלמות. תעריפי 2024.')+'</div>';
   return h;
 }
 
@@ -426,8 +438,8 @@ function renderCompPage(V){
 /* ── RENT VS BUY ── */
 function renderRentPage(V){
   var rent=V('rtR',4500),rg=V('rtG',3),price=V('rtP',1500000),down=V('rtD',375000),mr=V('rtM',4.5),yrs=V('rtY',15),appr=V('rtA',4);
-  var loan=price-down,mri=mr/100/12,n=yrs*12;
-  var pmt=loan>0?loan*(mri*Math.pow(1+mri,n))/(Math.pow(1+mri,n)-1):0;
+  var loan=Math.max(0,price-down),mri=mr/100/12,n=yrs*12;
+  var pmt=loan>0&&mri>0?loan*(mri*Math.pow(1+mri,n))/(Math.pow(1+mri,n)-1):0;
   var totalMort=pmt*n+down,totalRent=0,cR=rent;
   for(var y=0;y<yrs;y++){totalRent+=cR*12;cR*=(1+rg/100)}
   var futV=Math.round(price*Math.pow(1+appr/100,yrs));
@@ -577,6 +589,7 @@ function renderHishPage(V){
 /* ── HEALTH ── */
 function renderHealthPage(V){
   var inc=V('fhI',15000),house=V('fhH',4500),debt=V('fhD',0),sav=V('fhS',2000);
+  if(inc<=0)inc=1;
   var hp=Math.round(house/inc*100),dp=Math.round((house+debt)/inc*100),sp=Math.round(sav/inc*100);
   var free=inc-house-debt-sav;
   function gr(v,g,o){return v<=g?'#4a8c5c':v<=o?'#b8860b':'var(--rd)'}
