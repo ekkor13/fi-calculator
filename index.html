@@ -94,6 +94,10 @@ input[type=range]::-moz-range-progress{height:2px;background:var(--bk)}
 
 .page{display:none}
 .page.active{display:block}
+/* Hint blocks */
+.hint{margin:16px;padding:18px 16px 18px 20px;border-left:3px solid var(--rd);font-size:13px;color:var(--gr);line-height:1.7}
+.hint b{color:var(--bk);font-weight:600;display:block;margin-bottom:6px;font-size:14px}
+
 .footer{text-align:center;font-size:11px;color:var(--gr);padding:20px 16px;letter-spacing:.3px}
 </style>
 </head>
@@ -439,17 +443,21 @@ function ed(span,sid){
 }
 
 function fmtV(sid,v){
-  if(sid==='txN')return v;
-  if(sid==='mrY'||sid==='cmY')return v;
-  if(sid==='mrR'||sid==='cmR')return v+'%';
+  if(sid==='txN'||sid==='olK')return v;
+  if(sid==='mrY'||sid==='cmY'||sid==='rtY'||sid==='ifY')return v;
+  if(sid==='mrR'||sid==='cmR'||sid==='cmG'||sid==='rtG'||sid==='rtM'||sid==='rtA'||sid==='caD'||sid==='ifR')return v+'%';
   return fm(v)+' ₪';
 }
 function triggerUpdate(sid){
   if(sid.startsWith('s1')||sid.startsWith('s2'))uFiS();
-  else if(sid.startsWith('c'))uFiC();
+  else if(sid.startsWith('ce')||sid.startsWith('ci')||sid.startsWith('cp')||sid==='ch2'||sid==='cn')uFiC();
   else if(sid.startsWith('tx'))uTax();
   else if(sid.startsWith('mr'))uMort();
   else if(sid.startsWith('cm'))uComp();
+  else if(sid.startsWith('rt'))uRent();
+  else if(sid.startsWith('ca'))uCar();
+  else if(sid.startsWith('ol'))uOlim();
+  else if(sid.startsWith('if'))uInfl();
 }
 
 function fm(n){return n==null?'—':Math.round(n).toLocaleString('he-IL')}
@@ -468,8 +476,9 @@ function fiCalc(e,i,p0,r,n,h,pn){
   return{t:Math.log(N/D)/Math.log(1+r),tgt:tgt,s:s};
 }
 
-function renderFI(res){
+function renderFI(res,income){
   var ok=isFinite(res.t)&&res.t>0;
+  var savRate=income>0?Math.round(res.s/income*100):0;
   var h='<div class="res'+(ok?'':' bad')+'">';
   h+='<div class="res-lbl">до финансовой независимости</div>';
   h+='<div class="res-num">'+(ok?fy(res.t):'Недостижимо')+'</div>';
@@ -477,7 +486,10 @@ function renderFI(res){
   h+='<div class="res-row">';
   h+='<div class="res-item"><div class="res-item-lbl">Нужно накопить</div><div class="res-item-val">'+fm(res.tgt)+' ₪</div></div>';
   h+='<div class="res-item"><div class="res-item-lbl">Откладываешь/мес</div><div class="res-item-val">'+fm(Math.round(res.s))+' ₪</div></div>';
-  h+='</div></div>';
+  h+='</div>';
+  if(income>0){h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Норма сбережений</div><div class="res-item-val">'+savRate+'% от дохода</div></div>'
+  +'<div class="res-item"><div class="res-item-lbl">На жизнь остаётся</div><div class="res-item-val">'+fm(income-Math.round(res.s))+' ₪</div></div></div>';}
+  h+='</div>';
   return h;
 }
 
@@ -505,8 +517,8 @@ function uFiS(){
   document.getElementById('s1pV').textContent=fm(v('s1p'))+' ₪';
   document.getElementById('s2iV').textContent=fm(v('s2i'))+' ₪';
   document.getElementById('s2pV').textContent=fm(v('s2p'))+' ₪';
-  document.getElementById('fiR1').innerHTML=renderFI(fiCalc(11000,v('s1i'),v('s1p'),fiRateVal,1,1570,3200));
-  document.getElementById('fiR2').innerHTML=renderFI(fiCalc(16400,v('s2i'),v('s2p'),fiRateVal,2,1570,3200));
+  document.getElementById('fiR1').innerHTML=renderFI(fiCalc(11000,v('s1i'),v('s1p'),fiRateVal,1,1570,3200),v('s1i'));
+  document.getElementById('fiR2').innerHTML=renderFI(fiCalc(16400,v('s2i'),v('s2p'),fiRateVal,2,1570,3200),v('s2i'));
   document.querySelectorAll('#p-fi input[type=range]').forEach(ss);
 }
 
@@ -517,7 +529,7 @@ function uFiC(){
   document.getElementById('cpV').textContent=fm(v('cp'))+' ₪';
   document.getElementById('chV').textContent=fm(v('ch2'))+' ₪';
   document.getElementById('cnV').textContent=fm(v('cn'))+' ₪';
-  document.getElementById('fiR3').innerHTML=renderFI(fiCalc(v('ce'),v('ci'),v('cp'),fiRateVal,fiEarners,v('ch2'),v('cn')));
+  document.getElementById('fiR3').innerHTML=renderFI(fiCalc(v('ce'),v('ci'),v('cp'),fiRateVal,fiEarners,v('ch2'),v('cn')),v('ci'));
   document.querySelectorAll('#p-fi input[type=range]').forEach(ss);
 }
 
@@ -554,11 +566,14 @@ function uTax(){
   h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Брутто</div><div class="res-item-val">'+fm(r.brutto)+' ₪</div></div>';
   h+='<div class="res-item"><div class="res-item-lbl">На руки</div><div class="res-item-val">'+Math.round(r.netto/r.brutto*100)+'%</div></div></div></div>';
 
+  var empCost=Math.round(r.brutto*1.185);
   h+='<div class="info-grid">';
   h+='<div class="info-cell"><div class="info-cell-lbl">Мас ахнаса</div><div class="info-cell-val">−'+fm(r.tax)+' ₪</div></div>';
   h+='<div class="info-cell"><div class="info-cell-lbl">Битуах леуми</div><div class="info-cell-val">−'+fm(r.bituach)+' ₪</div></div>';
   h+='<div class="info-cell"><div class="info-cell-lbl">Мас бриют</div><div class="info-cell-val">−'+fm(r.health)+' ₪</div></div>';
   h+='<div class="info-cell"><div class="info-cell-lbl">Пенсия (6%)</div><div class="info-cell-val">−'+fm(r.pension)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Нетто в год</div><div class="info-cell-val">'+fm(r.netto*12)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Стоимость работодателю</div><div class="info-cell-val">~'+fm(empCost)+' ₪</div></div>';
   h+='</div>';
 
   document.getElementById('taxRes').innerHTML=h;
@@ -669,19 +684,25 @@ function uRent(){
   var buyCost=Math.round(totalMort);
   var buyNet=Math.round(buyCost-equity);
   var rentTotal=Math.round(totalRent);
-  var diff=rentTotal-buyNet;
-  var buyWins=diff>0;
+  var diff=rentTotal-(buyNet>0?buyNet:0);
+  var buyWins=buyNet<rentTotal;
+
+  var buyLabel=buyNet<0?'Заработаешь на росте':'Чистый расход покупки';
+  var buyVal=buyNet<0?'+'+fm(Math.abs(buyNet))+' ₪':fm(buyNet)+' ₪';
+  var diffAbs=Math.abs(rentTotal-buyNet);
 
   var h='<div class="res'+(buyWins?'':' bad')+'"><div class="res-lbl">'+(buyWins?'Покупать выгоднее':'Снимать выгоднее')+'</div>';
-  h+='<div class="res-num">на '+fm(Math.abs(diff))+' ₪</div><div class="res-line"></div>';
+  h+='<div class="res-num">на '+fm(diffAbs)+' ₪</div><div class="res-line"></div>';
   h+='<div class="res-row"><div class="res-item"><div class="res-item-lbl">Аренда за '+yrs+' лет</div><div class="res-item-val">'+fm(rentTotal)+' ₪</div></div>';
-  h+='<div class="res-item"><div class="res-item-lbl">Покупка (чистый расход)</div><div class="res-item-val">'+fm(Math.max(0,buyNet))+' ₪</div></div></div></div>';
+  h+='<div class="res-item"><div class="res-item-lbl">'+buyLabel+'</div><div class="res-item-val">'+buyVal+'</div></div></div></div>';
 
   h+='<div class="info-grid">';
   h+='<div class="info-cell"><div class="info-cell-lbl">Платёж/мес</div><div class="info-cell-val">'+fm(Math.round(pmt))+' ₪</div></div>';
   h+='<div class="info-cell"><div class="info-cell-lbl">Первый взнос</div><div class="info-cell-val">'+fm(down)+' ₪</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Всего за машканту</div><div class="info-cell-val">'+fm(Math.round(pmt*n))+' ₪</div></div>';
   h+='<div class="info-cell"><div class="info-cell-lbl">Стоимость через '+yrs+' лет</div><div class="info-cell-val">'+fm(futureVal)+' ₪</div></div>';
   h+='<div class="info-cell"><div class="info-cell-lbl">Аренда в '+yrs+'-й год</div><div class="info-cell-val">'+fm(Math.round(rent*Math.pow(1+rg/100,yrs-1)))+' ₪/мес</div></div>';
+  h+='<div class="info-cell"><div class="info-cell-lbl">Разница платежа сейчас</div><div class="info-cell-val">'+fm(Math.round(Math.abs(pmt-rent)))+' ₪/мес</div></div>';
   h+='</div>';
 
   document.getElementById('rentRes').innerHTML=h;
@@ -720,7 +741,8 @@ function uCar(){
   h+='<div class="info-cell"><div class="info-cell-lbl">Страховка/мес</div><div class="info-cell-val">'+fm(insM)+' ₪</div></div>';
   h+='<div class="info-cell"><div class="info-cell-lbl">Тест+ТО/мес</div><div class="info-cell-val">'+fm(testM)+' ₪</div></div>';
   h+='<div class="info-cell"><div class="info-cell-lbl">Парковка/мес</div><div class="info-cell-val">'+fm(park)+' ₪</div></div>';
-  h+='<div class="info-cell"><div class="info-cell-lbl">% от ЗП 15К</div><div class="info-cell-val">'+Math.round(total/15000*100)+'%</div></div>';
+  var invest10=Math.round(total*12*((Math.pow(1.07,10)-1)/0.07));
+  h+='<div class="info-cell"><div class="info-cell-lbl">Инвестируя это за 10 лет</div><div class="info-cell-val">'+fm(invest10)+' ₪</div></div>';
   h+='</div>';
 
   document.getElementById('carRes').innerHTML=h;
